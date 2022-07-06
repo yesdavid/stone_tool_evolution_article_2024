@@ -55,21 +55,21 @@ xml_helper_function <- # has to be loaded first
       if(fossil_age_uncertainty == FALSE & skyline_BDMM == FALSE){
         blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_underPrior"  # fbds with without age uncertainty
       } else if(fossil_age_uncertainty == FALSE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_BDMMprime_underPrior_blank" # BDMM-prime skyline without age uncertainty
+        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_BDMMprime_underPrior" # BDMM-prime skyline without age uncertainty
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == FALSE){
         blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty_underPrior" # fbds with with age uncertainty
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_BDMMprime_ageUncertainty_underPrior"  # BDMM-prime skyline with age uncertainty
+        blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty_BDMMprime_underPrior"  # BDMM-prime skyline with age uncertainty
       }
     } else if(underPrior == FALSE){
       if(fossil_age_uncertainty == FALSE & skyline_BDMM == FALSE){
         blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds" # fbds with without age uncertainty
       } else if(fossil_age_uncertainty == FALSE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_BDMMprime_blank" # BDMM-prime skyline without age uncertainty
+        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_BDMMprime" # BDMM-prime skyline without age uncertainty
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == FALSE){
         blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty" # fbds with with age uncertainty
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_BDMMprime_ageUncertainty" # BDMM-prime skyline with age uncertainty
+        blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty_BDMMprime" # BDMM-prime skyline with age uncertainty
       }
     }
     
