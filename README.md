@@ -42,5 +42,3 @@ to do
 
 Code: MIT <http://opensource.org/licenses/MIT> year: 2022, copyright holder: David Nicolas Matzig
 
-Data: The data has been compiled from different resources. Please see the article's references or this repository under `./1_data/Readme.md`.
-
