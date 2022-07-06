@@ -91,6 +91,10 @@ DNA_SEQUENCE_PLACEHOLDER
 			<distr id="sampleExpMean" spec="beast.math.distributions.Exponential" mean="1.0" offset="0.0"/>
         </distribution>
 
+		<distribution id="origin" spec="beast.math.distributions.Prior" x="@FBDorigin">
+				<distr id="FBDoriginUniform" spec="beast.math.distributions.Uniform" upper="Infinity"/>
+			</distribution>
+
         
         <!-- BM model prior -->
         <!-- trait evolutionary rate, the diagonal elements in the variance-covariance matrix -->
