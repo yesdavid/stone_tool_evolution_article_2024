@@ -6,11 +6,19 @@ xml_helper_function <- # has to be loaded first
   function(fossil_age_uncertainty,
            fully_extinct,
            skyline_BDMM,
+               timebins, # this helper function does not work for timebins <2. Has to be adjusted manually.
+               changeTimes, # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
+               birthParameter,
+               deathParameter, 
+               samplingParameter, 
+               removalParameter,
+           BDS_ExponentialMean,
            underPrior,
            chainlength_in_millions,
            printgen,
            walltime_spec,
            blank_file_path){
+
     
     ####### fossil ages
     
@@ -38,11 +46,12 @@ xml_helper_function <- # has to be loaded first
       dplyr::distinct()
     
     # scale age to range 0-10
-    age_offset_beast <- age_offset/1000
+    age_scaler <- 1000
+    age_offset_beast <- age_offset/age_scaler
     print(age_offset_beast)
-    taxa_file_subset$max <- round(taxa_file_subset$max/1000, digits = 3)
-    taxa_file_subset$oneSigma_rangeMax <- round(taxa_file_subset$oneSigma_rangeMax/1000, digits = 3)
-    taxa_file_subset$oneSigma_rangeMin <- round(taxa_file_subset$oneSigma_rangeMin/1000, digits = 3)
+    taxa_file_subset$max <- round(taxa_file_subset$max/age_scaler, digits = 3)
+    taxa_file_subset$oneSigma_rangeMax <- round(taxa_file_subset$oneSigma_rangeMax/age_scaler, digits = 3)
+    taxa_file_subset$oneSigma_rangeMin <- round(taxa_file_subset$oneSigma_rangeMin/age_scaler, digits = 3)
     
     number_of_taxa <- nrow(taxa_file_subset)
     subset_taxa <- taxa_file_subset
@@ -205,6 +214,73 @@ xml_helper_function <- # has to be loaded first
     xml_1 <- gsub(pattern = "TRAITDATA_PLACEHOLDER",
                   replacement = paste0(PCaxis_traits, collapse = " "),
                   x = xml_1)
+    
+    
+    
+    ###############################
+    # BDS_EXPONENTIAL_MEAN_PLACEHOLDER BDS_ExponentialMean
+    ###############################
+    xml_1 <- 
+      gsub(pattern = "BDS_EXPONENTIAL_MEAN_PLACEHOLDER",
+           replacement = BDS_ExponentialMean,
+           x = xml_1)
+    
+    
+    # output names will be adjusted 
+    blank_file_name <- paste0(blank_file_name, "_BDSExp", BDS_ExponentialMean)
+    
+    
+    
+    ###############################
+    # BDMM-prime Skyline model setup
+    ###############################
+    
+    if(skyline_BDMM == T){
+      
+      # N_TIMEBINS_PLACEHOLDER
+      xml_1 <- 
+        gsub(pattern = "N_TIMEBINS_PLACEHOLDER",
+             replacement = timebins,
+             x = xml_1)
+      
+      # output names will be adjusted 
+      blank_file_name <- paste0(blank_file_name, "_tBins", timebins)
+                                
+                                
+      
+      # CHANGE_TIMES_PLACEHOLDER of length(timebins-1)
+      xml_1 <- 
+        gsub(pattern = "CHANGE_TIMES_PLACEHOLDER",
+             replacement = round((changeTimes - age_offset)/age_scaler, digits = 3),
+             x = xml_1)
+      
+      # BIRTH_TIMEBINS_PLACEHOLDER 1.0 1.0
+      xml_1 <- 
+        gsub(pattern = "BIRTH_TIMEBINS_PLACEHOLDER",
+             replacement = rep(birthParameter, timebins),
+             x = xml_1)
+      
+      # DEATH_TIMEBINS_PLACEHOLDER 1.0 1.0
+      xml_1 <- 
+        gsub(pattern = "DEATH_TIMEBINS_PLACEHOLDER",
+             replacement = rep(deathParameter, timebins),
+             x = xml_1)
+      
+      # SAMPLING_TIMEBINS_PLACEHOLDER 0.1 0.1
+      xml_1 <- 
+        gsub(pattern = "SAMPLING_TIMEBINS_PLACEHOLDER",
+             replacement = rep(samplingParameter, timebins),
+             x = xml_1)
+      
+      # REMOVALPROB_TIMEBINS_PLACEHOLDER 0.0 0.0
+      xml_1 <- 
+        gsub(pattern = "REMOVALPROB_TIMEBINS_PLACEHOLDER",
+             replacement = rep(removalParameter, timebins),
+             x = xml_1)
+      
+      
+      
+    }
     
     ###############################
     # fossil age uncertainty https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf section 3.2.10

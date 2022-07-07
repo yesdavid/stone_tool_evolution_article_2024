@@ -86,9 +86,16 @@ source(file.path("2_scripts",
 # xml file set up
 xml_helper_function(fossil_age_uncertainty = F,
                     fully_extinct = F,
-                    skyline_BDMM = T,
+                    skyline_BDMM = F,
+                        timebins = 2, # this helper function does not work for timebins <2. Has to be adjusted manually.
+                        changeTimes, # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
+                        birthParameter = "1.0",
+                        deathParameter = "1.0", 
+                        samplingParameter = "0.1", 
+                        removalParameter = "0.0",
+                    BDS_ExponentialMean = "1.0",
                     underPrior = F,
-                    printgen = 100000, # print ever _printgen_ iteration; set it to chainlength_in_millions/printgen = 10000
+                    printgen = 100000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
                     chainlength_in_millions = 1000,
                     walltime_spec = "24:00:00",
                     blank_file_path <- file.path(getwd(), "2_scripts","BEAST2_contraband") # path to folder where the blank .xml files are
