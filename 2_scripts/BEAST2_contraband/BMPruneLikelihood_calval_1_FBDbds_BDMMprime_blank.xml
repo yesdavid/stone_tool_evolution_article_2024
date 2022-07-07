@@ -36,9 +36,11 @@ name="alignment">
                     <taxa idref="TaxonSet"/>
                 </trait>
 			</tree>
+			
             <parameter id="birthRateCanonical.t" spec="parameter.RealParameter" dimension="2" name="stateNode">1.0 1.0</parameter>
-            <parameter id="deathRateCanonical.t" spec="parameter.RealParameter" name="stateNode">1.0 1.0</parameter>
-            <parameter id="samplingRateCanonical.t" spec="parameter.RealParameter" name="stateNode">0.1 0.1</parameter>
+            <parameter id="deathRateCanonical.t" spec="parameter.RealParameter" dimension="2" name="stateNode">1.0 1.0</parameter>
+            <parameter id="samplingRateCanonical.t" spec="parameter.RealParameter" dimension="2" name="stateNode">0.1 0.1</parameter>
+			
             <parameter id="originBDMMPrime.t" spec="parameter.RealParameter" name="stateNode">10.0</parameter>
             <parameter id="typeFrequencies.t" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">1.0</parameter>
             <parameter id="clockRate.c" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
@@ -81,7 +83,7 @@ name="alignment">
 						
 						<rhoSampling id="rhoSamplingProbTPCanonical.t" spec="bdmmprime.parameterization.TimedParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
                             <parameter id="rhoSamplingProbTimesCanonical.t" spec="parameter.RealParameter" estimate="false" name="times">4.0</parameter>
-                            <parameter id="rhoSamplingProbCanonical.t" spec="parameter.RealParameter" estimate="false" name="values">1.0</parameter>
+                            <parameter id="rhoSamplingProbCanonical.t" spec="parameter.RealParameter" estimate="false" name="values"> 0.00000001</parameter>
                         </rhoSampling>
                         
 						<removalProb id="removalProbSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
