@@ -82,7 +82,7 @@ name="alignment">
                         </samplingRate>
 						
 						<rhoSampling id="rhoSamplingProbTPCanonical.t" spec="bdmmprime.parameterization.TimedParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="rhoSamplingProbTimesCanonical.t" spec="parameter.RealParameter" estimate="false" name="times">CHANGE_TIMES_PLACEHOLDER</parameter>
+                            <parameter id="rhoSamplingProbTimesCanonical.t" spec="parameter.RealParameter" estimate="false" name="times">0.0</parameter>
                             <parameter id="rhoSamplingProbCanonical.t" spec="parameter.RealParameter" estimate="false" name="values"> 0.00000001</parameter>
                         </rhoSampling>
                         
