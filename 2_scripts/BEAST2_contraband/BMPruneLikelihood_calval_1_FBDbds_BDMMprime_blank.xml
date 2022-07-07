@@ -24,7 +24,7 @@ name="alignment">
 	<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 	
 	
-    <run id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER" >
+    <run id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER">
         <state id="state" spec="State" storeEvery="5000">
             <tree id="TheTree" spec="beast.evolution.tree.Tree" name="stateNode">
                 
@@ -37,9 +37,9 @@ name="alignment">
                 </trait>
 			</tree>
 			
-            <parameter id="birthRateCanonical.t" spec="parameter.RealParameter" dimension="2" name="stateNode">1.0 1.0</parameter>
-            <parameter id="deathRateCanonical.t" spec="parameter.RealParameter" dimension="2" name="stateNode">1.0 1.0</parameter>
-            <parameter id="samplingRateCanonical.t" spec="parameter.RealParameter" dimension="2" name="stateNode">0.1 0.1</parameter>
+            <parameter id="birthRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">BIRTH_TIMEBINS_PLACEHOLDER</parameter>
+            <parameter id="deathRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">DEATH_TIMEBINS_PLACEHOLDER</parameter>
+            <parameter id="samplingRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">SAMPLING_TIMEBINS_PLACEHOLDER</parameter>
 			
             <parameter id="originBDMMPrime.t" spec="parameter.RealParameter" name="stateNode">10.0</parameter>
             <parameter id="typeFrequencies.t" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">1.0</parameter>
@@ -65,7 +65,7 @@ name="alignment">
                     <parameterization id="CanonicalBDMMPrimeParameterization.t" spec="bdmmprime.parameterization.CanonicalParameterization" origin="@originBDMMPrime.t">
                         
 						<birthRate id="birthRateSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@birthRateCanonical.t" timesAreAges="true">
-                            <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">4.0</parameter>
+                            <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
                             <typeSet id="typeSetBDMMPrime.t" spec="bdmmprime.parameterization.TypeSet">
                                 <typeTraitSet id="typeTraitSet.t" spec="bdmmprime.util.InitializedTraitSet" traitname="type" value="TYPETRAITSET_PLACEHOLDER">
                                     <taxa id="TaxonSet.1" spec="TaxonSet" alignment="@dnaSequence"/>
@@ -74,21 +74,21 @@ name="alignment">
                         </birthRate>
 						
                         <deathRate id="deathRateSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@deathRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="deathRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">4.0</parameter>
+                            <parameter id="deathRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
                         </deathRate>
 						
 						 <samplingRate id="samplingRateSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@samplingRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="samplingRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">4.0</parameter>
+                            <parameter id="samplingRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
                         </samplingRate>
 						
 						<rhoSampling id="rhoSamplingProbTPCanonical.t" spec="bdmmprime.parameterization.TimedParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="rhoSamplingProbTimesCanonical.t" spec="parameter.RealParameter" estimate="false" name="times">4.0</parameter>
+                            <parameter id="rhoSamplingProbTimesCanonical.t" spec="parameter.RealParameter" estimate="false" name="times">CHANGE_TIMES_PLACEHOLDER</parameter>
                             <parameter id="rhoSamplingProbCanonical.t" spec="parameter.RealParameter" estimate="false" name="values"> 0.00000001</parameter>
                         </rhoSampling>
                         
 						<removalProb id="removalProbSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">4.0</parameter>
-                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="skylineValues" upper="1.0">1.0 1.0</parameter>
+                            <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
+                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="skylineValues" upper="1.0">REMOVALPROB_TIMEBINS_PLACEHOLDER</parameter>
                         </removalProb>
 						
                         <migrationRate id="migrationRateSMCanonical.t" spec="bdmmprime.parameterization.SkylineMatrixParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
@@ -107,19 +107,19 @@ name="alignment">
 				
                 <distribution id="birthRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@birthRateCanonical.t">
                     <Exponential id="Exponential.1" name="distr">
-                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="mean">1.0</parameter>
+                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
                     </Exponential>
                 </distribution>
 				
                 <prior id="ClockPrior.c" name="distribution" x="@clockRate.c">
                     <Exponential id="Exponential.4" name="distr">
-                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="mean">1.0</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
                     </Exponential>
                 </prior>
 				
                 <distribution id="deathRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@deathRateCanonical.t">
                     <Exponential id="Exponential.2" name="distr">
-                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="mean">1.0</parameter>
+                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
                     </Exponential>
                 </distribution>
 				
@@ -129,7 +129,7 @@ name="alignment">
 				
                 <distribution id="samplingRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@samplingRateCanonical.t">
                     <Exponential id="Exponential.3" name="distr">
-                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="mean">1.0</parameter>
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
                     </Exponential>
                 </distribution>
             </distribution>
