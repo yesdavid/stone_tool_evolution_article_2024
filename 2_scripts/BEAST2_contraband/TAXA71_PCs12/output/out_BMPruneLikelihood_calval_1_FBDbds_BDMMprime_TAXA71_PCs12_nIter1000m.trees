@@ -1,0 +1,154 @@
+#NEXUS
+
+Begin taxa;
+	Dimensions ntax=71;
+		Taxlabels
+			TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_na_1_pseudo_no_1
+			TS2_AzilTECE_ASH_Elsbethen_Rettenbacher1998_AR_na_2_pseudo_no_1
+			TS4_AzilTSG_ASH_Gamssulzen_KuehtreiberKunst1995_AR_na_1_pseudo_no_1
+			TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_4_pseudo_no_2
+			TS1_Mag_BSN_TroudeChaleux_Otte1994_AR_NA_1_pseudo_no_8
+			TS2_Feder_BSN_MilheezeHutseberg2_Rozoy1978_AR_D_1_pseudo_no_5
+			TS3_EpiAhr_BSN_GeldropMiePeels_DeebenSchreurs2012_AR_P_1_pseudo_no_2
+			TS4_EpiAhr_BSN_Geldrop32Oost_Deeben1996_AR_P_1_pseudo_no_22
+			TS1_Mag_BOMO_Hostim_Vencl1995_AR_d_1_pseudo_no_9
+			TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_12
+			TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_10
+			TS4_Meso_BOMO_Kulna3_Valoch1988_AR_d_1_pseudo_no_7
+			TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_29
+			TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_9
+			TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_2
+			TS2_EMag_IBM_Roureda_Roman2012_AR_na_1_pseudo_no_3
+			TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_21
+			TS2_PAzil_IBC_BalmaMarginedaUnit7sup_Guilaineetal2008_AR_p_1_pseudo_no_2
+			TS3_EAzil_IBC_BalmaMarginedaUnit7sup_Guilaineetal2008_AR_p_1_pseudo_no_5
+			TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_12
+			TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_12
+			TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_5
+			TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_7
+			TS4_Sauv_IBM_AtxosteVIb_Soto2014_AR_na_2_pseudo_no_9
+			TS3_Brom_LT_Parupe1_RimkusGirininkas2021_AR_na_1_pseudo_no_1
+			TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_4
+			TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_8
+			TS12_EAzil_NF_LeCloseauLL_BoduMevel2008_AR_na_1_pseudo_no_2
+			TS23_LAzil_NF_LaFru_Mevel2017_AR_d_1_pseudo_no_5
+			TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_2
+			TS1_Ham_NG_Poggenwisch_Rust1958Taf44_AR_na_1_pseudo_no_23
+			TS2_Feder_NG_Weitsche_Veil2012fig2_AR_p_1_pseudo_no_1
+			TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3
+			TS3_Ahr_NG_Stellmoor_Grimmetal2012_AR_na_1_pseudo_no_7
+			TS4_Magle_NG_DuvenseeWP8_Bokelmannetal1981_AR_p_4_pseudo_no_1
+			TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_1
+			TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_1_pseudo_no_10
+			TS12_LEpigrav_NEI_RiparoTaglientelayer10_Bartolomeietal1984_AR_p_1_pseudo_no_3
+			TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_24
+			TS1_Ham_PL_Mirkowice33_ChlodnickiKabacinski1997_AR_na_1_pseudo_no_1
+			TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_3_pseudo_no_1
+			TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1
+			TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_3_pseudo_no_1
+			TS3_Wito_PL_Rotnowo18ll_Galinski2007_AR_p_1_pseudo_no_1
+			TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_d_1_pseudo_no_1
+			TS4_Plu_PL_Zagacie2_Pawlowska20032017_AR_d_1_pseudo_no_1
+			TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_na_9_pseudo_no_1
+			TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_16
+			TS1_LMagTKE_CH_AbriSchweizersbild_HoneisenPeyer1994_AR_na_1_pseudo_no_2
+			TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16
+			TS2_LPal_SG_ZigeunerfelsDE_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_9
+			TS23_EAzil_CH_GrottedeBichon_Chauviere2008_AR_d_1_pseudo_no_16
+			TS3_LAzil_CH_AbriWachtfels_Sedlmeier2015_AR_na_1_pseudo_no_2
+			TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2
+			TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_29
+			TS4_EMeso_CH_AbriVionnaz1_Chaixetal2003_AR_d_1_pseudo_no_11
+			TS1_Ham_SS_SlotsengC_HolmRieck1992_AR_na_1_pseudo_no_1
+			TS2_Feder_SS_SlotsengB_HolmRieck1992_AR_na_1_pseudo_no_3
+			TS3_Brom_SS_Bromme_Mathiassen1946p3_AR_na_1_pseudo_no_3
+			TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1
+			TS4_Magle_SS_Aarup2_KarstenNilsson2006_AR_na_1_pseudo_no_1
+			TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_29
+			TS12_EAzil_SWF_BoisRagotniv4_ValentinHantai2005_AR_d_4_pseudo_no_14
+			TS23_LAzil_SWF_BoisRagotniv3_ValentinHantai2005_AR_d_2_pseudo_no_11
+			TS34_ELab_SWF_Malaurie_MISSING_AR_d_1_pseudo_no_3
+			TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_3
+			TS4_LLab_SWF_Peyrazet_Langlaisetal2015_AR_d_1_pseudo_no_2
+			TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_2
+			TS45_FBBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_13
+			TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_4
+			TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2
+			;
+End;
+Begin trees;
+	Translate
+		   1 TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_na_1_pseudo_no_1,
+		   2 TS2_AzilTECE_ASH_Elsbethen_Rettenbacher1998_AR_na_2_pseudo_no_1,
+		   3 TS4_AzilTSG_ASH_Gamssulzen_KuehtreiberKunst1995_AR_na_1_pseudo_no_1,
+		   4 TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_4_pseudo_no_2,
+		   5 TS1_Mag_BSN_TroudeChaleux_Otte1994_AR_NA_1_pseudo_no_8,
+		   6 TS2_Feder_BSN_MilheezeHutseberg2_Rozoy1978_AR_D_1_pseudo_no_5,
+		   7 TS3_EpiAhr_BSN_GeldropMiePeels_DeebenSchreurs2012_AR_P_1_pseudo_no_2,
+		   8 TS4_EpiAhr_BSN_Geldrop32Oost_Deeben1996_AR_P_1_pseudo_no_22,
+		   9 TS1_Mag_BOMO_Hostim_Vencl1995_AR_d_1_pseudo_no_9,
+		  10 TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_12,
+		  11 TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_10,
+		  12 TS4_Meso_BOMO_Kulna3_Valoch1988_AR_d_1_pseudo_no_7,
+		  13 TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_29,
+		  14 TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_9,
+		  15 TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_2,
+		  16 TS2_EMag_IBM_Roureda_Roman2012_AR_na_1_pseudo_no_3,
+		  17 TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_21,
+		  18 TS2_PAzil_IBC_BalmaMarginedaUnit7sup_Guilaineetal2008_AR_p_1_pseudo_no_2,
+		  19 TS3_EAzil_IBC_BalmaMarginedaUnit7sup_Guilaineetal2008_AR_p_1_pseudo_no_5,
+		  20 TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_12,
+		  21 TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_12,
+		  22 TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_5,
+		  23 TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_7,
+		  24 TS4_Sauv_IBM_AtxosteVIb_Soto2014_AR_na_2_pseudo_no_9,
+		  25 TS3_Brom_LT_Parupe1_RimkusGirininkas2021_AR_na_1_pseudo_no_1,
+		  26 TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_4,
+		  27 TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_8,
+		  28 TS12_EAzil_NF_LeCloseauLL_BoduMevel2008_AR_na_1_pseudo_no_2,
+		  29 TS23_LAzil_NF_LaFru_Mevel2017_AR_d_1_pseudo_no_5,
+		  30 TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_2,
+		  31 TS1_Ham_NG_Poggenwisch_Rust1958Taf44_AR_na_1_pseudo_no_23,
+		  32 TS2_Feder_NG_Weitsche_Veil2012fig2_AR_p_1_pseudo_no_1,
+		  33 TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3,
+		  34 TS3_Ahr_NG_Stellmoor_Grimmetal2012_AR_na_1_pseudo_no_7,
+		  35 TS4_Magle_NG_DuvenseeWP8_Bokelmannetal1981_AR_p_4_pseudo_no_1,
+		  36 TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_1,
+		  37 TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_1_pseudo_no_10,
+		  38 TS12_LEpigrav_NEI_RiparoTaglientelayer10_Bartolomeietal1984_AR_p_1_pseudo_no_3,
+		  39 TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_24,
+		  40 TS1_Ham_PL_Mirkowice33_ChlodnickiKabacinski1997_AR_na_1_pseudo_no_1,
+		  41 TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_3_pseudo_no_1,
+		  42 TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1,
+		  43 TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_3_pseudo_no_1,
+		  44 TS3_Wito_PL_Rotnowo18ll_Galinski2007_AR_p_1_pseudo_no_1,
+		  45 TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_d_1_pseudo_no_1,
+		  46 TS4_Plu_PL_Zagacie2_Pawlowska20032017_AR_d_1_pseudo_no_1,
+		  47 TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_na_9_pseudo_no_1,
+		  48 TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_16,
+		  49 TS1_LMagTKE_CH_AbriSchweizersbild_HoneisenPeyer1994_AR_na_1_pseudo_no_2,
+		  50 TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16,
+		  51 TS2_LPal_SG_ZigeunerfelsDE_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_9,
+		  52 TS23_EAzil_CH_GrottedeBichon_Chauviere2008_AR_d_1_pseudo_no_16,
+		  53 TS3_LAzil_CH_AbriWachtfels_Sedlmeier2015_AR_na_1_pseudo_no_2,
+		  54 TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2,
+		  55 TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_29,
+		  56 TS4_EMeso_CH_AbriVionnaz1_Chaixetal2003_AR_d_1_pseudo_no_11,
+		  57 TS1_Ham_SS_SlotsengC_HolmRieck1992_AR_na_1_pseudo_no_1,
+		  58 TS2_Feder_SS_SlotsengB_HolmRieck1992_AR_na_1_pseudo_no_3,
+		  59 TS3_Brom_SS_Bromme_Mathiassen1946p3_AR_na_1_pseudo_no_3,
+		  60 TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1,
+		  61 TS4_Magle_SS_Aarup2_KarstenNilsson2006_AR_na_1_pseudo_no_1,
+		  62 TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_29,
+		  63 TS12_EAzil_SWF_BoisRagotniv4_ValentinHantai2005_AR_d_4_pseudo_no_14,
+		  64 TS23_LAzil_SWF_BoisRagotniv3_ValentinHantai2005_AR_d_2_pseudo_no_11,
+		  65 TS34_ELab_SWF_Malaurie_MISSING_AR_d_1_pseudo_no_3,
+		  66 TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_3,
+		  67 TS4_LLab_SWF_Peyrazet_Langlaisetal2015_AR_d_1_pseudo_no_2,
+		  68 TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_2,
+		  69 TS45_FBBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_13,
+		  70 TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_4,
+		  71 TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2
+;
+tree STATE_0 = ((((40:0.22017154711667608,((((58:0.16323786416892272,28:0.16723786416892317):0.6133688119851799,(34:0.04390243295987606,70:0.10790243295987612):0.4887042431942268):0.11286701043378766,5:0.06547368658789043):0.11357833134388429,63:0.21305201793177542):0.21611952918490118):0.10648024177730253,(14:0.22203723246229234,38:0.08403723246229244):0.011614556431686296):0.07110127110215991,1:0.3947530599961384):1.9231790135023505,((((62:0.2561458137530126,50:0.08214581375301222):0.1688488329932456,((((((33:0.07032151395645769,((43:0.20684929326945678,(((8:0.2150832257341464,(53:0.00760305197418365,37:0.04360305197418346):0.1364801737599628):1.0331879731117517,((((30:0.3976613121570618,(60:0.15377226089245521,(55:0.09471950808564888,22:0.16171950808564906):0.13905275280680618):0.09288905126460678):0.40179245397623164,18:0.003453766133293623):0.02135698731804858,19:0.024810753451342205):0.15974370783075686,36:0.2155544612820992):0.08971673756379905):0.5140271305934156,71:0.02529832943931387):0.018550963830143097):0.2954963962282098,46:0.11834568949766666):0.7129758244587912):0.17452114146432685,((((66:0.29512467035591605,69:0.5881246703559162):0.22981090706261886,(59:0.04790667085844236,65:0.043906670858442354):0.11102890656009246):0.4794688885795484,25:0.23940446599808318):0.229267421257644,((44:0.05053219957847066,12:0.08253219957847069):0.40058319048455227,((16:0.01671013815049438,(42:0.041123158248931535,(21:0.1952734145110986,7:0.13327341451109875):0.46284974373783294):0.044586979901562795):0.08415218362790666,(((20:0.21044499441997688,(((3:0.26519788402162137,4:0.15219788402162138):0.10744090418082308,(23:0.2753123545706728,((26:0.02277050566378458,67:0.1967705056637845):0.31620225485388564,(39:0.10048017157352596,(61:0.508478894847566,((56:1.3045829512467055,35:0.09558295124670546):0.07663039779003,24:0.3272133490367355):0.12326554581083049):0.09900127672595982):0.36749258894414427):0.3333395940530026):0.1633264336317719):0.3155814189970063,47:0.24822020719945082):0.21522478722052574):0.02467916139366233,45:0.014124155813639128):0.1481571273035267,6:0.08428128311716554):0.4095810386612353):0.1242530682846219):0.11255649719270444):0.5921707681650572):0.2912873818826993,(54:0.1964747993073983,29:0.09347479930739855):0.06865523799608564):0.6358337060351476,68:0.05096374333863185):0.023294994939282,(57:0.16259437687561995,48:0.07259437687562009):0.23366436140229307):0.660751567696229,((41:0.062375148754436616,64:0.07837514875443663):0.09124130276216746,(11:0.28213654418925316,13:0.05213654418925273):0.018479907327351164):0.4393938544575384):0.15798434077211532):0.1187232814345931,31:0.4217179281808505):1.0988719261293483,(27:0.24109579817318938,((9:0.018133844578322567,(((17:0.20253509365836342,10:0.04153509365836339):0.2802010512307338,((52:0.03199437503182434,2:0.17599437503182447):0.11870806229113562,49:0.13270243732296017):0.22203370756613694):0.5682769529973593,(51:0.41414377832688665,15:0.09314377832688603):0.30486931955957):0.09012074669186632):0.2640320002008343,32:1.054165844779157):1.1079299533940326):1.1204940561370096):0.88734221918829):0.0;
+tree STATE_100000 = ((38:0.0,(14:0.0,(27:0.0,(1:0.0,(50:0.0,(31:0.0,(5:0.036252998667825054,((62:0.0,((13:0.0,41:0.08300000000000018):0.034730368373808496,(64:0.0,(((34:0.0,((48:0.0,(((57:0.0,9:0.07800000000000029):0.0227897956939227,58:0.0227897956939227):0.0014586821420659035,((29:0.055676518065741476,(54:0.0,(((32:0.0,(51:0.0,((10:0.0,(52:0.0,(17:0.0,(2:0.0,((16:0.0,((46:0.0,71:0.22100000000000009):0.02356638869880401,(42:0.0,(43:0.36939262094673975,(44:0.0,(12:0.0,(6:0.0,((45:0.0,(21:0.15600000000000014,59:0.0):0.05899999999999972):0.06272029900401987,(65:0.0,(7:0.0,(20:0.004893023880474079,(66:0.0,(47:0.0,((19:0.0,((69:0.0,(4:0.0,(3:0.0,(23:0.0,((60:0.0,((26:0.0,(67:0.05899999999999994,53:0.0):0.11499999999999999):0.0038725877874807857,(((8:0.0,(35:0.0,(24:0.0,(56:0.996,61:0.0):0.05800000000000005):0.15500000000000003):0.23699999999999988):0.05699999999999994,39:0.0):0.125,22:0.0):0.00787258778748079):0.13912741221251923):0.019511105999307166,55:0.09951110599930701):0.23448889400069284):0.06600000000000028):0.11299999999999999):0.08299999999999974):0.09799999999999986,36:0.0):0.03100000000000014):0.01019716255472991,((30:0.0,37:0.14300000000000002):0.7959999999999998,18:0.0):0.01019716255472991):0.1048028374452703):0.04899999999999993):0.20889302388047382):0.06310697611952598):0.09800000000000031):0.11772029900401959):0.015279700995980416):0.1349999999999998):0.03200000000000003):0.13539262094673976):0.021607379053260267):0.01656638869880389):0.05243361130119606):0.0845723240789309,25:0.21557232407893068):0.16442767592106922):0.03399999999999981):0.11000000000000032):0.05099999999999971):0.017505260338126494,49:0.05050526033812641):0.15349473966187333):0.019000000000000128):0.051000000000000156,33:0.0):0.25100000000000033,15:0.0):0.019999999999999574):0.15867651806574123):0.3653234819342588,28:0.0):0.02824847783598905):0.06575152216401126):0.08999999999999986,70:0.0):0.06400000000000006):0.07299999999999951,11:0.0):0.016382001115781364,68:0.01138200111578147):0.11461799888421886):0.1337303683738087):0.20826963162619094):0.006866959745636336,63:0.006866959745636336):0.06338603892218941):0.051747001332175024):0.0519999999999996):0.038000000000000256):0.06899999999999995):0.020999999999999908):0.1379999999999999):0.059933602755379844,40:0.2909336027553797):0.0;
