@@ -84,17 +84,17 @@ source(file.path("2_scripts",
                  "30_BEAST2_outlines_XMLhelperFunction.R"))
 
 # xml file set up
-xml_helper_function(fossil_age_uncertainty = F,
-                    fully_extinct = F,
+xml_helper_function(fossil_age_uncertainty = T,
+                    fully_extinct = T,
                     skyline_BDMM = F,
                         timebins = 2, # this helper function does not work for timebins <2. Has to be adjusted manually.
-                        changeTimes, # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
+                        changeTimes = 13006,  #13,006+-9 calBP is the year of the Laacher See eruption (2021) https://www.nature.com/articles/s41586-021-03608-x   # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
                         birthParameter = "1.0",
                         deathParameter = "1.0", 
                         samplingParameter = "0.1", 
                         removalParameter = "0.0",
                     BDS_ExponentialMean = "1.0",
-                    underPrior = F,
+                    underPrior = T,
                     printgen = 100000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
                     chainlength_in_millions = 1000,
                     walltime_spec = "24:00:00",

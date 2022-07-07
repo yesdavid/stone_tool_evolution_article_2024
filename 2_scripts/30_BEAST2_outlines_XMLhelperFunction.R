@@ -251,31 +251,31 @@ xml_helper_function <- # has to be loaded first
       # CHANGE_TIMES_PLACEHOLDER of length(timebins-1)
       xml_1 <- 
         gsub(pattern = "CHANGE_TIMES_PLACEHOLDER",
-             replacement = round((changeTimes - age_offset)/age_scaler, digits = 3),
+             replacement = paste0(round((changeTimes - age_offset)/age_scaler, digits = 3), collapse = " "),
              x = xml_1)
       
       # BIRTH_TIMEBINS_PLACEHOLDER 1.0 1.0
       xml_1 <- 
         gsub(pattern = "BIRTH_TIMEBINS_PLACEHOLDER",
-             replacement = rep(birthParameter, timebins),
+             replacement = paste0(rep(birthParameter, timebins), collapse = " "),
              x = xml_1)
       
       # DEATH_TIMEBINS_PLACEHOLDER 1.0 1.0
       xml_1 <- 
         gsub(pattern = "DEATH_TIMEBINS_PLACEHOLDER",
-             replacement = rep(deathParameter, timebins),
+             replacement = paste0(rep(deathParameter, timebins), collapse = " "),
              x = xml_1)
       
       # SAMPLING_TIMEBINS_PLACEHOLDER 0.1 0.1
       xml_1 <- 
         gsub(pattern = "SAMPLING_TIMEBINS_PLACEHOLDER",
-             replacement = rep(samplingParameter, timebins),
+             replacement = paste0(rep(samplingParameter, timebins), collapse = " "),
              x = xml_1)
       
       # REMOVALPROB_TIMEBINS_PLACEHOLDER 0.0 0.0
       xml_1 <- 
         gsub(pattern = "REMOVALPROB_TIMEBINS_PLACEHOLDER",
-             replacement = rep(removalParameter, timebins),
+             replacement = paste0(rep(removalParameter, timebins), collapse = " "),
              x = xml_1)
       
       
