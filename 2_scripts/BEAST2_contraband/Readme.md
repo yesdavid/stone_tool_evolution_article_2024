@@ -1,4 +1,4 @@
-# "BEAST2 xml scripts"
+# BEAST2 xml scripts
 'David N. Matzig¹ ORCID: 0000-0001-7349-5401'
 
 The blank scripts are modified using the `../30_BEAST2_outlines_XMLhelperFunction.R` function via the `../30_BEAST2_outlines_v2.R` R-script. I.e., the data will be included into the blank files and various parameters can be set and adjusted. However, if there is general changes to be made to the scripts, it is the __BLANK__ scripts that have to modified manually!
