@@ -1,6 +1,7 @@
 library(Momocs)
 library(splitstackshape)
 library(readr)
+library(magrittr)
 
 outlines_AR_centered_w_metric_measures_raw <- readRDS(file = file.path("..",
                                                                        "CLIOARCH_workshop_2_2020",
@@ -83,8 +84,8 @@ source(file.path("2_scripts",
                  "30_BEAST2_outlines_XMLhelperFunction.R"))
 
 # xml file set up
-xml_helper_function(fossil_age_uncertainty = T,
-                    fully_extinct = T,
+xml_helper_function(fossil_age_uncertainty = F,
+                    fully_extinct = F,
                     skyline_BDMM = T,
                     underPrior = F,
                     printgen = 100000, # print ever _printgen_ iteration; set it to chainlength_in_millions/printgen = 10000

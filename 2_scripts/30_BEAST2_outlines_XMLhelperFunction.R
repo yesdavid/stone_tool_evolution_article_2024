@@ -319,7 +319,7 @@ xml_helper_function <- # has to be loaded first
     # finishing
     ###############################
     # create folder for this constellation
-    current_output_path<- file.path(getwd(),"post_workshop_2021","2_script","BEAST2_contraband",
+    current_output_path<- file.path(getwd(),"2_scripts","BEAST2_contraband",
                                     paste0("TAXA",number_of_taxa,
                                            "_PCs",number_of_pc_axes_used))
     
