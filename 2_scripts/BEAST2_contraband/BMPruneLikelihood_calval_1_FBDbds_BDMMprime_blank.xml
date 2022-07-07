@@ -64,7 +64,7 @@ name="alignment">
                 <distribution id="BDMMPrime.t" spec="bdmmprime.distribution.BirthDeathMigrationDistribution" conditionOnSurvival="false" frequencies="@typeFrequencies.t" tree="@TheTree">
                     <parameterization id="CanonicalBDMMPrimeParameterization.t" spec="bdmmprime.parameterization.CanonicalParameterization" origin="@originBDMMPrime.t">
                         
-						<birthRate id="birthRateSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@birthRateCanonical.t" timesAreAges="true">
+						<birthRate id="birthRate" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@birthRateCanonical.t" timesAreAges="true">
                             <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
                             <typeSet id="typeSetBDMMPrime.t" spec="bdmmprime.parameterization.TypeSet">
                                 <typeTraitSet id="typeTraitSet.t" spec="bdmmprime.util.InitializedTraitSet" traitname="type" value="TYPETRAITSET_PLACEHOLDER">
@@ -73,11 +73,11 @@ name="alignment">
                             </typeSet>
                         </birthRate>
 						
-                        <deathRate id="deathRateSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@deathRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                        <deathRate id="deathRate" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@deathRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
                             <parameter id="deathRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
                         </deathRate>
 						
-						 <samplingRate id="samplingRateSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@samplingRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+						 <samplingRate id="samplingRate" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@samplingRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
                             <parameter id="samplingRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
                         </samplingRate>
 						
@@ -227,11 +227,11 @@ name="alignment">
             <log idref="likelihood"/>
             <log idref="prior"/>
 			<log id="TreeHeight.t" spec="beast.evolution.tree.TreeHeightLogger" tree="@TheTree"/>
-            <log idref="birthRateSVCanonical.t"/>
+            <log idref="birthRate"/>
             <log idref="birthRateAmongDemesSMCanonical.t"/>
-            <log idref="deathRateSVCanonical.t"/>
+            <log idref="deathRate"/>
             <log idref="migrationRateSMCanonical.t"/>
-            <log idref="samplingRateSVCanonical.t"/>
+            <log idref="samplingRate"/>
             <log idref="removalProbSVCanonical.t"/>
             <log idref="rhoSamplingProbTPCanonical.t"/>
             <log idref="birthRateAmongDemesCanonical.t"/>
