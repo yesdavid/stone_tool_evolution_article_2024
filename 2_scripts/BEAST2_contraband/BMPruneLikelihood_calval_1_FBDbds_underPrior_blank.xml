@@ -39,9 +39,9 @@ DNA_SEQUENCE_PLACEHOLDER
 		<stateNode idref="FBDrho"/>
 
 		<!--NEW specification of the FBP parameters-->
-		<parameter id="birthRateFBD" lower="0.0" name="stateNode">1.0 </parameter>
-		<parameter id="deathRateFBD" lower="0.0" name ="stateNode">0.5 </parameter>
-		<parameter id="samplingRateFBD" lower="0.0" name ="stateNode">0.5 </parameter>
+		<parameter id="birthRate" lower="0.0" name="stateNode">1.0 </parameter>
+		<parameter id="deathRate" lower="0.0" name ="stateNode">0.5 </parameter>
+		<parameter id="samplingRate" lower="0.0" name ="stateNode">0.5 </parameter>
 
 		<parameter id="FBDorigin" name="stateNode" lower="0.0">100.0</parameter>
 	</state>
@@ -62,9 +62,9 @@ DNA_SEQUENCE_PLACEHOLDER
 <!-- XML specification of the FBD process NEW -->
         <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" 
         				conditionOnRhoSampling = "true"
-        				birthRate="@birthRateFBD" 
-        				deathRate="@deathRateFBD" 
-        				samplingRate="@samplingRateFBD" 
+        				birthRate="@birthRate" 
+        				deathRate="@deathRate" 
+        				samplingRate="@samplingRate" 
         				origin="@FBDorigin"
         				tree="@TheTree">
             <parameter id="FBDremovalProb" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
@@ -73,14 +73,14 @@ DNA_SEQUENCE_PLACEHOLDER
 
 
 <!-- Priors of the FBD process NEW-->
-        <distribution id="birthRatePrior" spec="beast.math.distributions.Prior" x="@birthRateFBD">
-        	<distr id="birthExpMean" spec="beast.math.distributions.Exponential" mean="1.0" offset="0.0"/>  
+        <distribution id="birthRatePrior" spec="beast.math.distributions.Prior" x="@birthRate">
+        	<distr id="birthExpMean" spec="beast.math.distributions.Exponential" mean="BDS_EXPONENTIAL_MEAN_PLACEHOLDER" offset="0.0"/>  
         </distribution>
-        <distribution id="deathRatePrior" spec="beast.math.distributions.Prior" x="@deathRateFBD">
-           <distr id="deathExpMean" spec="beast.math.distributions.Exponential" mean="1.0" offset="0.0"/> 
+        <distribution id="deathRatePrior" spec="beast.math.distributions.Prior" x="@deathRate">
+           <distr id="deathExpMean" spec="beast.math.distributions.Exponential" mean="BDS_EXPONENTIAL_MEAN_PLACEHOLDER" offset="0.0"/> 
         </distribution>
-        <distribution id="sampleRatePrior" spec="beast.math.distributions.Prior" x="@samplingRateFBD">
-			<distr id="sampleExpMean" spec="beast.math.distributions.Exponential" mean="1.0" offset="0.0"/>
+        <distribution id="sampleRatePrior" spec="beast.math.distributions.Prior" x="@samplingRate">
+			<distr id="sampleExpMean" spec="beast.math.distributions.Exponential" mean="BDS_EXPONENTIAL_MEAN_PLACEHOLDER" offset="0.0"/>
         </distribution>
 
 	<distribution id="origin" spec="beast.math.distributions.Prior" x="@FBDorigin">
@@ -157,9 +157,9 @@ DNA_SEQUENCE_PLACEHOLDER
 	<!-- 
   	<operator id="MutationRateScaler" spec="ScaleOperator" parameter="@mutationRate" scaleFactor="0.75" weight="2.0"/>
     	-->
-    <operator id="FBDDiveRateScaler" spec="ScaleOperator" parameter="@birthRateFBD" scaleFactor="0.75" weight="2.0"/>
-    <operator id="deathRateFBDScaler" spec="ScaleOperator" parameter="@deathRateFBD" scaleFactor="0.75" weight="2.0"/>
-    <operator id="FBDSamplingPropScaler" spec="ScaleOperator" parameter="@samplingRateFBD" scaleFactor="0.75" weight="2.0"/> 
+    <operator id="FBDDiveRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.75" weight="2.0"/>
+    <operator id="deathRateScaler" spec="ScaleOperator" parameter="@deathRate" scaleFactor="0.75" weight="2.0"/>
+    <operator id="FBDSamplingPropScaler" spec="ScaleOperator" parameter="@samplingRate" scaleFactor="0.75" weight="2.0"/> 
 	<operator id="FBDoriginScaler" spec="ScaleOperator" parameter="@FBDorigin" scaleFactor="0.75" weight="2.0"/>
     
 	<operator id="VarValueScaler" spec="ScaleOperator" parameter="@varValues" scaleFactor="0.75" weight="6.0"/>
@@ -184,9 +184,9 @@ DNA_SEQUENCE_PLACEHOLDER
 	  <log idref="varValues"/>
       <log idref="covValues"/>
       <log idref="rootValues"/>
-      <log idref="birthRateFBD"/>
-      <log idref="deathRateFBD"/>
-      <log idref="samplingRateFBD"/>
+      <log idref="birthRate"/>
+      <log idref="deathRate"/>
+      <log idref="samplingRate"/>
       <log idref="FBDrho"/>
       <log idref="FBDorigin"/>
 	<!--PRIOR_FOSSIL_AGES_PLACEHOLDER_logger-->
