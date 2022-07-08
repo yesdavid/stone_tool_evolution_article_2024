@@ -1,4 +1,4 @@
-# Research Compendium for: "An analysis of European Late Upper Palaeolithic stone tool evolution using a Bayesian phylogenetic framework"
+# Research Compendium for: "A macroevolutionary analysis of European Late Upper Palaeolithic stone tool shape using a Bayesian phylogenetic framework"
 
 David N. Matzig¹,✉ ORCID: [0000-0001-7349-5401](http://orcid.org/0000-0001-7349-5401)  
 Rachel Warnock² ORCID: [0000-0002-9151-4642](http://orcid.org/0000-0002-9151-4642)  
