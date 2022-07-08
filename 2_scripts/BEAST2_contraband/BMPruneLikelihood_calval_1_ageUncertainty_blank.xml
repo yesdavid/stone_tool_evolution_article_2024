@@ -71,7 +71,7 @@ DNA_SEQUENCE_PLACEHOLDER
         				origin="@FBDorigin"
         				tree="@TheTree">
             <parameter id="FBDremovalProb" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
-            <parameter id="FBDrho" lower="0.0" name="rho" upper="1.0">0</parameter>
+            <parameter id="FBDrho" lower="0.0" name="rho" upper="1.0">RHO_PLACEHOLDER</parameter>
             <!--TREEWOFFSET_PLACEHOLDER
             <treeWOffset id="treeWOffset" spec="beast.evolution.tree.TreeWOffset"
             tree="@TheTree" offset = "0.0"/>            
