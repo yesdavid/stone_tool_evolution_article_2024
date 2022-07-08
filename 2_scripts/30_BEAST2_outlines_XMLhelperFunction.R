@@ -106,6 +106,19 @@ xml_helper_function <- # has to be loaded first
                   x = xml_1)
     
     
+    # RHO_PLACEHOLDER
+    if(fossil_age_uncertainty == TRUE & fully_extinct == FALSE){
+      xml_1 <- gsub(pattern = "RHO_PLACEHOLDER",
+                    replacement = 0.00000001,
+                    x = xml_1)
+    } else if(fossil_age_uncertainty == TRUE & fully_extinct == TRUE){
+      xml_1 <- gsub(pattern = "RHO_PLACEHOLDER",
+                    replacement = 1,
+                    x = xml_1)
+    }
+    
+    
+    
     ## DNA_SEQUENCE_PLACEHOLDER
     # <sequence id="1" taxon="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_3" totalcount="4" value="N"/>
     DNA_SEQUENCE_PLACEHOLDER_list <- list()
@@ -371,7 +384,7 @@ xml_helper_function <- # has to be loaded first
     ###############################
     # delete "comment" to "activate" fully extinct in script
     
-    if(fully_extinct == TRUE){
+    if(f == TRUE){
       xml_1 <- 
         gsub(pattern = "<!--TREEWOFFSET_PLACEHOLDER\n",
              replacement = "",
