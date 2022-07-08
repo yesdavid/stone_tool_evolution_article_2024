@@ -257,6 +257,8 @@ TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2=3.183
             <parameter id="typeFrequencies.t" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">1.0</parameter>
             <parameter id="clockRate.c" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
 			
+	    <parameter id="FBDorigin" name="stateNode" lower="0.0">100.0</parameter>
+			
 			<stateNode idref="varValues"/>
 			<stateNode idref="rootValues"/>
 			<stateNode idref="covValues"/>
@@ -304,11 +306,11 @@ TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2=3.183
                         </removalProb>
 						
                         <migrationRate id="migrationRateSMCanonical.t" spec="bdmmprime.parameterization.SkylineMatrixParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="migrationRateCanonical.t" spec="parameter.RealParameter" estimate="false" name="skylineValues">1.0</parameter>
+                            <parameter id="migrationRateCanonical.t" spec="parameter.RealParameter" estimate="false" name="skylineValues">0.0</parameter>
                         </migrationRate>
 						
                         <birthRateAmongDemes id="birthRateAmongDemesSMCanonical.t" spec="bdmmprime.parameterization.SkylineMatrixParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="birthRateAmongDemesCanonical.t" spec="parameter.RealParameter" estimate="false" name="skylineValues">1.0</parameter>
+                            <parameter id="birthRateAmongDemesCanonical.t" spec="parameter.RealParameter" estimate="false" name="skylineValues">0.0</parameter>
                         </birthRateAmongDemes>
 						
                         <typeSet idref="typeSetBDMMPrime.t"/>
@@ -335,9 +337,15 @@ TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2=3.183
                     </Exponential>
                 </distribution>
 				
+				<!--
                 <prior id="originBDMMPrimePrior.t" name="distribution" x="@originBDMMPrime.t">
                     <OneOnX id="OneOnX.1" name="distr"/>
                 </prior>
+				-->
+				<distribution id="origin" spec="beast.math.distributions.Prior" x="@originBDMMPrime.t">
+					<distr id="FBDoriginUniform" spec="beast.math.distributions.Uniform" upper="Infinity"/>
+				</distribution>
+				
 				
                 <distribution id="samplingRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@samplingRateCanonical.t">
                     <Exponential id="Exponential.3" name="distr">
