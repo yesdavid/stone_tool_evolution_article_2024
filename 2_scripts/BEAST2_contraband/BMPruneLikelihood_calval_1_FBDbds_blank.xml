@@ -61,7 +61,7 @@ DNA_SEQUENCE_PLACEHOLDER
 
 <!-- XML specification of the FBD process NEW -->
         <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" 
-        				conditionOnRhoSampling = "true"
+        				conditionOnRhoSampling = "false"
         				birthRate="@birthRate" 
         				deathRate="@deathRate" 
         				samplingRate="@samplingRate" 
