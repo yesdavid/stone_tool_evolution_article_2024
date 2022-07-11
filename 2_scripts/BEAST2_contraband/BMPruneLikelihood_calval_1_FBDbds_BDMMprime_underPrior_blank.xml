@@ -63,7 +63,7 @@ name="alignment">
 		
         <distribution id="posterior" spec="util.CompoundDistribution">
             <distribution id="prior" spec="util.CompoundDistribution">
-                <distribution id="BDMMPrime.t" spec="bdmmprime.distribution.BirthDeathMigrationDistribution" conditionOnSurvival="false" frequencies="@typeFrequencies.t" tree="@TheTree">
+                <distribution id="BDMMPrime.t" spec="bdmmprime.distribution.BirthDeathMigrationDistribution" conditionOnSurvival="true" frequencies="@typeFrequencies.t" tree="@TheTree">
                     <parameterization id="CanonicalBDMMPrimeParameterization.t" spec="bdmmprime.parameterization.CanonicalParameterization" origin="@originBDMMPrime.t">
                         
 						<birthRate id="birthRateSVCanonical.t" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@birthRateCanonical.t" timesAreAges="true">
