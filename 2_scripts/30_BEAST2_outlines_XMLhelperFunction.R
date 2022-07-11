@@ -384,7 +384,7 @@ xml_helper_function <- # has to be loaded first
     ###############################
     # delete "comment" to "activate" fully extinct in script
     
-    if(f == TRUE){
+    if(fully_extinct == TRUE){
       xml_1 <- 
         gsub(pattern = "<!--TREEWOFFSET_PLACEHOLDER\n",
              replacement = "",
