@@ -273,7 +273,7 @@ TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2=3.183
 
 <!-- XML specification of the FBD process NEW -->
         <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" 
-        				conditionOnRhoSampling = "true"
+        				conditionOnRhoSampling = "false"
         				birthRate="@birthRate" 
         				deathRate="@deathRate" 
         				samplingRate="@samplingRate" 
