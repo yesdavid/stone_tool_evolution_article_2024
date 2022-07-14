@@ -3,10 +3,12 @@
 
 
 xml_helper_function <- # has to be loaded first
-  function(fossil_age_uncertainty,
+  function(clockmodel,
+           fossil_age_uncertainty,
            fully_extinct,
            skyline_BDMM,
                timebins, # this helper function does not work for timebins <2. Has to be adjusted manually.
+               estimate_changeTimes, # logical, if false, provide the following parameters:
                changeTimes, # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
                birthParameter,
                deathParameter, 
@@ -60,27 +62,15 @@ xml_helper_function <- # has to be loaded first
     
     
     # input file will be chosen accordingly
-    if(underPrior == TRUE){
       if(fossil_age_uncertainty == FALSE & skyline_BDMM == FALSE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_underPrior"  # fbds with without age uncertainty
+        blank_file_name <- "BMPruneLikelihood_clockModel_FBDbds" # fbds with without age uncertainty
       } else if(fossil_age_uncertainty == FALSE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_BDMMprime_underPrior" # BDMM-prime skyline without age uncertainty
+        blank_file_name <- "BMPruneLikelihood_clockModel_FBDbds_BDMMprime" # BDMM-prime skyline without age uncertainty
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == FALSE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty_underPrior" # fbds with with age uncertainty
+        blank_file_name <- "BMPruneLikelihood_clockModel_ageUncertainty" # fbds with with age uncertainty
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty_BDMMprime_underPrior"  # BDMM-prime skyline with age uncertainty
+        blank_file_name <- "BMPruneLikelihood_clockModel_ageUncertainty_BDMMprime" # BDMM-prime skyline with age uncertainty
       }
-    } else if(underPrior == FALSE){
-      if(fossil_age_uncertainty == FALSE & skyline_BDMM == FALSE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds" # fbds with without age uncertainty
-      } else if(fossil_age_uncertainty == FALSE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_FBDbds_BDMMprime" # BDMM-prime skyline without age uncertainty
-      } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == FALSE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty" # fbds with with age uncertainty
-      } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == TRUE){
-        blank_file_name <- "BMPruneLikelihood_calval_1_ageUncertainty_BDMMprime" # BDMM-prime skyline with age uncertainty
-      }
-    }
     
     # input file will be read
     xml <- readr::read_file(file.path(blank_file_path,
@@ -117,6 +107,13 @@ xml_helper_function <- # has to be loaded first
                     x = xml_1)
     }
     
+    
+    # sampleFromPrior="true"
+    if(underPrior == FALSE){
+      xml_1 <- gsub(pattern = " sampleFromPrior=\"true\"",
+                    replacement = "",
+                    x = xml_1)
+    }
     
     
     ## DNA_SEQUENCE_PLACEHOLDER
@@ -229,6 +226,134 @@ xml_helper_function <- # has to be loaded first
                   x = xml_1)
     
     
+    ###############################
+    # CLOCKMODEL_PLACEHOLDER
+    ############################### 
+    
+    if(clockmodel == "strict") {
+      blank_file_name <- gsub(x = blank_file_name,
+                              pattern = "clockModel",
+                              replacement = paste0(clockmodel, "Clock"))
+      # <!-- the morphological clock model used here is equivalent to a strict clock -->
+      #   <!-- the rates input here refers to the branch rates -->
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_model",
+                    replacement = "<branchRateModel id=\"rateCatClock\" spec=\"contraband.clock.RateCategoryClockModel\" nCat=\"1\">\n
+                                    <rates id=\"rateValues\" spec=\"parameter.RealParameter\">1</rates>\n
+                                    <rateCatAssign id=\"rateAssignments\" spec=\"parameter.IntegerParameter\" lower=\"0\" upper=\"1\">0</rateCatAssign>\n
+                                    <tree idref=\"TheTree\"/>\n
+                                   </branchRateModel>\n",
+                    x = xml_1)
+      
+      # CLOCKMODEL_PLACEHOLDER_outputTreeLog
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+                    replacement = "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\"/>",
+                    x = xml_1)
+      
+      
+    } else if (clockmodel == "nCat") {
+      blank_file_name <- gsub(x = blank_file_name,
+                              pattern = "clockModel",
+                              replacement = paste0(clockmodel, "Clock"))
+      # mysterious
+      # from https://github.com/fkmendes/contraband/blob/master/examples/testing/OUMVNLikelihoodOneTrait_FBDTree_RateCatClock.xml lines 103-108
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_model",
+                    replacement = "<optimumManager id=\"optimumManager\" spec=\"contraband.clock.TreeToVCVMat\" coalCorrection=\"false\">\n
+                                    <branchRateModel id=\"rateCatClock\" spec=\"contraband.clock.RateCategoryClockModel\" nCat=\"2\">\n
+                                    <rates id=\"OUTheta\" spec=\"parameter.RealParameter\" lower=\"-Infinity\" upper=\"Infinity\">0.01 0.05</rates>\n
+                                    <rateCatAssign id=\"OUThetaAssignments\" spec=\"parameter.IntegerParameter\" lower=\"0\" upper=\"1\">0 0 0 0 0 0 0</rateCatAssign>\n
+                                    <tree idref=\"TheTree\"/>\n
+                                   </branchRateModel>\n",
+                    x = xml_1)
+
+      # CLOCKMODEL_PLACEHOLDER_outputTreeLog
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+                    replacement = "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\"/>",
+                    x = xml_1)
+      
+      
+    } else if (clockmodel == "relaxed") {
+      # from https://github.com/fkmendes/contraband/blob/master/examples/testing/Carnivora_Morph_BDSS.xml
+      
+      blank_file_name <- gsub(x = blank_file_name,
+                              pattern = "clockModel",
+                              replacement = paste0(clockmodel, "Clock"))
+      
+      #state node
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_stateNode-->",
+                    replacement = 
+                      "<stateNode id=\"branchRate\" spec=\"parameter.RealParameter\" value=\"1.0\"/>\n
+                      <stateNode id=\"ucldMean\" spec=\"parameter.RealParameter\" value=\"0.0005\"/>\n
+                      <stateNode id=\"ucldStdev\" spec=\"parameter.RealParameter\" lower=\"0.0\" value=\"0.5\"/>",
+                    x = xml_1)
+      
+      # priors
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_priors-->",
+                    replacement = 
+                      "<distribution id=\"rateValuesPrior\" spec=\"beast.math.distributions.Prior\" x=\"@branchRate\">\n
+                      <distr id=\"LogNormal.rateValues\" spec=\"beast.math.distributions.LogNormalDistributionModel\" S=\"@ucldStdev\" M=\"1.0\" meanInRealSpace=\"true\"/>\n
+                      </distribution>\n
+                      \n
+                      <prior id=\"ucldStdevPrior\"  name=\"distribution\" x=\"@ucldStdev\">\n
+                      <distr id=\"LogNormal.ucldstdev\" spec=\"beast.math.distributions.LogNormalDistributionModel\" S=\"0.3417393\" M=\"0.9403022\" meanInRealSpace=\"true\"/>\n
+                      </prior>\n
+                      \n
+                      <distribution id=\"ucldMeanPrior\" spec=\"beast.math.distributions.Prior\" x=\"@ucldMean\">\n
+                      <Gamma id=\"Gamma.ucldmean\" mode=\"ShapeRate\" name=\"distr\">\n
+                      <parameter id=\"RealParameter.3\" spec=\"parameter.RealParameter\" estimate=\"false\" name=\"alpha\">2.0</parameter>\n
+                      <parameter id=\"RealParameter.4\" spec=\"parameter.RealParameter\" estimate=\"false\" name=\"beta\">5.0</parameter>\n
+                      </Gamma>\n
+                      </distribution>\n",
+                    x = xml_1)
+      
+      # actual clockmodel
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_model",
+                    replacement = "<branchRateModel id=\"RelaxedClock\" spec=\"beast.evolution.branchratemodel.UCRelaxedClockModel\" clock.rate=\"@ucldMean\" rates=\"@branchRate\" tree=\"@TheTree\">\n
+                                    <LogNormal id=\"FastLogNormalDistributionModel\" S=\"@ucldStdev\" meanInRealSpace=\"true\" name=\"distr\">\n
+                                    <parameter id=\"RealParameter.0\" spec=\"parameter.RealParameter\" estimate=\"false\" name=\"M\">1.0</parameter>\n
+                                    </LogNormal>\n
+                                   </branchRateModel>\n",
+                    x = xml_1)
+
+      # operator
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_operators-->",
+                    replacement = 
+                      
+                      "<operator id=\"RateValueScaler\" spec=\"ScaleOperator\" parameter=\"@branchRate\" scaleFactor=\"0.75\" weight=\"8.0\"/>\n
+                      <operator id=\"RateValueRandomWalker\" spec=\"RealRandomWalkOperator\" parameter=\"@branchRate\" windowSize=\"1.0\" weight=\"8.0\"/>\n
+                      <operator id=\"InternalnodesOperator\" spec=\"consoperators.InConstantDistanceOperator\" clockModel=\"@RelaxedClock\"\n
+                      twindowSize=\"1.0\"  tree=\"@TheTree\" rates=\"@branchRate\"  weight=\"10.0\"/>\n
+                      <operator id=\"FastRootOperator1\" spec=\"consoperators.SimpleDistance\" clockModel=\"@RelaxedClock\" rates=\"@branchRate\" tree=\"@TheTree\" twindowSize=\"1.0\" weight=\"1.0\"/>\n
+                      <operator id=\"FastRootOperator2\" spec=\"consoperators.SmallPulley\" clockModel=\"@RelaxedClock\" dwindowSize=\"1.0\" rates=\"@branchRate\" tree=\"@TheTree\" weight=\"1.0\"/>\n
+                      \n
+                      <operator id=\"UcldStdevScaler\" spec=\"consoperators.UcldScalerOperator\"\n
+                      rates=\"@branchRate\" stdev=\"@ucldStdev\" distr=\"@LogNormal.rateValues\" scaleFactor=\"0.5\" weight=\"3.0\"/>\n
+                      \n
+                      <operator id=\"ucldMeancaler\" spec=\"ScaleOperator\" parameter=\"@ucldMean\" scaleFactor=\"0.75\" weight=\"20.0\"/>\n
+                      <operator id=\"relaxedUpDownOperator.c:anolis\" spec=\"UpDownOperator\" scaleFactor=\"0.75\" weight=\"20.0\">\n
+                      <up idref=\"ucldMean\"/>\n
+                      <down idref=\"TheTree\"/>\n
+                      </operator>\n",
+                    x = xml_1)
+      
+      # logger
+        xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_loggers-->",
+                      replacement = 
+                        "<log id=\"ratesStat\" spec=\"beast.evolution.branchratemodel.RateStatistic\" branchratemodel=\"@RelaxedClock\" tree=\"@TheTree\"/>\n
+                        <log idref=\"ucldMean\"/>\n
+                        <log idref=\"ucldStdev\"/>\n",
+                      x = xml_1)
+      
+        
+        # CLOCKMODEL_PLACEHOLDER_outputTreeLog
+        xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+                      replacement = "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\" branchratemodel=\"@RelaxedClock\" sort=\"false\"/>",
+                      x = xml_1)
+        
+      
+    }
+    
+    
+    
     
     ###############################
     # BDS_EXPONENTIAL_MEAN_PLACEHOLDER BDS_ExponentialMean
@@ -249,6 +374,33 @@ xml_helper_function <- # has to be loaded first
     ###############################
     
     if(skyline_BDMM == T){
+      
+      if(estimate_changeTimes == TRUE){
+        
+        blank_file_name <- paste0(blank_file_name, "_ChTmsEst")
+        
+        xml_1 <- 
+          gsub(pattern = "<!--IF_changeTimeEstimate_TRUE",
+               replacement = "",
+               x = xml_1)
+        xml_1 <- 
+          gsub(pattern = "IF_changeTimeEstimate_TRUE-->",
+               replacement = "",
+               x = xml_1)
+        
+        
+      } else if(estimate_changeTimes == FALSE){
+        xml_1 <- 
+          gsub(pattern = "<!--IF_changeTimeEstimate_FALSE",
+               replacement = "",
+               x = xml_1)
+        xml_1 <- 
+          gsub(pattern = "IF_changeTimeEstimate_FALSE-->",
+               replacement = "",
+               x = xml_1)
+      }
+      
+      
       
       # N_TIMEBINS_PLACEHOLDER
       xml_1 <- 
@@ -418,75 +570,66 @@ xml_helper_function <- # has to be loaded first
     dir.create(path = current_output_path_output,
                recursive = T)
     
+    current_folder_name <- paste0("TAXA",number_of_taxa,
+                                  "_PCs",number_of_pc_axes_used)
+    
+    current_analysis_name <- paste0(blank_file_name,
+                                    "_TAXA",number_of_taxa,
+                                    "_PCs",number_of_pc_axes_used, 
+                                    "_nIter", chainlength_in_millions, "m")
+    
+    if(underPrior == TRUE) {
+      current_analysis_name <- paste0(current_analysis_name, "_underPrior")
+    }
     
     
     # output names and paths
     xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.log",
                   replacement = file.path(".", 
-                                          paste0("TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used), 
+                                          current_folder_name, 
                                           "output",
                                           paste0("out_",
-                                                 blank_file_name,
-                                                 "_TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used, 
-                                                 "_nIter", chainlength_in_millions, "m",
+                                                 current_analysis_name,
                                                  ".log")
                   ),
                   x = xml_1)
     
     xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.trees",
                   replacement = file.path(".", 
-                                          paste0("TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used), 
+                                          current_folder_name, 
                                           "output",
                                           paste0("out_",
-                                                 blank_file_name,
-                                                 "_TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used, 
-                                                 "_nIter", chainlength_in_millions, "m",
+                                                 current_analysis_name,
                                                  ".trees")
                   ),
                   x = xml_1)
     
     xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.typed.trees",
                   replacement = file.path(".", 
-                                          paste0("TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used), 
+                                          current_folder_name, 
                                           "output",
                                           paste0("out_",
-                                                 blank_file_name,
-                                                 "_TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used, 
-                                                 "_nIter", chainlength_in_millions, "m",
+                                                 current_analysis_name,
                                                  ".typed.trees")
                   ),
                   x = xml_1)
     
     xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.typed.node.trees",
                   replacement = file.path(".", 
-                                          paste0("TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used), 
+                                          current_folder_name, 
                                           "output",
                                           paste0("out_",
-                                                 blank_file_name,
-                                                 "_TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used, 
-                                                 "_nIter", chainlength_in_millions, "m",
+                                                 current_analysis_name,
                                                  ".typed.node.trees")
                   ),
                   x = xml_1)
     
     xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.traj",
                   replacement = file.path(".", 
-                                          paste0("TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used), 
+                                          current_folder_name, 
                                           "output",
                                           paste0("out_",
-                                                 blank_file_name,
-                                                 "_TAXA",number_of_taxa,
-                                                 "_PCs",number_of_pc_axes_used, 
-                                                 "_nIter", chainlength_in_millions, "m",
+                                                 current_analysis_name,
                                                  ".traj")
                   ),
                   x = xml_1)
@@ -500,10 +643,7 @@ xml_helper_function <- # has to be loaded first
     readr::write_file(x = xml_1,
                       file = file.path(current_output_path,
                                        paste0("script_",
-                                              blank_file_name,
-                                              "_TAXA", number_of_taxa, 
-                                              "_PCs",number_of_pc_axes_used,
-                                              "_nIter", chainlength_in_millions, "m",
+                                              current_analysis_name,
                                               ".xml"))
     )
     
@@ -523,22 +663,15 @@ xml_helper_function <- # has to be loaded first
     
     # JOBNAME_PLACEHOLDER
     job_sh_1 <- gsub(pattern = "JOBNAME_PLACEHOLDER",
-                     replacement = paste0(blank_file_name,
-                                          "_TAXA", number_of_taxa, 
-                                          "_PCs",number_of_pc_axes_used,
-                                          "_nIter", chainlength_in_millions, "m"),
+                     replacement = current_analysis_name,
                      x = job_sh_1)
     
     # SCRIPTPATH_PLACEHOLDER
     job_sh_1 <- gsub(pattern = "SCRIPTPATH_PLACEHOLDER",
                      replacement = file.path(".",
-                                             paste0("TAXA",number_of_taxa,
-                                                    "_PCs",number_of_pc_axes_used),
+                                             current_folder_name,
                                              paste0("script_",
-                                                    blank_file_name,
-                                                    "_TAXA", number_of_taxa, 
-                                                    "_PCs",number_of_pc_axes_used,
-                                                    "_nIter", chainlength_in_millions, "m",
+                                                    current_analysis_name,
                                                     ".xml")),
                      x = job_sh_1)
     
@@ -549,10 +682,7 @@ xml_helper_function <- # has to be loaded first
     readr::write_file(x = job_sh_1,
                       file = file.path(blank_file_path,
                                        paste0("job_",
-                                              blank_file_name,
-                                              "_TAXA", number_of_taxa, 
-                                              "_PCs",number_of_pc_axes_used,
-                                              "_nIter", chainlength_in_millions, "m",
+                                              current_analysis_name,
                                               ".sh")
                       )
     )
