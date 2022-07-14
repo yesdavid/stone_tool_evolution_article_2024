@@ -444,6 +444,35 @@ xml_helper_function <- # has to be loaded first
              x = xml_1)
       
       
+      # if change times are estimate, the number of dimensions has to be 1 less for the changeTimesCanonical parameters than for the non-changetimes canonical parameters.
+      if(estimate_changeTimes == TRUE){
+        timebins_estChTi <- timebins-1
+        xml_1 <- 
+          gsub(pattern = "N_TIMEBINS_estChTi_PLACEHOLDER",
+               replacement = timebins_estChTi,
+               x = xml_1)
+        
+        xml_1 <- 
+          gsub(pattern = "BIRTH_TIMEBINS_estChTi_PLACEHOLDER",
+               replacement = paste0(rep(birthParameter, timebins_estChTi), collapse = " "),
+               x = xml_1)
+        
+        xml_1 <- 
+          gsub(pattern = "DEATH_TIMEBINS_estChTi_PLACEHOLDER",
+               replacement = paste0(rep(deathParameter, timebins_estChTi), collapse = " "),
+               x = xml_1)
+        
+        xml_1 <- 
+          gsub(pattern = "SAMPLING_TIMEBINS_estChTi_PLACEHOLDER",
+               replacement = paste0(rep(samplingParameter, timebins_estChTi), collapse = " "),
+               x = xml_1)
+        
+        xml_1 <- 
+          gsub(pattern = "REMOVALPROB_TIMEBINS_estChTi_PLACEHOLDER",
+               replacement = paste0(rep(removalParameter, timebins_estChTi), collapse = " "),
+               x = xml_1)
+      }
+      
       
     }
     

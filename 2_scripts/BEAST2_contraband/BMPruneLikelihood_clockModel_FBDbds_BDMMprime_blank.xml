@@ -41,10 +41,10 @@ name="alignment">
             <parameter id="samplingRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">SAMPLING_TIMEBINS_PLACEHOLDER</parameter>
 			
             <!--IF_changeTimeEstimate_TRUE
-            <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.0</parameter>
-            <parameter id="deathRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.0</parameter>
-            <parameter id="samplingRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.0</parameter>
-            <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.0</parameter>
+            <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">BIRTH_TIMEBINS_estChTi_PLACEHOLDER</parameter>
+            <parameter id="deathRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">DEATH_TIMEBINS_estChTi_PLACEHOLDER</parameter>
+            <parameter id="samplingRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">SAMPLING_TIMEBINS_estChTi_PLACEHOLDER</parameter>
+            <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">REMOVALPROB_TIMEBINS_estChTi_PLACEHOLDER</parameter>
             IF_changeTimeEstimate_TRUE-->
 
             <parameter id="rhoSamplingProb" spec="parameter.RealParameter" name="stateNode">0.0</parameter>
@@ -96,7 +96,7 @@ name="alignment">
 
                         <removalProb id="removalProb" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
                             <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
-                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="skylineValues" upper="1.0">REMOVALPROB_TIMEBINS_PLACEHOLDER</parameter>
+                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" estimate="false" lower="0.0" name="skylineValues" upper="1.0">REMOVALPROB_TIMEBINS_PLACEHOLDER</parameter>
                         </removalProb>
 			
                         <rhoSampling id="rhoSamplingProbTPCanonical.t" spec="bdmmprime.parameterization.TimedParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
@@ -120,7 +120,7 @@ name="alignment">
                         <samplingRate id="samplingRate" spec="bdmmprime.parameterization.SkylineVectorParameter" changeTimes="@samplingRateChangeTimesCanonical.t" origin="@originBDMMPrime.t" skylineValues="@samplingRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t"/>
 
                         <removalProb id="removalProb" spec="bdmmprime.parameterization.SkylineVectorParameter" changeTimes="@removalProbChangeTimesCanonical.t" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
-                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="skylineValues" upper="1.0">1.0 1.0</parameter>
+                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" estimate="false" lower="0.0" name="skylineValues" upper="1.0">REMOVALPROB_TIMEBINS_PLACEHOLDER</parameter>
                         </removalProb>
 
                         <rhoSampling id="rhoSamplingProbTPCanonical.t" spec="bdmmprime.parameterization.TimedParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t"/>
