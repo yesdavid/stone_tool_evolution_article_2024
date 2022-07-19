@@ -54,7 +54,7 @@ name="alignment">
             <parameter id="clockRate.c" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
 			
 			
-            <parameter id="FBDorigin" name="stateNode" lower="0.0">100.0</parameter>
+            <parameter id="FBDorigin" name="stateNode" lower="0.0">ROOT_AGE_PLACEHOLDER</parameter>
 			
             <stateNode idref="varValues"/>
             <stateNode idref="rootValues"/>
@@ -276,6 +276,7 @@ name="alignment">
         <operator id="birthRateCanonicalScaler.t" spec="ScaleOperator" parameter="@birthRateCanonical.t" weight="3.0"/>
         <operator id="deathRateCanonicalScaler.t" spec="ScaleOperator" parameter="@deathRateCanonical.t" weight="3.0"/>
         <operator id="samplingRateCanonicalScaler.t" spec="ScaleOperator" parameter="@samplingRateCanonical.t" weight="3.0"/>
+
         <operator id="BDMMPrimeLeafToSA.t" spec="LeafToSampledAncestorJump" tree="@TheTree" weight="10.0"/>
         <operator id="BDMMPrimeSAWilsonBalding.t" spec="SAWilsonBalding" tree="@TheTree" weight="10.0"/>
         <operator id="BDMMPrimeSAWide.t" spec="SAExchange" isNarrow="false" tree="@TheTree" weight="10.0"/>
