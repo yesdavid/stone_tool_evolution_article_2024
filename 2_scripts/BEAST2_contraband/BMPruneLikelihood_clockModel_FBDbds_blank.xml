@@ -42,11 +42,13 @@ DNA_SEQUENCE_PLACEHOLDER
 		<parameter id="birthRate" lower="0.0" name="stateNode">1.0 </parameter>
 		<parameter id="deathRate" lower="0.0" name ="stateNode">0.5 </parameter>
 		<parameter id="samplingRate" lower="0.0" name ="stateNode">0.5 </parameter>
-
+		<parameter id="FBDorigin" name="stateNode" lower="0.0">ROOT_AGE_PLACEHOLDER</parameter>
+		
+		
 		<!--CLOCKMODEL_PLACEHOLDER_stateNode-->
 
 
-		<parameter id="FBDorigin" name="stateNode" lower="0.0">100.0</parameter>
+
 	</state>
 
     <!-- Initialise a random tree to start the chain -->
