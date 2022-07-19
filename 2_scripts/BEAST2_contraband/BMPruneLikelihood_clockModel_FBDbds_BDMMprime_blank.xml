@@ -51,8 +51,12 @@ name="alignment">
 			
             <parameter id="originBDMMPrime.t" spec="parameter.RealParameter" name="stateNode">10.0</parameter>
             <parameter id="typeFrequencies.t" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">1.0</parameter>
+
+<!-- old clock
             <parameter id="clockRate.c" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
-			
+-->
+            <!--CLOCKMODEL_PLACEHOLDER_stateNode-->
+
 			
             <parameter id="FBDorigin" name="stateNode" lower="0.0">ROOT_AGE_PLACEHOLDER</parameter>
 			
@@ -149,12 +153,15 @@ name="alignment">
                         <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
                     </Exponential>
                 </distribution>
-				
+
+<!--old clock
                 <prior id="ClockPrior.c" name="distribution" x="@clockRate.c">
                     <Exponential id="Exponential.4" name="distr">
                         <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
                     </Exponential>
                 </prior>
+-->
+        <!--CLOCKMODEL_PLACEHOLDER_priors-->
 				
                 <distribution id="deathRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@deathRateCanonical.t">
                     <Exponential id="Exponential.2" name="distr">
@@ -288,11 +295,18 @@ name="alignment">
         <operator id="typeFrequenciesExchanger.t" spec="DeltaExchangeOperator" delta="0.1" weight="1.0">
             <parameter idref="typeFrequencies.t"/>
         </operator>
+
+
+<!-- old clockmodel operators
         <operator id="StrictClockRateScaler.c" spec="ScaleOperator" parameter="@clockRate.c" weight="3.0"/>
         <operator id="strictClockUpDownOperator.c" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
             <up idref="clockRate.c"/>
             <down idref="TheTree"/>
         </operator>
+-->
+
+<!--CLOCKMODEL_PLACEHOLDER_operators-->
+
 
         <!--IF_changeTimeEstimate_TRUE
         <operator id="birthRateChangeTimesCanonicalScaler.t" spec="ScaleOperator" parameter="@birthRateChangeTimesCanonical.t" weight="3.0"/>
@@ -327,12 +341,16 @@ name="alignment">
                 <typedTree id="typeMappedTheTree" spec="bdmmprime.mapping.TypeMappedTree" bdmmDistrib="@BDMMPrime.t" frequencies="@typeFrequencies.t" mapOnInit="false" remapOnLog="true" typeLabel="type" typeTraitSet="@typeTraitSet.t" untypedTree="@TheTree"/>
             </log>
 			-->
+
+<!-- old clock model log
             <log idref="clockRate.c"/>
+-->
+            <!--CLOCKMODEL_PLACEHOLDER_loggers-->
 			
-			<!-- parameters in the BM model -->
-			<log idref="varValues"/>
-			<log idref="covValues"/>
-			<log idref="rootValues"/>
+            <!-- parameters in the BM model -->
+            <log idref="varValues"/>
+            <log idref="covValues"/>
+            <log idref="rootValues"/>
 			
 			
         </logger>
