@@ -150,7 +150,7 @@ name="alignment">
 				
                 <distribution id="birthRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@birthRateCanonical.t">
                     <Exponential id="Exponential.1" name="distr">
-                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                        <parameter id="RealParameter.birthRateCanonicalPrior" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
                     </Exponential>
                 </distribution>
 
