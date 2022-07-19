@@ -100,7 +100,7 @@ xml_helper_function <- # has to be loaded first
     
     ## ROOT_AGE_PLACEHOLDER
     xml_1 <- gsub(pattern = "ROOT_AGE_PLACEHOLDER",
-                  replacement = root_age - age_offset_beast,
+                  replacement = round((root_age - age_offset)/age_scaler, digits = 3),
                   x = xml_1)
     
     
@@ -278,11 +278,12 @@ xml_helper_function <- # has to be loaded first
       # from https://github.com/fkmendes/contraband/blob/master/examples/testing/OUMVNLikelihoodOneTrait_FBDTree_RateCatClock.xml lines 103-108
       xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_model",
                     replacement = 
-                      "<branchRateModel id=\"rateCatClock\" spec=\"contraband.clock.RateCategoryClockModel\" nCat=\"2\">
-                      <rates id=\"rateValues\" spec=\"parameter.RealParameter\" lower=\"-Infinity\" upper=\"Infinity\">0.1 0.5</rates>
-                      <rateCatAssign id=\"rateAssignments\" spec=\"parameter.IntegerParameter\" lower=\"0\" upper=\"1\">", paste(rep(0, times= nrow(pcs)), collapse = " "),"</rateCatAssign>
-                      <tree idref=\"TheTree\"/>
-                      </branchRateModel>",
+                      paste0("<branchRateModel id=\"rateCatClock\" spec=\"contraband.clock.RateCategoryClockModel\" nCat=\"2\">\n
+                      <rates id=\"rateValues\" spec=\"parameter.RealParameter\" lower=\"-Infinity\" upper=\"Infinity\">0.1 0.5</rates>\n
+                      <rateCatAssign id=\"rateAssignments\" spec=\"parameter.IntegerParameter\" lower=\"0\" upper=\"1\">", paste(rep(0, times= nrow(pcs)), collapse = " "),"</rateCatAssign>\n
+                      <tree idref=\"TheTree\"/>\n
+                      </branchRateModel>\n",
+                             collapse = " "),
                     x = xml_1)
 
       # operator
