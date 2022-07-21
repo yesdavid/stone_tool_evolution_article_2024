@@ -244,6 +244,7 @@ xml_helper_function <- # has to be loaded first
     # CLOCKMODEL_PLACEHOLDER
     ############################### 
     
+    ############################### strict clock
     if(clockmodel == "strict") {
       blank_file_name <- gsub(x = blank_file_name,
                               pattern = "clockModel",
@@ -264,6 +265,7 @@ xml_helper_function <- # has to be loaded first
                     x = xml_1)
       
       
+      ############################### nCat clock
     } else if (clockmodel == "nCat") {
       blank_file_name <- gsub(x = blank_file_name,
                               pattern = "clockModel",
@@ -293,13 +295,15 @@ xml_helper_function <- # has to be loaded first
         <operator id=\"RateValueScaler\" spec=\"ScaleOperator\" parameter=\"@rateValues\" scaleFactor=\"0.75\" weight=\"3.0\"/>",
       x = xml_1)
       
-      # CLOCKMODEL_PLACEHOLDER_outputTreeLog
-      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+      
+      
+      # logger
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_loggers-->",
                     replacement = 
                       "<log idref=\"rateValues\"/>\n
                       <log idref=\"rateAssignments\"/>",
-                      x = xml_1)
-      
+                    x = xml_1)
+
       
       # CLOCKMODEL_PLACEHOLDER_outputTreeLog
       xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
@@ -308,6 +312,8 @@ xml_helper_function <- # has to be loaded first
                     x = xml_1)
       
       
+      
+      ############################### relaxed ln clock
     } else if (clockmodel == "relaxed") {
       # from https://github.com/fkmendes/contraband/blob/master/examples/testing/Carnivora_Morph_BDSS.xml
       # needs beast2 package "orc"
