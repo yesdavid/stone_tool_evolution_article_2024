@@ -364,7 +364,7 @@ name="alignment">
         </logger>
 		
         <logger id="treelog.t" spec="Logger" fileName="BMPruneLikelihood_calval_1.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
-            <log id="TreeWithMetaDataLogger.t" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree"/>
+            CLOCKMODEL_PLACEHOLDER_outputTreeLog
         </logger>
 		<!--
         <logger id="typedTreeLogger.t" spec="bdmmprime.util.OptionalLogger" fileName="BMPruneLikelihood_calval_1.typed.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
