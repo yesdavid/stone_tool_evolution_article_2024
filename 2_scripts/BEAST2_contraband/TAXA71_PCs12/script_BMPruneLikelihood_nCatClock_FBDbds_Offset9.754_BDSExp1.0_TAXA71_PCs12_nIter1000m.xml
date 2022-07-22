@@ -426,7 +426,9 @@ TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2=3.183
       <log idref="FBDrho"/>
       <log idref="FBDorigin"/>
 
-	<!--CLOCKMODEL_PLACEHOLDER_loggers-->
+	<log idref="rateValues"/>
+
+                      <log idref="rateAssignments"/>
 
 	<!--PRIOR_FOSSIL_AGES_PLACEHOLDER_logger-->
 
@@ -440,9 +442,7 @@ TS4_EMeso_GBS_StarCarr_Milneretal2018_AR_na_5_pseudo_no_2=3.183
     </logger>
 
     <logger id="treelog" fileName="./TAXA71_PCs12/output/out_BMPruneLikelihood_nCatClock_FBDbds_Offset9.754_BDSExp1.0_TAXA71_PCs12_nIter1000m.trees" logEvery="100000" mode="tree">
-        <log idref="rateValues"/>
-
-                      <log idref="rateAssignments"/>
+        <log id="TreeWithMetaDataLogger" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree" branchratemodel="@rateCatClock" sort="false"/>
     </logger>
   </run>
 </beast>
