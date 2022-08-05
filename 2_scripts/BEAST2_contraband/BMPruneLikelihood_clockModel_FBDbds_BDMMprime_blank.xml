@@ -381,6 +381,15 @@ name="alignment">
 		
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
 		
+
+<!--TREELOG_SUBSTITUTION_PLACEHOLDER
+    <logger id="treelog_substi" fileName="BMPruneLikelihood_calval_1.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
+        CLOCKMODEL_PLACEHOLDER_substiOutputTreeLog
+    </logger>
+TREELOG_SUBSTITUTION_PLACEHOLDER-->
+
+
+
 		
     </run>
 </beast>
