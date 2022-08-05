@@ -18,6 +18,7 @@ xml_helper_function <- # has to be loaded first
                deathParameter, 
                samplingParameter, 
                removalParameter,
+           subsitution_tree,
            BDS_ExponentialMean,
            underPrior,
            chainlength_in_millions,
@@ -259,11 +260,30 @@ xml_helper_function <- # has to be loaded first
                                    </branchRateModel>\n",
                     x = xml_1)
       
+      # logger
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_loggers-->",
+                    replacement = 
+                      "<log idref=\"rateValues\"/>",
+                    x = xml_1)
+      
       # CLOCKMODEL_PLACEHOLDER_outputTreeLog
       xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
                     replacement = "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\"/>",
                     x = xml_1)
       
+      if(subsitution_tree == TRUE){
+        # TREELOG_SUBSTITUTION_PLACEHOLDER
+        xml_1 <- gsub(pattern = "<!--TREELOG_SUBSTITUTION_PLACEHOLDER",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "TREELOG_SUBSTITUTION_PLACEHOLDER-->",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_substiOutputTreeLog",
+                      replacement = "<log id=\"TreeWithMetaDataLoggerSubstitution\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" substitutions=\"true\" tree=\"@TheTree\"/>",
+                      x = xml_1)
+      }
+
       
       ############################### nCat clock
     } else if (clockmodel == "nCat") {
@@ -311,6 +331,21 @@ xml_helper_function <- # has to be loaded first
                     "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\" branchratemodel=\"@rateCatClock\" sort=\"false\"/>",
                     x = xml_1)
       
+      
+      
+      if(subsitution_tree == TRUE){
+        # TREELOG_SUBSTITUTION_PLACEHOLDER
+        xml_1 <- gsub(pattern = "<!--TREELOG_SUBSTITUTION_PLACEHOLDER",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "TREELOG_SUBSTITUTION_PLACEHOLDER-->",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+                      replacement = 
+                        "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" substitutions=\"true\" tree=\"@TheTree\" branchratemodel=\"@rateCatClock\" sort=\"false\"/>",
+                      x = xml_1)
+      }
       
       
       ############################### relaxed ln clock
@@ -392,6 +427,21 @@ xml_helper_function <- # has to be loaded first
         xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
                       replacement = "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\" branchratemodel=\"@RelaxedClock\" sort=\"false\"/>",
                       x = xml_1)
+        
+        
+        
+        if(subsitution_tree == TRUE){
+          # TREELOG_SUBSTITUTION_PLACEHOLDER
+          xml_1 <- gsub(pattern = "<!--TREELOG_SUBSTITUTION_PLACEHOLDER",
+                        replacement = "",
+                        x = xml_1)
+          xml_1 <- gsub(pattern = "TREELOG_SUBSTITUTION_PLACEHOLDER-->",
+                        replacement = "",
+                        x = xml_1)
+          xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+                        replacement = "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" substitutions=\"true\" tree=\"@TheTree\" branchratemodel=\"@RelaxedClock\" sort=\"false\"/>",
+                        x = xml_1)
+        }
         
       
     }

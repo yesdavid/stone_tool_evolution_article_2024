@@ -91,17 +91,18 @@ xml_helper_function(taxa_file = taxa_file_subset, # age has to be in column call
                     number_of_pc_axes_used = number_of_pc_axes_used, # number of axes chosen
                     pcs = pcs, # pca axes
                     root_age = 40000,
-                    clockmodel = "strict", # "relaxed" or "nCat" works so far only for fossil_age_uncertainty = F,fully_extinct = F,skyline_BDMM = F, ### "relaxed" needs BEAST2 package "ORC"
+                    clockmodel = "nCat", # "strict", "relaxed", "nCat". "relaxed" or "nCat" works so far only for fossil_age_uncertainty = F,fully_extinct = F,skyline_BDMM = F, ### "relaxed" needs BEAST2 package "ORC"
                     fossil_age_uncertainty = F,
                     fully_extinct = F,
-                    skyline_BDMM = T,
-                        timebins = 2, # this helper function does not work for timebins <2. Has to be adjusted manually.
-                        estimate_changeTimes = T, # logical, if false, provide the following parameters:
-                        changeTimes = 13006,  #13,006+-9 calBP is the year of the Laacher See eruption (2021) https://www.nature.com/articles/s41586-021-03608-x   # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
+                    skyline_BDMM = F,
+                        timebins = 4, # this helper function does not work for timebins <2. Has to be adjusted manually.
+                        estimate_changeTimes = F, # logical, if false, provide the following parameters:
+                        changeTimes = c(14600, 12900, 11700),  # 13006,  #13,006+-9 calBP is the year of the Laacher See eruption (2021) https://www.nature.com/articles/s41586-021-03608-x   # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
                         birthParameter = "1.0",
                         deathParameter = "1.0", 
                         samplingParameter = "0.1", 
                         removalParameter = "0.0",
+                    subsitution_tree = TRUE,
                     BDS_ExponentialMean = "1.0",
                     underPrior = F,
                     printgen = 100000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
@@ -113,8 +114,35 @@ xml_helper_function(taxa_file = taxa_file_subset, # age has to be in column call
 
 #############
 # geiger::fitContinuous()
-mccTre <- treeio::read.beast("/home/au656892/Documents/Doktor/2_projects/stone_tool_evolution_article_2022/2_scripts/BEAST2_contraband/TAXA71_PCs12/output/out_BMPruneLikelihood_relaxedClock_FBDbds_BDSExp1.0_TAXA71_PCs12_nIter1000m_mcc.tre")
+mccTre <- treeio::read.beast("/home/au656892/Documents/Doktor/2_projects/stone_tool_evolution_article_2022/2_scripts/BEAST2_contraband/TAXA71_PCs12/output/out_BMPruneLikelihood_relaxedClock_FBDbds_Offset9.754_BDSExp1.0_TAXA71_PCs12_nIter1000m.NoNegHeightmcc.tre")
 
+
+ggtree(mccTre,
+       aes(color=(rate_median)),
+       size = 1,
+       # mrsd ="11-01-01"
+) +
+  # geom_range(range='length_0.95_HPD', color='blue', alpha=.53, size=2) +
+  # geom_nodelab(aes(x=branch, label=round(posterior, 2)), vjust=-.5, size=3) +
+  # geom_tiplab(aes(x=branch, label=round(posterior, 2)), vjust=-.5, size=3) +
+  geom_nodelab(aes(x=branch, label=round((rate_median), 4)), vjust=-.5, size=3) +
+  geom_tiplab(aes(x=branch, label=round((rate_median), 4)), vjust=-.5, size=3) +
+  # geom_nodelab(aes(x=branch, label=ln(rate_median)), vjust=-.5, size=3) +
+  # geom_tiplab(aes(x=branch, label=ln(rate_median)), vjust=-.5, size=3) +
+  scale_color_continuous(low="blue", high="red",
+                         name = "Rate of\nevolution") +
+  theme(legend.position=c(.1, .8),
+        plot.title = element_text(hjust = 0.5)) +
+  geom_rootedge(rootedge = 0.2) +
+  theme_tree2()+
+  geom_tiplab(align = T,
+              linesize=.5,
+              offset = 0.75,
+              color = "black") +
+  # ggtitle("Bayesian MAP timescaled tree w/ offset, ngen = 3 Mio.") +
+  geom_tippoint(pch = 16) +
+  geom_nodepoint(pch = 15) +
+  geom_treescale()
 
 ggplot(data = mccTre@data,
        aes(x = height_median+9.754,
@@ -135,36 +163,44 @@ ggplot(data = mccTre@data,
   xlim(16,10)
 
 
-outlines_AR_subset_lengthCM <- outlines_AR_subset$fac$width_cm
-names(outlines_AR_subset_lengthCM) <- outlines_AR_subset$fac$ARTEFACTNAME
+outlines_AR_subset_lengthCM <- (log(outlines_AR_subset$fac$width_cm))
+names(outlines_AR_subset_lengthCM) <- (outlines_AR_subset$fac$ARTEFACTNAME)
 
-library(geiger)
-BM <- 
-  geiger::fitContinuous(mccTre@phylo,
-                        dat = outlines_AR_subset_lengthCM,
+outlines_AR_subset_lengthCM_naomit <- (na.omit(outlines_AR_subset_lengthCM))
+outlines_AR_subset_lengthCM_naomit_v <- as.vector(outlines_AR_subset_lengthCM_naomit)
+names(outlines_AR_subset_lengthCM_naomit_v) <- names(outlines_AR_subset_lengthCM_naomit)
+
+# library(geiger)
+BM <-
+  geiger::fitContinuous(ape::drop.tip(mccTre@phylo,
+                                      names(which(is.na(outlines_AR_subset$fac$width_cm)))),
+                        dat = outlines_AR_subset_lengthCM_naomit_v,
                         # niter = 10000,
                         ncores = 7,
                         model = "BM")
 EB <- 
-  geiger::fitContinuous(mccTre@phylo,
-                        dat = outlines_AR_subset_lengthCM,
+  geiger::fitContinuous(ape::drop.tip(mccTre@phylo,
+                                      names(which(is.na(outlines_AR_subset$fac$width_cm)))),
+                        dat = outlines_AR_subset_lengthCM_naomit_v,
                         # niter = 10000,
                         ncores = 7,
                         model = "EB")
 # OU doesnt work
-# OU <- 
-#   geiger::fitContinuous(mccTre@phylo,
-#                         dat = outlines_AR_subset_lengthCM,
-#                         # niter = 10000,
-#                         ncores = 7,
-#                         model = "OU")
+OU <-
+  geiger::fitContinuous(ape::drop.tip(mccTre@phylo,
+                                      names(which(is.na(outlines_AR_subset$fac$width_cm)))),
+                        dat = outlines_AR_subset_lengthCM_naomit_v,
+                        # niter = 10000,
+                        ncores = 7,
+                        model = "OU")
 aic.vals<-setNames(c(BM$opt$aicc,
-                     # OU$opt$aicc,
+                     OU$opt$aicc,
                      EB$opt$aicc),
                    c("BM",
-                     # "OU",
+                     "OU",
                      "EB"))
 aic.vals
+
 #############
 outlines_AR_subset_region <- factor(outlines_AR_subset$fac$Region)
 names(outlines_AR_subset_region) <- outlines_AR_subset$fac$ARTEFACTNAME
@@ -178,6 +214,18 @@ fitDiscrete(mccTre@phylo, outlines_AR_subset_region, linearchange=TRUE)
 fitDiscrete(mccTre@phylo, outlines_AR_subset_region, exponentialchange=TRUE)
 fitDiscrete(mccTre@phylo, outlines_AR_subset_region, tworate=TRUE)
 
+#############
+# # skyline plot
+# devtools::install_github("laduplessis/bdskytools")
+# library(bdskytools)
+# fname <- "/home/au656892/Documents/Doktor/2_projects/stone_tool_evolution_article_2022/2_scripts/BEAST2_contraband/TAXA71_PCs12/output/out_BMPruneLikelihood_relaxedClock_FBDbds_BDMMprime_Offset9.754_BDSExp1.0_tBins4_TAXA71_PCs12_nIter1000m.log"   
+# lf    <- bdskytools::readLogfile(fname, burnin=0.1)
+# 
+# Re_sky    <- bdskytools::getSkylineSubset(lf, "reproductiveNumber")
+# Re_hpd    <- bdskytools::getMatrixHPD(Re_sky)
+# delta_hpd <- bdskytools::getHPD(lf$becomeUninfectiousRate)
+# 
+# bdskytools::plotSkyline(1:10, Re_hpd, type='step', ylab="R")
 #############
 
 outlines_AR_with_dates$fac %>% 
@@ -207,12 +255,15 @@ outlines_AR_with_dates$fac %>%
   geom_vline(xintercept = 13006,  # laacher see volcano
              color = "green", size = 2) + 
   geom_label(aes(x = 13156, y = -11, label = "Laacher See Eruption")) +
+  
   geom_vline(xintercept = 14600,  # end of late pleniglacial
              color = "red", size = 2) +
   geom_label(aes(x = 14600, y = -12, label = "end of late pleniglacial")) +
+  
   geom_vline(xintercept = 12900,  # end of bølling allerød complex
              color = "red", size = 2) + 
   geom_label(aes(x = 12700, y = -13, label = "end of bølling allerød complex")) +
+  
   geom_vline(xintercept = 11700,  # end of younger dryas complex
              color = "red", size = 2) +
   geom_label(aes(x = 11700, y = -14, label = "end of younger dryas complex")) +
