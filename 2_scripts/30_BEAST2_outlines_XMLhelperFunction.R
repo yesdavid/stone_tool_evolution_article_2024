@@ -703,6 +703,9 @@ xml_helper_function <- # has to be loaded first
     if(underPrior == TRUE) {
       current_analysis_name <- paste0(current_analysis_name, "_underPrior")
     }
+    if(SteppingStone == TRUE) {
+      current_analysis_name <- paste0(current_analysis_name, "_SteppingStone")
+    }
     
     
     # output names and paths
