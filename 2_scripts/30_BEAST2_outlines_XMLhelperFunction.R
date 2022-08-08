@@ -20,6 +20,7 @@ xml_helper_function <- # has to be loaded first
                removalParameter,
            subsitution_tree,
            BDS_ExponentialMean,
+           SteppingStone,
            underPrior,
            chainlength_in_millions,
            printgen,
@@ -676,9 +677,7 @@ xml_helper_function <- # has to be loaded first
              x = xml_1)
       
     }
-    
-    
-    
+
     ###############################
     # finishing
     ###############################
@@ -756,6 +755,35 @@ xml_helper_function <- # has to be loaded first
                                                  ".traj")
                   ),
                   x = xml_1)
+    
+    
+    ###############################
+    # SteppingStone
+    ###############################
+    
+    if(SteppingStone == T){
+      
+      xml_1 <- gsub(pattern = "<!--STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER",
+                    replacement = "",
+                    x = xml_1)
+      xml_1 <- gsub(pattern = "STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER-->",
+                    replacement = "",
+                    x = xml_1)
+      
+      xml_1 <- gsub(pattern = "STEPPINGSTONE_PATHSAMPLING_TRUE_PATH_PLACEHOLDER",
+                    replacement = "current_output_path_output",
+                    x = xml_1)
+      
+    } else {
+      
+      xml_1 <- gsub(pattern = "<!--STEPPINGSTONE_PATHSAMPLING_FALSE_PLACEHOLDER",
+                    replacement = "",
+                    x = xml_1)
+      xml_1 <- gsub(pattern = "STEPPINGSTONE_PATHSAMPLING_FALSE_PLACEHOLDER-->",
+                    replacement = "",
+                    x = xml_1)
+      
+    }
     
     
     

@@ -21,7 +21,23 @@ DNA_SEQUENCE_PLACEHOLDER
 </data>
     
 
+<!--STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER
+<run spec='beast.inference.PathSampler' 
+	chainLength="100000" 
+	alpha='0.3'
+	rootdir='STEPPINGSTONE_PATHSAMPLING_TRUE_PATH_PLACEHOLDER'
+	burnInPercentage='0' 
+	preBurnin="10000" 
+	deleteOldLogs='true' 
+	nrOfSteps='48'>
+	cd $(dir)
+	java -cp $(java.class.path) beast.app.beastapp.BeastMain $(resume/overwrite) -java -seed $(seed) beast.xml
+<mcmc id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER" sampleFromPrior="true">
+STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER-->
+
+<!--STEPPINGSTONE_PATHSAMPLING_FALSE_PLACEHOLDER
 <run id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER" sampleFromPrior="true">
+STEPPINGSTONE_PATHSAMPLING_FALSE_PLACEHOLDER-->
 	<state id="state" storeEvery="5000">
 		<tree id="TheTree" name="stateNode" spec='beast.evolution.tree.Tree'>
 	            <taxonset id="TaxonSet" spec="TaxonSet">
@@ -225,6 +241,10 @@ DNA_SEQUENCE_PLACEHOLDER
     </logger>
 TREELOG_SUBSTITUTION_PLACEHOLDER-->
 
+
+<!--STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER
+  </mcmc>
+STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER-->
 
 
 

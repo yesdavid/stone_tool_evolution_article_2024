@@ -104,6 +104,7 @@ xml_helper_function(taxa_file = taxa_file_subset, # age has to be in column call
                         removalParameter = "0.0",
                     subsitution_tree = TRUE,
                     BDS_ExponentialMean = "1.0",
+                    SteppingStone = T,
                     underPrior = F,
                     printgen = 100000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
                     chainlength_in_millions = 1000,
