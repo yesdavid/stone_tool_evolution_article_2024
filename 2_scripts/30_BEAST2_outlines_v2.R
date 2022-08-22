@@ -23,7 +23,7 @@ outlines_AR_with_dates <-
                    taxa_file_raw$taxon)
 
 ## stratified sub-sample
-set.seed(1234)
+set.seed(12)
 stratified_subset_of_names <- 
   splitstackshape::stratified(outlines_AR_with_dates$fac,
                               group = c("Region", "Timeslice_range_from", "TaxUnit"),
@@ -58,12 +58,14 @@ outlines_AR_subset_PCA <-
 
 plot(outlines_AR_subset_PCA$x[,1], outlines_AR_subset_PCA$x[,2])
 
+# remove outliers?
+
 
 
 # determine the number of PC axes to use
 # select number of PCs which account for XX.X% of variation
 minimum_no_of_pcs_outlines_AR <- Momocs::scree_min(outlines_AR_subset_PCA,
-                                                   prop = 0.990) 
+                                                   prop = 0.999) 
 minimum_no_of_pcs_outlines_AR 
 
 Momocs::scree_plot(outlines_AR_subset_PCA,
@@ -102,9 +104,9 @@ xml_helper_function(taxa_file = taxa_file_subset, # age has to be in column call
                         deathParameter = "1.0", 
                         samplingParameter = "0.1", 
                         removalParameter = "0.0",
-                    subsitution_tree = TRUE,
+                    substitution_tree = T,
                     BDS_ExponentialMean = "1.0",
-                    SteppingStone = T,
+                    SteppingStone = F,
                     underPrior = F,
                     printgen = 100000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
                     chainlength_in_millions = 1000,
