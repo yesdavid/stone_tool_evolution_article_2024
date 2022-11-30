@@ -45,8 +45,8 @@ xml_helper_function <- # has to be loaded first
     # taxa_file <- taxa_file_raw
     
     taxa_file$max <- taxa_file$max - age_offset
-    taxa_file$oneSigma_rangeMax <- taxa_file$oneSigma_rangeMax - age_offset
-    taxa_file$oneSigma_rangeMin <- taxa_file$oneSigma_rangeMin - age_offset
+    # taxa_file$oneSigma_rangeMax <- taxa_file$oneSigma_rangeMax - age_offset
+    # taxa_file$oneSigma_rangeMin <- taxa_file$oneSigma_rangeMin - age_offset
     
     # taxa_file_subset <-
     #   subset(taxa_file,
@@ -58,8 +58,8 @@ xml_helper_function <- # has to be loaded first
     age_offset_beast <- age_offset/age_scaler
     print(age_offset_beast)
     taxa_file$max <- round(taxa_file$max/age_scaler, digits = 3)
-    taxa_file$oneSigma_rangeMax <- round(taxa_file$oneSigma_rangeMax/age_scaler, digits = 3)
-    taxa_file$oneSigma_rangeMin <- round(taxa_file$oneSigma_rangeMin/age_scaler, digits = 3)
+    # taxa_file$oneSigma_rangeMax <- round(taxa_file$oneSigma_rangeMax/age_scaler, digits = 3)
+    # taxa_file$oneSigma_rangeMin <- round(taxa_file$oneSigma_rangeMin/age_scaler, digits = 3)
     
     number_of_taxa <- nrow(taxa_file)
     subset_taxa <- taxa_file
@@ -302,7 +302,7 @@ xml_helper_function <- # has to be loaded first
       xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_model",
                     replacement = 
                       paste0("<branchRateModel id=\"rateCatClock\" spec=\"contraband.clock.RateCategoryClockModel\" nCat=\"2\">\n
-                      <rates id=\"rateValues\" spec=\"parameter.RealParameter\" lower=\"-Infinity\" upper=\"Infinity\">0.1 0.5</rates>\n
+                      <rates id=\"rateValues\" spec=\"parameter.RealParameter\" lower=\"0\" upper=\"1000\">0.1 0.5</rates>\n
                       <rateCatAssign id=\"rateAssignments\" spec=\"parameter.IntegerParameter\" lower=\"0\" upper=\"1\">", paste(rep(0, times= nrow(pcs)), collapse = " "),"</rateCatAssign>\n
                       <tree idref=\"TheTree\"/>\n
                       </branchRateModel>\n",
@@ -330,6 +330,132 @@ xml_helper_function <- # has to be loaded first
       xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
                     replacement = 
                     "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\" branchratemodel=\"@rateCatClock\" sort=\"false\"/>",
+                    x = xml_1)
+      
+      
+      
+      if(substitution_tree == TRUE){
+        # TREELOG_SUBSTITUTION_PLACEHOLDER
+        xml_1 <- gsub(pattern = "<!--TREELOG_SUBSTITUTION_PLACEHOLDER",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "TREELOG_SUBSTITUTION_PLACEHOLDER-->",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_substiOutputTreeLog",
+                      replacement = 
+                        "<log id=\"TreeWithMetaDataLoggerSubstitution\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" substitutions=\"true\" tree=\"@TheTree\" branchratemodel=\"@rateCatClock\" sort=\"false\"/>",
+                      x = xml_1)
+      }
+      
+      
+      ############################### relaxed ln clock
+    } else if (clockmodel == "nCat3") {
+      blank_file_name <- gsub(x = blank_file_name,
+                              pattern = "clockModel",
+                              replacement = paste0(clockmodel, "Clock"))
+      #state node
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_stateNode-->",
+                    replacement = 
+                      "<stateNode idref=\"rateAssignments\"/>\n
+                      <stateNode idref=\"rateValues\"/>",
+                    x = xml_1)
+      
+      # from https://github.com/fkmendes/contraband/blob/master/examples/testing/OUMVNLikelihoodOneTrait_FBDTree_RateCatClock.xml lines 103-108
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_model",
+                    replacement = 
+                      paste0("<branchRateModel id=\"rateCatClock\" spec=\"contraband.clock.RateCategoryClockModel\" nCat=\"3\">\n
+                      <rates id=\"rateValues\" spec=\"parameter.RealParameter\" lower=\"0\" upper=\"1000\">0.1 0.5 0.9</rates>\n
+                      <rateCatAssign id=\"rateAssignments\" spec=\"parameter.IntegerParameter\" lower=\"0\" upper=\"1\">", paste(rep(0, times= nrow(pcs)), collapse = " "),"</rateCatAssign>\n
+                      <tree idref=\"TheTree\"/>\n
+                      </branchRateModel>\n",
+                             collapse = " "),
+                    x = xml_1)
+      
+      # operator
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_operators-->",
+                    replacement = 
+                      "<operator id=\"RateAssignmentWalker\" spec=\"IntRandomWalkOperator\" parameter=\"@rateAssignments\" windowSize=\"1\" weight=\"10.0\"/>\n
+        <operator id=\"RateValueScaler\" spec=\"ScaleOperator\" parameter=\"@rateValues\" scaleFactor=\"0.75\" weight=\"3.0\"/>",
+                    x = xml_1)
+      
+      
+      
+      # logger
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_loggers-->",
+                    replacement = 
+                      "<log idref=\"rateValues\"/>\n
+                      <log idref=\"rateAssignments\"/>",
+                    x = xml_1)
+      
+      
+      # CLOCKMODEL_PLACEHOLDER_outputTreeLog
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+                    replacement = 
+                      "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\" branchratemodel=\"@rateCatClock\" sort=\"false\"/>",
+                    x = xml_1)
+      
+      
+      
+      if(substitution_tree == TRUE){
+        # TREELOG_SUBSTITUTION_PLACEHOLDER
+        xml_1 <- gsub(pattern = "<!--TREELOG_SUBSTITUTION_PLACEHOLDER",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "TREELOG_SUBSTITUTION_PLACEHOLDER-->",
+                      replacement = "",
+                      x = xml_1)
+        xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_substiOutputTreeLog",
+                      replacement = 
+                        "<log id=\"TreeWithMetaDataLoggerSubstitution\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" substitutions=\"true\" tree=\"@TheTree\" branchratemodel=\"@rateCatClock\" sort=\"false\"/>",
+                      x = xml_1)
+      }
+      
+      
+      ############################### relaxed ln clock
+    } else if (clockmodel == "nCat4") {
+      blank_file_name <- gsub(x = blank_file_name,
+                              pattern = "clockModel",
+                              replacement = paste0(clockmodel, "Clock"))
+      #state node
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_stateNode-->",
+                    replacement = 
+                      "<stateNode idref=\"rateAssignments\"/>\n
+                      <stateNode idref=\"rateValues\"/>",
+                    x = xml_1)
+      
+      # from https://github.com/fkmendes/contraband/blob/master/examples/testing/OUMVNLikelihoodOneTrait_FBDTree_RateCatClock.xml lines 103-108
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_model",
+                    replacement = 
+                      paste0("<branchRateModel id=\"rateCatClock\" spec=\"contraband.clock.RateCategoryClockModel\" nCat=\"4\">\n
+                      <rates id=\"rateValues\" spec=\"parameter.RealParameter\" lower=\"0\" upper=\"1000\">0.1 0.3 0.5 0.9</rates>\n
+                      <rateCatAssign id=\"rateAssignments\" spec=\"parameter.IntegerParameter\" lower=\"0\" upper=\"1\">", paste(rep(0, times= nrow(pcs)), collapse = " "),"</rateCatAssign>\n
+                      <tree idref=\"TheTree\"/>\n
+                      </branchRateModel>\n",
+                             collapse = " "),
+                    x = xml_1)
+      
+      # operator
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_operators-->",
+                    replacement = 
+                      "<operator id=\"RateAssignmentWalker\" spec=\"IntRandomWalkOperator\" parameter=\"@rateAssignments\" windowSize=\"1\" weight=\"10.0\"/>\n
+        <operator id=\"RateValueScaler\" spec=\"ScaleOperator\" parameter=\"@rateValues\" scaleFactor=\"0.75\" weight=\"3.0\"/>",
+                    x = xml_1)
+      
+      
+      
+      # logger
+      xml_1 <- gsub(pattern = "<!--CLOCKMODEL_PLACEHOLDER_loggers-->",
+                    replacement = 
+                      "<log idref=\"rateValues\"/>\n
+                      <log idref=\"rateAssignments\"/>",
+                    x = xml_1)
+      
+      
+      # CLOCKMODEL_PLACEHOLDER_outputTreeLog
+      xml_1 <- gsub(pattern = "CLOCKMODEL_PLACEHOLDER_outputTreeLog",
+                    replacement = 
+                      "<log id=\"TreeWithMetaDataLogger\" spec=\"beast.evolution.tree.TreeWithMetaDataLogger\" tree=\"@TheTree\" branchratemodel=\"@rateCatClock\" sort=\"false\"/>",
                     x = xml_1)
       
       
@@ -712,55 +838,54 @@ xml_helper_function <- # has to be loaded first
     
     
     # output names and paths
-    xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.log",
+    xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1",
                   replacement = file.path(".", 
                                           current_folder_name, 
                                           "output",
                                           paste0("out_",
-                                                 current_analysis_name,
-                                                 ".log")
+                                                 current_analysis_name)
                   ),
                   x = xml_1)
-    
-    xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.trees",
-                  replacement = file.path(".", 
-                                          current_folder_name, 
-                                          "output",
-                                          paste0("out_",
-                                                 current_analysis_name,
-                                                 ".trees")
-                  ),
-                  x = xml_1)
-    
-    xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.typed.trees",
-                  replacement = file.path(".", 
-                                          current_folder_name, 
-                                          "output",
-                                          paste0("out_",
-                                                 current_analysis_name,
-                                                 ".typed.trees")
-                  ),
-                  x = xml_1)
-    
-    xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.typed.node.trees",
-                  replacement = file.path(".", 
-                                          current_folder_name, 
-                                          "output",
-                                          paste0("out_",
-                                                 current_analysis_name,
-                                                 ".typed.node.trees")
-                  ),
-                  x = xml_1)
-    
-    xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.traj",
-                  replacement = file.path(".", 
-                                          current_folder_name, 
-                                          "output",
-                                          paste0("out_",
-                                                 current_analysis_name,
-                                                 ".traj")
-                  ),
-                  x = xml_1)
+    # 
+    # xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.trees",
+    #               replacement = file.path(".", 
+    #                                       current_folder_name, 
+    #                                       "output",
+    #                                       paste0("out_",
+    #                                              current_analysis_name,
+    #                                              ".trees")
+    #               ),
+    #               x = xml_1)
+    # 
+    # xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.typed.trees",
+    #               replacement = file.path(".", 
+    #                                       current_folder_name, 
+    #                                       "output",
+    #                                       paste0("out_",
+    #                                              current_analysis_name,
+    #                                              ".typed.trees")
+    #               ),
+    #               x = xml_1)
+    # 
+    # xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.typed.node.trees",
+    #               replacement = file.path(".", 
+    #                                       current_folder_name, 
+    #                                       "output",
+    #                                       paste0("out_",
+    #                                              current_analysis_name,
+    #                                              ".typed.node.trees")
+    #               ),
+    #               x = xml_1)
+    # 
+    # xml_1 <- gsub(pattern = "BMPruneLikelihood_calval_1.traj",
+    #               replacement = file.path(".", 
+    #                                       current_folder_name, 
+    #                                       "output",
+    #                                       paste0("out_",
+    #                                              current_analysis_name,
+    #                                              ".traj")
+    #               ),
+    #               x = xml_1)
     
     
     ###############################
