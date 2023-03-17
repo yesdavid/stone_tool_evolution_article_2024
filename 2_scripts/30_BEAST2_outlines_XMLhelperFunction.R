@@ -45,8 +45,8 @@ xml_helper_function <- # has to be loaded first
     # taxa_file <- taxa_file_raw
     
     taxa_file$max <- taxa_file$max - age_offset
-    # taxa_file$oneSigma_rangeMax <- taxa_file$oneSigma_rangeMax - age_offset
-    # taxa_file$oneSigma_rangeMin <- taxa_file$oneSigma_rangeMin - age_offset
+    taxa_file$oneSigma_rangeMax <- taxa_file$oneSigma_rangeMax - age_offset
+    taxa_file$oneSigma_rangeMin <- taxa_file$oneSigma_rangeMin - age_offset
     
     # taxa_file_subset <-
     #   subset(taxa_file,
@@ -58,8 +58,8 @@ xml_helper_function <- # has to be loaded first
     age_offset_beast <- age_offset/age_scaler
     print(age_offset_beast)
     taxa_file$max <- round(taxa_file$max/age_scaler, digits = 3)
-    # taxa_file$oneSigma_rangeMax <- round(taxa_file$oneSigma_rangeMax/age_scaler, digits = 3)
-    # taxa_file$oneSigma_rangeMin <- round(taxa_file$oneSigma_rangeMin/age_scaler, digits = 3)
+    taxa_file$oneSigma_rangeMax <- round(taxa_file$oneSigma_rangeMax/age_scaler, digits = 3)
+    taxa_file$oneSigma_rangeMin <- round(taxa_file$oneSigma_rangeMin/age_scaler, digits = 3)
     
     number_of_taxa <- nrow(taxa_file)
     subset_taxa <- taxa_file
@@ -115,7 +115,8 @@ xml_helper_function <- # has to be loaded first
     # RHO_PLACEHOLDER
     if(fossil_age_uncertainty == TRUE & fully_extinct == FALSE){
       xml_1 <- gsub(pattern = "RHO_PLACEHOLDER",
-                    replacement = 0.00000001,
+                    replacement = 0,
+                    # replacement = 0.00000001, # only if rho=0 does not work!
                     x = xml_1)
     } else if(fossil_age_uncertainty == TRUE & fully_extinct == TRUE){
       xml_1 <- gsub(pattern = "RHO_PLACEHOLDER",
