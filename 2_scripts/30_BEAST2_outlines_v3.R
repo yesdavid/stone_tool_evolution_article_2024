@@ -9,8 +9,8 @@ outlines_centered_scaled_subset_PCA <- readRDS(file = file.path("1_data",
                                                                 "TAXA42_PCs42_outlines_centered_scaled_subset_seed1_PCA.RDS"))
 
 # load taxa file
-taxa_file_raw <- readr::read_tsv(file.path("1_data", "outlines_centered_scaled_subset_FAD_LAD_C14.tsv"))
-
+# taxa_file_raw <- readr::read_tsv(file.path("1_data", "outlines_centered_scaled_subset_FAD_LAD_C14.tsv"))
+taxa_file_raw <- readr::read_tsv(file.path("1_data","outlines_centered_scaled_subset_FAD_LAD_C14_oneSigmaMinMax.tsv"))
 
 
 
@@ -43,13 +43,14 @@ source(file.path("2_scripts",
                  "30_BEAST2_outlines_XMLhelperFunction.R"))
 
 # xml file set up
+# OBS! rho = 0, or rho = 0.00000001?
 xml_helper_function(taxa_file = taxa_file_raw, # age has to be in column called "max"
                     number_of_pc_axes_used = number_of_pc_axes_used, # number of axes chosen
                     pcs = pcs, # pca axes
                     root_age = 40000,
-                    clockmodel = "strict", # "strict", "relaxed", "nCat", "nCat3", nCat4. "relaxed" or "nCat" works so far only for fossil_age_uncertainty = F,fully_extinct = F,skyline_BDMM = F, ### "relaxed" needs BEAST2 package "ORC"
-                    fossil_age_uncertainty = F,
-                    fully_extinct = F,
+                    clockmodel = "nCat", # "strict", "relaxed", "nCat", "nCat3", nCat4. "relaxed" or "nCat" works so far only for fossil_age_uncertainty = F,fully_extinct = F,skyline_BDMM = F, ### "relaxed" needs BEAST2 package "ORC"
+                    fossil_age_uncertainty = T,
+                    fully_extinct = T,
                     skyline_BDMM = F,
                         timebins = 4, # this helper function does not work for timebins <2. Has to be adjusted manually.
                         estimate_changeTimes = F, # logical, if false, provide the following parameters:
@@ -60,40 +61,45 @@ xml_helper_function(taxa_file = taxa_file_raw, # age has to be in column called 
                         removalParameter = "0.0",
                     substitution_tree = F,
                     BDS_ExponentialMean = "1.0",
-                    SteppingStone = T,
+                    SteppingStone = F,
                     underPrior = F,
-                    printgen = 5000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
-                    chainlength_in_millions = 50,
-                    walltime_spec = "12:00:00",
+                    printgen = 70000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
+                    chainlength_in_millions = 70,
+                    walltime_spec = "23:55:00",
                     blank_file_path <- file.path(getwd(), "2_scripts","BEAST2_contraband") # path to folder where the blank .xml files are
 )
 
 
+############################################################
+############################################################
 # for pathSampling/steppingStone:
-# 1. run the .xml file, it will create a step0 folder + .xml script, and a run.sh script in the output-folder.
-# 2. cut&paste these files + the original .sh file into a new folder above the output folder, which you name according to the clock model and the number of steps etc. (i.e., nCat2_SS_s0-20)
-
+############################################################
+############################################################
+# 1. take the above created *_SteppingStone.xml and cut&paste it into a dedicated pathSampling folder, i.e. BEAST2_contraband/TAXA42_PCs42/pathSampling_80steps/nCat2_SS/
+# 
+# 2. run the .xml file, it will create a step0 folder + beast.xml script, and a run.sh script in the output-folder. These files lie where contraband.sh lies. cut&paste them into the dedicated pathSampling folder
+# 
 # 3. at the bottom of the beast.xml file created in folder step0, remove the following lines
 # <logger id="Logger" spec="Logger" fileName="likelihood.log" logEvery="50000">
 #   
 #   <log idref="likelihood"/>
 #   
 # </logger>
-# and the lines for the .tre file.
+# and the lines for the trees/ .tree file. (not needed for this)
 
 # 4. modify the output path for the log file to this:
-# fileName="./TAXA42_PCs42/nCat2_SS/step0/likelihood.log", where nCat2_SS is the folder name of the current run, specified in step 2.
+# fileName="./TAXA42_PCs42/pathSampling_100steps/nCat2_SS/step0/likelihood.log", where "nCat2_SS" is the folder name of the current run, specified in step 1, and "pathSampling_100steps" the folder from step 1.
 
 # 5. insert the beta argument like so:
-# <run id="PathSamplingStep" spec="beast.inference.PathSamplingStep" chainLength="50000000" beta="1" preBurnin="100000">
+# <run id="PathSamplingStep" spec="beast.inference.PathSamplingStep" chainLength="50000000" beta="1" preBurnin="1000000">
 
 ############################################################
 # 6. run this script:
 ############################################################
-nSteps = 50
+nSteps = 100
 taxa_and_pcs <- "TAXA42_PCs42"
 model_folder <- "nCat2_SS"
-path_to_folder = file.path(getwd(), "2_scripts","BEAST2_contraband", taxa_and_pcs, model_folder)
+path_to_folder = file.path(getwd(), "2_scripts","BEAST2_contraband",taxa_and_pcs, paste0("pathSampling_", nSteps,"steps"), model_folder)
 ############################################################
 
 # read step0 beast.xml
@@ -147,10 +153,30 @@ for(i in nSteps:1){
   readr::write_file(x = run.sh_current,
                     file = file.path(path_to_folder,
                                      paste0(model_folder,"_run", nSteps-i, ".sh")))
-  
+  Sys.sleep(0.1)
 }
 ############################################################
 
+# 1. use 48-128 steps
+# 1.1. compare stepping-stone and pathsampling in revbayes. If output the same, then enough steps (https://revbayes.github.io/tutorials/model_selection_bayes_factors/bf_intro.html). 
+# You can use the .log files from the BEAST2 - applauncher:pathSampleAnalyser 
+#   (however, the theta column has to be renamed to "power" and all columns other than "Step","power","likelihood" have to be deleted). 
+# For the same model, the values of ps.marginal() and ss.marginal() have to be _quite_ close (<= 0.1 range).
+# 
+# For nCat2 clock model:
+#   ss = steppingStoneSampler(file="output_nCat2_pathSamplingAnalyser.out", powerColumnName="power", likelihoodColumnName="likelihood")
+# ss.marginal()
+# ps = pathSampler(file="output_nCat2_pathSamplingAnalyser.out", powerColumnName="power", likelihoodColumnName="likelihood")
+# ps.marginal()
+# 
+# For strickt clock model:
+#   ss = steppingStoneSampler(file="output_strictClock_pathSamplingAnalyser.out", powerColumnName="power", likelihoodColumnName="likelihood")
+# ss.marginal()
+# ps = pathSampler(file="output_strictClock_pathSamplingAnalyser.out", powerColumnName="power", likelihoodColumnName="likelihood")
+# ps.marginal()
+# 
+# 2. high burn-in
+# 3. lower chain length (1/10th of current)
 
-
-
+############################################################
+############################################################
