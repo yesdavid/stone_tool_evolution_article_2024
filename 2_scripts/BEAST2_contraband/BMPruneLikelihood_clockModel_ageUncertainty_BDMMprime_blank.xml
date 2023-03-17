@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beast namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.branchratemodel:beast.evolution.likelihood" required="BEAST v2.5.0" version="2.5">
+
+<map name="Uniform" >beast.math.distributions.Uniform</map>
+<map name="Exponential" >beast.math.distributions.Exponential</map>
+<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal" >beast.math.distributions.Normal</map>
+<map name="Beta" >beast.math.distributions.Beta</map>
+<map name="Gamma" >beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+<map name="prior" >beast.math.distributions.Prior</map>
+<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+<map name="OneOnX" >beast.math.distributions.OneOnX</map>
+<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
+
+
+<data id="dnaSequence" name="alignment">
+                  
+DNA_SEQUENCE_PLACEHOLDER
+                  
+</data>
+
+
+
+
+<!--
+############
+model/distribution set up, where all the model parameters are defined
+############
+-->
+
+
+<!--STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER
+<run spec='beast.inference.PathSampler' 
+	chainLength="100000" 
+	alpha='0.3'
+	rootdir='STEPPINGSTONE_PATHSAMPLING_TRUE_PATH_PLACEHOLDER'
+	burnInPercentage='0' 
+	preBurnin="10000" 
+	deleteOldLogs='true' 
+	nrOfSteps='48'>
+	cd $(dir)
+	java -cp $(java.class.path) beast.app.beastapp.BeastMain $(resume/overwrite) -java -seed $(seed) beast.xml
+<mcmc id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER" sampleFromPrior="true">
+STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER-->
+
+<!--STEPPINGSTONE_PATHSAMPLING_FALSE_PLACEHOLDER
+<run id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER" sampleFromPrior="true">
+STEPPINGSTONE_PATHSAMPLING_FALSE_PLACEHOLDER-->
+	<state id="state" storeEvery="5000">
+		<tree id="TheTree" name="stateNode" spec='beast.evolution.tree.Tree'>
+	            <taxonset id="TaxonSet" spec="TaxonSet">
+		TAXON_ID_PLACEHOLDER
+	            </taxonset>
+                <trait id="FossilSet" spec="beast.evolution.tree.TraitSet" traitname="date-backward">
+		FOSSILSET_PLACEHOLDER
+                    <taxa idref="TaxonSet"/>
+                </trait>
+        </tree>
+        	<stateNode idref="varValues"/>
+		<stateNode idref="rootValues"/>
+		<stateNode idref="covValues"/>
+		<stateNode idref="FBDremovalProb"/>
+		<stateNode idref="FBDrho"/>
+
+
+		<!--NEW specification of the FBP parameters-->
+		<parameter id="birthRate" lower="0.0" name="stateNode">1.0 </parameter>
+		<parameter id="deathRate" lower="0.0" name ="stateNode">0.5 </parameter>
+		<parameter id="samplingRate" lower="0.0" name ="stateNode">0.5 </parameter>
+
+		<parameter id="FBDorigin" name="stateNode" lower="0.0">ROOT_AGE_PLACEHOLDER</parameter>
+	</state>
+
+    <!-- Initialise a random tree to start the chain -->
+    <init id="RandomTree" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@TheTree" taxa="@dnaSequence">
+        <populationModel id="ConstantPopulation" spec="ConstantPopulation">
+            <parameter id="randomPopSize" spec="parameter.RealParameter" name="popSize">1.0</parameter>
+        </populationModel>
+    </init>
+
+	<distribution id="posterior" spec="util.CompoundDistribution">
+    <!-- START prior -->
+    <distribution id="prior" spec="util.CompoundDistribution">
+        <!-- tree prior -->
+
+
+<!-- XML specification of the FBD process NEW -->
+        <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" 
+        				conditionOnRhoSampling = "false"
+        				birthRate="@birthRate" 
+        				deathRate="@deathRate" 
+        				samplingRate="@samplingRate" 
+        				origin="@FBDorigin"
+        				tree="@TheTree">
+            <parameter id="FBDremovalProb" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+            <parameter id="FBDrho" lower="0.0" name="rho" upper="1.0">RHO_PLACEHOLDER</parameter>
+            <!--TREEWOFFSET_PLACEHOLDER
+            <treeWOffset id="treeWOffset" spec="beast.evolution.tree.TreeWOffset"
+            tree="@TheTree" offset = "0.0"/>            
+            TREEWOFFSET_PLACEHOLDER-->
+
+        </distribution>
+
+
+<!-- ############ -->
+<!--BDMMPrime start-->
+<!-- ############ -->
+            <parameter id="birthRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">BIRTH_TIMEBINS_PLACEHOLDER</parameter>
+            <parameter id="deathRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">DEATH_TIMEBINS_PLACEHOLDER</parameter>
+            <parameter id="samplingRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">SAMPLING_TIMEBINS_PLACEHOLDER</parameter>
+<!--BDMMPrime-->
+			
+            <!--IF_changeTimeEstimate_TRUE
+            <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">BIRTH_TIMEBINS_estChTi_PLACEHOLDER</parameter>
+            <parameter id="deathRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">DEATH_TIMEBINS_estChTi_PLACEHOLDER</parameter>
+            <parameter id="samplingRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">SAMPLING_TIMEBINS_estChTi_PLACEHOLDER</parameter>
+            <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">REMOVALPROB_TIMEBINS_estChTi_PLACEHOLDER</parameter>
+            IF_changeTimeEstimate_TRUE-->
+
+
+<!--BDMMPrime-->
+            <parameter id="rhoSamplingProb" spec="parameter.RealParameter" name="stateNode">0.0</parameter>
+			
+            <parameter id="originBDMMPrime.t" spec="parameter.RealParameter" name="stateNode">10.0</parameter>
+            <parameter id="typeFrequencies.t" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">1.0</parameter>
+<!-- ############ -->
+<!--BDMMPrime end-->
+<!-- ############ -->
+
+
+
+
+<!--
+############
+priors
+############
+-->
+
+
+
+
+<!-- ############ -->
+<!--BDMMPrime start-->
+<!-- ############ -->
+        <distribution id="posterior" spec="util.CompoundDistribution">
+            <distribution id="prior" spec="util.CompoundDistribution">
+                <distribution id="BDMMPrime.t" spec="bdmmprime.distribution.BirthDeathMigrationDistribution" conditionOnSurvival="true" frequencies="@typeFrequencies.t" tree="@TheTree">
+                    <parameterization id="CanonicalBDMMPrimeParameterization.t" spec="bdmmprime.parameterization.CanonicalParameterization" origin="@originBDMMPrime.t">
+                        
+	<!--IF_changeTimeEstimate_FALSE
+                        <birthRate id="birthRate" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@birthRateCanonical.t" timesAreAges="true">
+                            <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
+                            
+                            <typeSet id="typeSetBDMMPrime.t" spec="bdmmprime.parameterization.TypeSet">
+                                <typeTraitSet id="typeTraitSet.t" spec="bdmmprime.util.InitializedTraitSet" traitname="type" value="TYPETRAITSET_PLACEHOLDER">
+                                    <taxa id="TaxonSet.1" spec="TaxonSet" alignment="@dnaSequence"/>
+                                </typeTraitSet>
+                            </typeSet>
+                        </birthRate>				
+		
+                        <deathRate id="deathRate" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@deathRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                            <parameter id="deathRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
+                        </deathRate>				
+		
+                        <samplingRate id="samplingRate" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@samplingRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                            <parameter id="samplingRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
+                        </samplingRate>
+
+                        <removalProb id="removalProb" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                            <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
+                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" estimate="false" lower="0.0" name="skylineValues" upper="1.0">REMOVALPROB_TIMEBINS_PLACEHOLDER</parameter>
+                        </removalProb>
+			
+                        <rhoSampling id="rhoSamplingProbTPCanonical.t" spec="bdmmprime.parameterization.TimedParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                            <parameter id="rhoSamplingProbTimesCanonical.t" spec="parameter.RealParameter" estimate="false" name="times">0.0</parameter>
+                            <parameter id="rhoSamplingProbCanonical.t" spec="parameter.RealParameter" estimate="false" name="values"> RHO_PLACEHOLDER</parameter>
+                        </rhoSampling>
+                        IF_changeTimeEstimate_FALSE-->
+			
+
+	<!--IF_changeTimeEstimate_TRUE
+                        <birthRate id="birthRate" spec="bdmmprime.parameterization.SkylineVectorParameter" changeTimes="@birthRateChangeTimesCanonical.t" origin="@originBDMMPrime.t" skylineValues="@birthRateCanonical.t" timesAreAges="true">
+                            <typeSet id="typeSetBDMMPrime.t" spec="bdmmprime.parameterization.TypeSet">
+                                <typeTraitSet id="typeTraitSet.t" spec="bdmmprime.util.InitializedTraitSet" traitname="type" value="TYPETRAITSET_PLACEHOLDER">
+                                    <taxa id="TaxonSet.1" spec="TaxonSet" alignment="@dnaSequence"/>
+                                </typeTraitSet>
+                            </typeSet>
+                        </birthRate>
+
+                        <deathRate id="deathRate" spec="bdmmprime.parameterization.SkylineVectorParameter" changeTimes="@deathRateChangeTimesCanonical.t" origin="@originBDMMPrime.t" skylineValues="@deathRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t"/>
+
+                        <samplingRate id="samplingRate" spec="bdmmprime.parameterization.SkylineVectorParameter" changeTimes="@samplingRateChangeTimesCanonical.t" origin="@originBDMMPrime.t" skylineValues="@samplingRateCanonical.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t"/>
+
+                        <removalProb id="removalProb" spec="bdmmprime.parameterization.SkylineVectorParameter" changeTimes="@removalProbChangeTimesCanonical.t" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                            <parameter id="removalProbCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" estimate="false" lower="0.0" name="skylineValues" upper="1.0">REMOVALPROB_TIMEBINS_PLACEHOLDER</parameter>
+                        </removalProb>
+
+                        <rhoSampling id="rhoSamplingProbTPCanonical.t" spec="bdmmprime.parameterization.TimedParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t"/>
+
+                        IF_changeTimeEstimate_TRUE-->
+
+	<!--BDMMPrime-->
+                        <migrationRate id="migrationRateSMCanonical.t" spec="bdmmprime.parameterization.SkylineMatrixParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                            <parameter id="migrationRateCanonical.t" spec="parameter.RealParameter" estimate="false" name="skylineValues">0</parameter>
+                        </migrationRate>
+				
+		
+                        <birthRateAmongDemes id="birthRateAmongDemesSMCanonical.t" spec="bdmmprime.parameterization.SkylineMatrixParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
+                            <parameter id="birthRateAmongDemesCanonical.t" spec="parameter.RealParameter" estimate="false" name="skylineValues">0</parameter>
+                        </birthRateAmongDemes>
+				
+		
+                        <typeSet idref="typeSetBDMMPrime.t"/>
+                    </parameterization>
+					
+                    <typeTraitSet idref="typeTraitSet.t"/>
+                </distribution>
+				
+                <distribution id="birthRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@birthRateCanonical.t">
+                    <Exponential id="Exponential.1" name="distr">
+                        <parameter id="RealParameter.birthRateCanonicalPrior" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                    </Exponential>
+                </distribution>
+
+<!--CLOCKMODEL_PLACEHOLDER_priors-->
+				
+                <distribution id="deathRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@deathRateCanonical.t">
+                    <Exponential id="Exponential.2" name="distr">
+                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                    </Exponential>
+                </distribution>
+
+                <distribution id="samplingRateCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@samplingRateCanonical.t">
+                    <Exponential id="Exponential.3" name="distr">
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                    </Exponential>
+                </distribution>
+
+	<!--IF_changeTimeEstimate_TRUE
+                <distribution id="birthRateChangeTimesCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@birthRateChangeTimesCanonical.t">
+                    <Exponential id="Exponential.birthRateChangeTimes" name="distr">
+                        <parameter id="RealParameter.birthRateChangeTimes" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                    </Exponential>
+                </distribution>
+					
+                <distribution id="deathRateChangeTimesCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@deathRateChangeTimesCanonical.t">
+                    <Exponential id="Exponential.deathRateChangeTimes" name="distr">
+                        <parameter id="RealParameter.deathRateChangeTimes" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                    </Exponential>
+                </distribution>
+
+                <distribution id="removalProbChangeTimesCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@removalProbChangeTimesCanonical.t">
+                    <Exponential id="Exponential.removalProbChangeTimes" name="distr">
+                        <parameter id="RealParameter.removalProbChangeTimes" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                    </Exponential>
+                </distribution>
+
+                <distribution id="samplingRateChangeTimesCanonicalPrior.t" spec="bdmmprime.util.priors.ZeroExcludingPrior" x="@samplingRateChangeTimesCanonical.t">
+                    <Exponential id="Exponential.samplingRateChangeTimes" name="distr">
+                        <parameter id="RealParameter.samplingRateChangeTimes" spec="parameter.RealParameter" estimate="false" name="mean">BDS_EXPONENTIAL_MEAN_PLACEHOLDER</parameter>
+                    </Exponential>
+                </distribution>
+                IF_changeTimeEstimate_TRUE-->
+
+            </distribution>
+
+				
+            <!--
+            <prior id="originBDMMPrimePrior.t" name="distribution" x="@originBDMMPrime.t">
+                    <OneOnX id="OneOnX.1" name="distr"/>
+            </prior>
+            -->
+            <distribution id="origin" spec="beast.math.distributions.Prior" x="@originBDMMPrime.t">
+            	<distr id="FBDoriginUniform" spec="beast.math.distributions.Uniform" upper="Infinity"/>
+            </distribution>
+<!-- ############ -->
+<!--BDMMPrime end -->
+<!-- ############ -->				
+	
+
+
+
+
+
+
+
+
+
+<!-- Priors of the FBD process NEW-->
+       <distribution id="birthRatePrior" spec="beast.math.distributions.Prior" x="@birthRate">
+        	<distr id="birthExpMean" spec="beast.math.distributions.Exponential" mean="BDS_EXPONENTIAL_MEAN_PLACEHOLDER" offset="0.0"/>  
+        </distribution>
+        <distribution id="deathRatePrior" spec="beast.math.distributions.Prior" x="@deathRate">
+           <distr id="deathExpMean" spec="beast.math.distributions.Exponential" mean="BDS_EXPONENTIAL_MEAN_PLACEHOLDER" offset="0.0"/> 
+        </distribution>
+        <distribution id="sampleRatePrior" spec="beast.math.distributions.Prior" x="@samplingRate">
+			<distr id="sampleExpMean" spec="beast.math.distributions.Exponential" mean="BDS_EXPONENTIAL_MEAN_PLACEHOLDER" offset="0.0"/>
+        </distribution>
+
+		<distribution id="origin" spec="beast.math.distributions.Prior" x="@FBDorigin">
+				<distr id="FBDoriginUniform" spec="beast.math.distributions.Uniform" upper="Infinity"/>
+			</distribution>
+
+        
+        <!-- BM model prior -->
+        <!-- trait evolutionary rate, the diagonal elements in the variance-covariance matrix -->
+        <distribution id="varValuesPrior" spec="beast.math.distributions.Prior" x="@varValues">
+	        <distr id="LogNormal.varValues" spec="beast.math.distributions.LogNormalDistributionModel" S="0.3" M="1.0"/>
+        </distribution>
+        <!-- trait correlations, the off-diagonal elements in the variance-covariance matrix -->
+        <distribution id="covValuesPrior" spec="beast.math.distributions.Prior" x="@covValues">
+	        <distr id="Uniform.correlation" spec="beast.math.distributions.Uniform" lower="-1.0" upper="1.0"/>
+        </distribution>
+        <!-- trait values at the root -->
+        <distribution id="MeanPrior" spec="beast.math.distributions.Prior" x="@rootValues">
+	        <distr id="Normal.Mean" spec="beast.math.distributions.Normal" mean="0.0" sigma="2.0"/>
+        </distribution>
+
+
+	<!-- insert prior fossil ages here -->
+        <!--PRIOR_FOSSIL_AGES_PLACEHOLDER-->
+
+
+
+    </distribution>
+    <!-- END prior -->
+
+
+
+
+<!-- START likelihood -->
+    <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="false">
+
+    <!-- End Gene tree likelihood -->  
+     <!-- START Morphological likleihood-->
+        <distribution id="PCMLikelihood" spec="contraband.prunelikelihood.BMPruneLikelihood">
+			<tree idref="TheTree"/>
+			<!-- trait values for species of interest, an array of elements in the trait matrix-->
+            <!-- For example
+                  trait1 trait2 trait3
+            sp1     T11    T12    T13
+            sp2     T21    T22    T23
+            sp3     T31    T32    T33
+            the input here should be T11 T12 T13 T21 T22 T23 T31 T32 T33
+            -->
+            <traits id="oneTraitData" spec="parameter.RealParameter" minordimension="MINORDIMENSION_PLACEHOLDER" 
+		    keys= "ONETRAITDATA_PLACEHOLDER">
+		    TRAITDATA_PLACEHOLDER
+            </traits>
+
+
+
+<!-- the morphological clock model -->
+	    CLOCKMODEL_PLACEHOLDER_model
+
+
+
+
+            <!-- parameters in the BM model -->
+            <!-- here we assume each trait has its own evolutionary rate -->
+            <!-- if we assume all traits to share one common rate, we should set the flag by oneRateOnly="true" -->
+            <!-- the flag upperMatrix="true" here is to ensure the non-singular variance-covariance matrix -->
+            <nodeMath id="pcmNodeMath" spec="contraband.math.NodeMath" traits="@oneTraitData" upperMatrix="true">
+            	<sigmasq id="varValues" spec="parameter.RealParameter">1.0</sigmasq>
+            	<correlation id="covValues" spec="parameter.RealParameter">0.0</correlation>
+            	<rootValues id="rootValues" spec="parameter.RealParameter">0.0</rootValues>
+            </nodeMath>
+        </distribution>
+        <!-- END Morphological likleihood -->
+	</distribution> 
+	<!-- END Likelihood -->
+	</distribution> 
+	<!-- END Posterior -->
+
+
+
+
+<!--
+############
+operators
+############
+-->
+
+
+
+
+<!-- 
+  	<operator id="MutationRateScaler" spec="ScaleOperator" parameter="@mutationRate" scaleFactor="0.75" weight="2.0"/>
+    	-->
+    <operator id="FBDDiveRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.75" weight="2.0"/>
+    <operator id="deathRateScaler" spec="ScaleOperator" parameter="@deathRate" scaleFactor="0.75" weight="2.0"/>
+    <operator id="FBDSamplingPropScaler" spec="ScaleOperator" parameter="@samplingRate" scaleFactor="0.75" weight="2.0"/> 
+	<operator id="FBDoriginScaler" spec="ScaleOperator" parameter="@FBDorigin" scaleFactor="0.75" weight="2.0"/>
+    
+	<operator id="VarValueScaler" spec="ScaleOperator" parameter="@varValues" scaleFactor="0.75" weight="6.0"/>
+    <operator id="CoValueRandomWalk" spec="RealRandomWalkOperator" parameter="@covValues" windowSize="1.0" weight="10.0"/>
+    <operator id="MeanRandomWalk" spec="RealRandomWalkOperator" parameter="@rootValues" windowSize="1.0" weight="6.0"/>
+	
+    <operator id="FBDLeafToSA" spec="LeafToSampledAncestorJump" tree="@TheTree" weight="10.0"/>    
+    <operator id="FBDSAWilsonBalding" spec="SAWilsonBalding" tree="@TheTree" weight="10.0"/>
+    <operator id="FBDSAWide" spec="SAExchange" isNarrow="false" tree="@TheTree" weight="10.0"/>
+    <operator id="FBDSANarrow" spec="SAExchange" tree="@TheTree" weight="10.0"/>
+    <operator id="FBDSAUniformOperator" spec="SAUniform" tree="@TheTree" weight="20.0"/>
+    <operator id="FBDSATreeRootScaler" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@TheTree" weight="1.0"/>
+    <operator id="FBDSATreeScaler" spec="SAScaleOperator" scaleFactor="0.95" tree="@TheTree" weight="3.0"/>
+	<!--PRIOR_FOSSIL_AGES_PLACEHOLDER_operator-->
+
+
+<!-- ############ -->
+<!-- BDMMPrime start -->
+<!-- ############ -->	
+<operator id="birthRateCanonicalScaler.t" spec="ScaleOperator" parameter="@birthRateCanonical.t" weight="3.0"/>
+        <operator id="deathRateCanonicalScaler.t" spec="ScaleOperator" parameter="@deathRateCanonical.t" weight="3.0"/>
+        <operator id="samplingRateCanonicalScaler.t" spec="ScaleOperator" parameter="@samplingRateCanonical.t" weight="3.0"/>
+
+        <operator id="BDMMPrimeLeafToSA.t" spec="LeafToSampledAncestorJump" tree="@TheTree" weight="10.0"/>
+        <operator id="BDMMPrimeSAWilsonBalding.t" spec="SAWilsonBalding" tree="@TheTree" weight="10.0"/>
+        <operator id="BDMMPrimeSAWide.t" spec="SAExchange" isNarrow="false" tree="@TheTree" weight="10.0"/>
+        <operator id="BDMMPrimeSANarrow.t" spec="SAExchange" tree="@TheTree" weight="10.0"/>
+        <operator id="BDMMPrimeSAUniformOperator.t" spec="SAUniform" tree="@TheTree" weight="20.0"/>
+        <operator id="BDMMPrimeSATreeRootScaler.t" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@TheTree" weight="1.0"/>
+        <operator id="BDMMPrimeSATreeScaler.t" spec="SAScaleOperator" scaleFactor="0.95" tree="@TheTree" weight="3.0"/>
+        <operator id="originBDMMPrimeScaler.t" spec="ScaleOperator" parameter="@originBDMMPrime.t" weight="3.0"/>
+
+
+<!--IF_changeTimeEstimate_TRUE
+        <operator id="birthRateChangeTimesCanonicalScaler.t" spec="ScaleOperator" parameter="@birthRateChangeTimesCanonical.t" weight="3.0"/>
+        <operator id="deathRateChangeTimesCanonicalScaler.t" spec="ScaleOperator" parameter="@deathRateChangeTimesCanonical.t" weight="3.0"/>
+        <operator id="samplingRateChangeTimesCanonicalScaler.t" spec="ScaleOperator" parameter="@samplingRateChangeTimesCanonical.t" weight="3.0"/>
+        <operator id="removalProbChangeTimesCanonicalScaler.t" spec="ScaleOperator" parameter="@removalProbChangeTimesCanonical.t" weight="3.0"/>
+        IF_changeTimeEstimate_TRUE-->
+
+
+
+<!-- ############ -->
+<!-- BDMMPrime end -->
+<!-- ############ -->	
+
+
+
+
+
+
+<!--
+############
+logging
+############
+-->
+
+
+
+<!-- also log BDMMPrime
+birthRateCanonical
+deathRateCanonical
+samplingRateCanonical
+-->
+
+
+
+
+<logger id="tracelog" fileName="BMPruneLikelihood_calval_1.log" logEvery="PRINTGEN_PLACEHOLDER" model="@posterior" sanitiseHeaders="true" sort="smart">
+	<log idref="posterior"/>
+	<log idref="likelihood"/>
+	<log idref="prior"/>
+	<log id="TreeStats" spec="beast.evolution.tree.TreeStatLogger" tree="@TheTree"/>
+	<log id="TreeHeight.t" spec="beast.evolution.tree.TreeHeightLogger" tree="@TheTree"/>
+	<log id="SACountFBD" spec="beast.evolution.tree.SampledAncestorLogger" tree="@TheTree"/>
+	<log idref="varValues"/>
+	<log idref="covValues"/>
+	<log idref="rootValues"/>
+	<log idref="birthRate"/>
+	<log idref="deathRate"/>
+	<log idref="samplingRate"/>
+	<log idref="FBDrho"/>
+	<log idref="FBDorigin"/>
+<!-- BDMMPrime start -->
+	<log idref="birthRateAmongDemesSMCanonical.t"/>
+	<log idref="migrationRateSMCanonical.t"/>
+	<log idref="rhoSamplingProbTPCanonical.t"/>
+	<log idref="birthRateAmongDemesCanonical.t"/>
+<!-- BDMMPrime end -->
+	<!--PRIOR_FOSSIL_AGES_PLACEHOLDER_logger-->
+	<!--TREEWOFFSET_PLACEHOLDER_logger-->
+
+    </logger>
+
+    <logger id="screenlog" logEvery="PRINTGEN_PLACEHOLDER">
+        <log idref="posterior"/>
+        <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <logger id="treelog" fileName="BMPruneLikelihood_calval_1.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
+        <log id="TreeWithMetaDataLogger" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree"/>
+    </logger>
+
+
+<!--TREELOG_SUBSTITUTION_PLACEHOLDER
+    <logger id="treelog_substi" fileName="BMPruneLikelihood_calval_1.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
+        CLOCKMODEL_PLACEHOLDER_substiOutputTreeLog
+    </logger>
+TREELOG_SUBSTITUTION_PLACEHOLDER-->
+
+
+<!--STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER
+  </mcmc>
+STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<
