@@ -36,9 +36,12 @@ name="alignment">
                 </trait>
             </tree>
 			
+
+<!--BDMMPrime-->
             <parameter id="birthRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">BIRTH_TIMEBINS_PLACEHOLDER</parameter>
             <parameter id="deathRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">DEATH_TIMEBINS_PLACEHOLDER</parameter>
             <parameter id="samplingRateCanonical.t" spec="parameter.RealParameter" dimension="N_TIMEBINS_PLACEHOLDER" name="stateNode">SAMPLING_TIMEBINS_PLACEHOLDER</parameter>
+<!--BDMMPrime-->
 			
             <!--IF_changeTimeEstimate_TRUE
             <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">BIRTH_TIMEBINS_estChTi_PLACEHOLDER</parameter>
@@ -47,18 +50,25 @@ name="alignment">
             <parameter id="removalProbChangeTimesCanonical.t" spec="parameter.RealParameter" lower="0.0" dimension="N_TIMEBINS_estChTi_PLACEHOLDER" name="stateNode">REMOVALPROB_TIMEBINS_estChTi_PLACEHOLDER</parameter>
             IF_changeTimeEstimate_TRUE-->
 
+
+<!--BDMMPrime-->
             <parameter id="rhoSamplingProb" spec="parameter.RealParameter" name="stateNode">0.0</parameter>
 			
             <parameter id="originBDMMPrime.t" spec="parameter.RealParameter" name="stateNode">10.0</parameter>
             <parameter id="typeFrequencies.t" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">1.0</parameter>
+<!--BDMMPrime-->
+
 
 <!-- old clock
             <parameter id="clockRate.c" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
 -->
+
+
             <!--CLOCKMODEL_PLACEHOLDER_stateNode-->
 
-			
+<!-- NOT NEEDED?
             <parameter id="FBDorigin" name="stateNode" lower="0.0">ROOT_AGE_PLACEHOLDER</parameter>
+-->
 			
             <stateNode idref="varValues"/>
             <stateNode idref="rootValues"/>
@@ -73,13 +83,14 @@ name="alignment">
             </populationModel>
         </init>
 		
-		
+
+<!--BDMMPrime-->
         <distribution id="posterior" spec="util.CompoundDistribution">
             <distribution id="prior" spec="util.CompoundDistribution">
                 <distribution id="BDMMPrime.t" spec="bdmmprime.distribution.BirthDeathMigrationDistribution" conditionOnSurvival="true" frequencies="@typeFrequencies.t" tree="@TheTree">
                     <parameterization id="CanonicalBDMMPrimeParameterization.t" spec="bdmmprime.parameterization.CanonicalParameterization" origin="@originBDMMPrime.t">
                         
-                        <!--IF_changeTimeEstimate_FALSE
+<!--IF_changeTimeEstimate_FALSE
                         <birthRate id="birthRate" spec="bdmmprime.parameterization.SkylineVectorParameter" origin="@originBDMMPrime.t" skylineValues="@birthRateCanonical.t" timesAreAges="true">
                             <parameter id="birthRateChangeTimesCanonical.t" spec="parameter.RealParameter" estimate="false" lower="0.0" name="changeTimes">CHANGE_TIMES_PLACEHOLDER</parameter>
                             
@@ -131,7 +142,7 @@ name="alignment">
 
                         IF_changeTimeEstimate_TRUE-->
 
-
+<!--BDMMPrime-->
                         <migrationRate id="migrationRateSMCanonical.t" spec="bdmmprime.parameterization.SkylineMatrixParameter" origin="@originBDMMPrime.t" timesAreAges="true" typeSet="@typeSetBDMMPrime.t">
                             <parameter id="migrationRateCanonical.t" spec="parameter.RealParameter" estimate="false" name="skylineValues">0</parameter>
                         </migrationRate>
@@ -292,9 +303,19 @@ name="alignment">
         <operator id="BDMMPrimeSATreeRootScaler.t" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@TheTree" weight="1.0"/>
         <operator id="BDMMPrimeSATreeScaler.t" spec="SAScaleOperator" scaleFactor="0.95" tree="@TheTree" weight="3.0"/>
         <operator id="originBDMMPrimeScaler.t" spec="ScaleOperator" parameter="@originBDMMPrime.t" weight="3.0"/>
+
+<!-- also log 
+birthRateCanonical
+deathRateCanonical
+samplingRateCanonical
+-->
+
+
+<!-- we do not have types
         <operator id="typeFrequenciesExchanger.t" spec="DeltaExchangeOperator" delta="0.1" weight="1.0">
             <parameter idref="typeFrequencies.t"/>
         </operator>
+-->
 
 
 <!-- old clockmodel operators
