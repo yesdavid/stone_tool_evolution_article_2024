@@ -75,10 +75,15 @@ outlines_centered_scaled_C14 <-
 #############################################################################################
 #############################################################################################
 
-set.seed(1)
+# set.seed(1)
+# subsample_stratified_n1_perSite <-
+# splitstackshape::stratified(outlines_centered_scaled_C14$fac,
+#                             group = "Site", # column "site" is site+layer; however: some of the unique site/layer combinations have the same 14C dates associated with them.
+#                             size = 1)
+set.seed(3)
 subsample_stratified_n1_perSite <-
 splitstackshape::stratified(outlines_centered_scaled_C14$fac,
-                            group = "Site",
+                            group = c("TaxUnit_unique", "median_SPD_age_calBP"), # column "site" is site+layer
                             size = 1)
 
 outlines_centered_scaled_subs <-
@@ -161,19 +166,28 @@ Momocs::plot_PCA(outlines_centered_scaled_subs_PCA,
 
 taxa_file <- data.frame(taxon = outlines_centered_scaled_subs_PCA$fac$ARTEFACTNAME,
                         max = outlines_centered_scaled_subs_PCA$fac$median_SPD_age_calBP,
-                        min = 0)
+                        min = 0,
+                        oneSigma_rangeMax = outlines_centered_scaled_subs_PCA$fac$oneSigma_rangeMax,
+                        oneSigma_rangeMin = outlines_centered_scaled_subs_PCA$fac$oneSigma_rangeMin)
 readr::write_tsv(taxa_file,
-                 path = file.path("1_data", "outlines_centered_scaled_subset_FAD_LAD_C14.tsv"))
+                 path = file.path("1_data", "outlines_centered_scaled_subset_FAD_LAD_C14_oneSigmaMinMax.tsv"))
 
 #############################################################################################
 #############################################################################################
 
 
+plot_of_selected_artefacts_and_ages_ageUncertainties <- 
+  ggplot2::ggplot(data = taxa_file, 
+                  aes(y = reorder(taxon, -max), 
+                      x=max,
+                      xmin = oneSigma_rangeMax, 
+                      xmax = oneSigma_rangeMin)) + 
+  ggplot2::geom_pointrange() 
+plot_of_selected_artefacts_and_ages_ageUncertainties
 
-
-
-
-
+ggsave(plot_of_selected_artefacts_and_ages_ageUncertainties,
+       filename = file.path("3_output", "plot_of_selected_artefacts_and_ages_ageUncertainties.png"),
+       width = 40, height = 25, units = "cm", device = "png")
 
 
 
