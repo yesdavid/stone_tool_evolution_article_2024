@@ -140,14 +140,28 @@ filtered_C14_v4 <-
 
 
 filtered_C14_v4$median_SPD_age_calBP <- NA
+filtered_C14_v4$oneSigma_rangeMin <- NA
+filtered_C14_v4$oneSigma_rangeMax <- NA
 for(i in unique(filtered_C14_v4$Site_ID.x)){
 
     a <-
-      dplyr::filter(filtered_C14_v4, Site_ID.x == i)
+      dplyr::filter(filtered_C14_v4, Site_ID.x == i) 
+    
+    a_ams <-
+    a %>% 
+      dplyr::select("AMS_C14_date",
+                    `AMS_Pm/Std`) %>% 
+      na.omit()
+    
+    a_conv <-
+    a %>% 
+      dplyr::select("Conv_C14_date",
+                    "Conv_std") %>% 
+      na.omit()
     
     caldates <-
-      rcarbon::calibrate(x=na.omit(c(a$AMS_C14_date, a$Conv_C14_date)),
-                         errors=na.omit(c(a$`AMS_Pm/Std`, a$Conv_std)),
+      rcarbon::calibrate(x=na.omit(c(a_ams$AMS_C14_date, a_conv$Conv_C14_date)),
+                         errors=na.omit(c(a_ams$`AMS_Pm/Std`, a_conv$Conv_std)),
                          calCurves='intcal20')
     
     if(nrow(a) > 1){
@@ -166,6 +180,21 @@ for(i in unique(filtered_C14_v4$Site_ID.x)){
       filter(cumsum_prdens == max(cumsum_prdens)) %>% 
       pull(calBP) %>% 
       max()
+    
+    onesigma <- 
+      spd_out$grid %>% 
+      arrange(., desc(PrDens)) %>% 
+      mutate(cumsum_prdens = cumsum(PrDens)) %>% 
+      filter(cumsum_prdens <= 0.6827*sum(PrDens))
+    
+    # ggplot(data = onesigma, 
+    #        aes(x = calBP, y = PrDens)) + 
+    #   geom_col() +
+    #   geom_vline(xintercept = dplyr::pull(filtered_C14_v4[which(filtered_C14_v4$Site_ID.x == i),"median_SPD_age_calBP"]),
+    #              color = "red", size = 2)
+    
+    filtered_C14_v4[which(filtered_C14_v4$Site_ID.x == i),"oneSigma_rangeMin"] <- min(onesigma$calBP)
+    filtered_C14_v4[which(filtered_C14_v4$Site_ID.x == i),"oneSigma_rangeMax"] <- max(onesigma$calBP)
     
 }
 
@@ -187,7 +216,7 @@ readr::write_csv(filtered_C14_v4_calibrated,
                            "filtered_C14_v4_calibrated.csv"))
 
 filtered_C14_v4_calibrated %>% 
-  ggplot(aes(y = Site_ID.x))+
+  ggplot(aes(y = reorder(Site_ID.x, -median_SPD_age_calBP)))+
   geom_point(aes(x = median_SPD_age_calBP), 
              color = "green", 
              size = 2) +
