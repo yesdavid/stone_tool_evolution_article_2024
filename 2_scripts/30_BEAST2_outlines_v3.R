@@ -6,13 +6,18 @@ library(magrittr)
 # load outlines + PCA data
 outlines_centered_scaled_subset_PCA <- readRDS(file = file.path("1_data",
                                                                 "Outlines",
-                                                                "TAXA42_PCs42_outlines_centered_scaled_subset_seed1_PCA.RDS"))
+                                                                "TAXA35_PCs35_outlines_centered_scaled_subset_seed1_PCA.RDS"))
 
 # load taxa file
 # taxa_file_raw <- readr::read_tsv(file.path("1_data", "outlines_centered_scaled_subset_FAD_LAD_C14.tsv"))
 taxa_file_raw <- readr::read_tsv(file.path("1_data","outlines_centered_scaled_subset_FAD_LAD_C14_oneSigmaMinMax.tsv"))
 
-
+ggplot2::ggplot(data = taxa_file_raw, 
+                aes(y = reorder(taxon, -max), 
+                    x=max,
+                    xmin = oneSigma_rangeMax, 
+                    xmax = oneSigma_rangeMin)) + 
+  ggplot2::geom_pointrange() 
 
 # # determine the number of PC axes to use
 # # select number of PCs which account for XX.X% of variation
@@ -50,10 +55,10 @@ xml_helper_function(taxa_file = taxa_file_raw, # age has to be in column called 
                     root_age = 40000,
                     clockmodel = "nCat", # "strict", "relaxed", "nCat", "nCat3", nCat4. "relaxed" or "nCat" works so far only for fossil_age_uncertainty = F,fully_extinct = F,skyline_BDMM = F, ### "relaxed" needs BEAST2 package "ORC"
                     fossil_age_uncertainty = T,
-                    fully_extinct = T,
-                    skyline_BDMM = F,
+                    fully_extinct = F,
+                    skyline_BDMM = T,
                         timebins = 4, # this helper function does not work for timebins <2. Has to be adjusted manually.
-                        estimate_changeTimes = F, # logical, if false, provide the following parameters:
+                        estimate_changeTimes = T, # logical, if false, provide the following parameters:
                         changeTimes = c(14600, 12900, 11700),  # 13006,  #13,006+-9 calBP is the year of the Laacher See eruption (2021) https://www.nature.com/articles/s41586-021-03608-x   # the date(s) when the timebins change; has to be of length(timebins-1); has to be in the same format as the raw dates provided in taxa_file_raw
                         birthParameter = "1.0",
                         deathParameter = "1.0", 
@@ -63,8 +68,8 @@ xml_helper_function(taxa_file = taxa_file_raw, # age has to be in column called 
                     BDS_ExponentialMean = "1.0",
                     SteppingStone = F,
                     underPrior = F,
-                    printgen = 70000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
-                    chainlength_in_millions = 70,
+                    printgen = 20000, # print ever _printgen_ iteration; set it to: chainlength_in_millions/printgen = 10000
+                    chainlength_in_millions = 200,
                     walltime_spec = "23:55:00",
                     blank_file_path <- file.path(getwd(), "2_scripts","BEAST2_contraband") # path to folder where the blank .xml files are
 )
