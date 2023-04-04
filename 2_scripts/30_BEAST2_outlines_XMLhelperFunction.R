@@ -37,7 +37,7 @@ xml_helper_function <- # has to be loaded first
       age_offset <- min(taxa_file$max)
       
     } else if(fully_extinct == T){
-      
+      #  'The "offset" parameter should be set to the starting age of the youngest fossil.' https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf
       age_offset <- min(taxa_file$oneSigma_rangeMin)
       
     }
@@ -72,6 +72,7 @@ xml_helper_function <- # has to be loaded first
         blank_file_name <- "BMPruneLikelihood_clockModel_FBDbds" # fbds with without age uncertainty
       } else if(fossil_age_uncertainty == FALSE & skyline_BDMM == TRUE){
         blank_file_name <- "BMPruneLikelihood_clockModel_FBDbds_BDMMprime" # BDMM-prime skyline without age uncertainty
+        # blank_file_name <- "BMPruneLikelihood_clockModel_ageUncertainty_BDMMprime" # this should work too
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == FALSE){
         blank_file_name <- "BMPruneLikelihood_clockModel_ageUncertainty" # fbds with with age uncertainty
       } else if(fossil_age_uncertainty == TRUE & skyline_BDMM == TRUE){
@@ -122,7 +123,14 @@ xml_helper_function <- # has to be loaded first
       xml_1 <- gsub(pattern = "RHO_PLACEHOLDER",
                     replacement = 1,
                     x = xml_1)
+    } 
+    # NEW! ###############################################
+    else if(fossil_age_uncertainty == FALSE){
+      xml_1 <- gsub(pattern = "RHO_PLACEHOLDER",
+                    replacement = 0,
+                    x = xml_1)
     }
+    ###############################################
     
     
     # sampleFromPrior="true"
@@ -628,6 +636,12 @@ xml_helper_function <- # has to be loaded first
       xml_1 <- 
         gsub(pattern = "N_TIMEBINS_PLACEHOLDER",
              replacement = timebins,
+             x = xml_1)
+      
+      # N_TIMEBINS_CHANGETIMES_PLACEHOLDER
+      xml_1 <- 
+        gsub(pattern = "N_TIMEBINS_CHANGETIMES_PLACEHOLDER",
+             replacement = timebins-1,
              x = xml_1)
       
       # output names will be adjusted 
