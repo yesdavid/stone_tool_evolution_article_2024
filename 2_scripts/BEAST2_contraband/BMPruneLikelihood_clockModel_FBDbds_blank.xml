@@ -23,13 +23,13 @@ DNA_SEQUENCE_PLACEHOLDER
 
 <!--STEPPINGSTONE_PATHSAMPLING_TRUE_PLACEHOLDER
 <run spec='beast.inference.PathSampler' 
-	chainLength="100000" 
+	chainLength="CHAINLENGTH_PLACEHOLDER" 
 	alpha='0.3'
 	rootdir='STEPPINGSTONE_PATHSAMPLING_TRUE_PATH_PLACEHOLDER'
 	burnInPercentage='0' 
-	preBurnin="10000" 
+	preBurnin="100000" 
 	deleteOldLogs='true' 
-	nrOfSteps='48'>
+	nrOfSteps='10'>
 	cd $(dir)
 	java -cp $(java.class.path) beast.app.beastapp.BeastMain $(resume/overwrite) -java -seed $(seed) beast.xml
 <mcmc id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER" sampleFromPrior="true">
@@ -236,7 +236,7 @@ STEPPINGSTONE_PATHSAMPLING_FALSE_PLACEHOLDER-->
 
 
 <!--TREELOG_SUBSTITUTION_PLACEHOLDER
-    <logger id="treelog_substi" fileName="BMPruneLikelihood_calval_1.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
+    <logger id="treelog_substi" fileName="BMPruneLikelihood_calval_1_substitution.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
         CLOCKMODEL_PLACEHOLDER_substiOutputTreeLog
     </logger>
 TREELOG_SUBSTITUTION_PLACEHOLDER-->
