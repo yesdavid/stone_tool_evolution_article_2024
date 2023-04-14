@@ -57,7 +57,7 @@ xml_helper_function(taxa_file = taxa_file_raw, # age has to be in column called 
                     root_age = 40000,
                     clockmodel = "nCat", # "strict", "relaxed", "nCat", "nCat3", nCat4. "relaxed" or "nCat" works so far only for fossil_age_uncertainty = F,fully_extinct = F,skyline_BDMM = F, ### "relaxed" needs BEAST2 package "ORC"
                     fossil_age_uncertainty = T,
-                    fully_extinct = F,
+                    fully_extinct = F, # fully_extinct = T won't work for BDMM prime
                     skyline_BDMM = T,
                         timebins = 4, # this helper function does not work for timebins <2. Has to be adjusted manually.
                         estimate_changeTimes = F, # logical, if false, provide the following parameters:
