@@ -32,12 +32,13 @@ xml_helper_function <- # has to be loaded first
     
     ## scale so that youngest age = 0
     ### attention! the youngest age may only be = 0 if A) the ages are fixed, or B) there is no age uncertainty associated with this age=0 specimen!
-    ### for fully extinct trees, the minimum age has to be 0+oneSigma_rangeMin !
+    ### for fully extinct trees, the minimum age has to be 0+min(oneSigma_rangeMin) !
     if(fully_extinct == F){
       age_offset <- min(taxa_file$max)
       
     } else if(fully_extinct == T){
-      #  'The "offset" parameter should be set to the starting age of the youngest fossil.' https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf
+      # 'The "offset" parameter should be set to the starting age of the youngest fossil.' https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf
+      # Now, it's set to the youngest _possible_ age.
       age_offset <- min(taxa_file$oneSigma_rangeMin)
       
     }
