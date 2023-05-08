@@ -4,7 +4,7 @@
         spec="Alignment"
         name="alignment">
 
-        <sequence id="1" taxon="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_2_pseudo_no_4" totalcount="4" value="N"/>
+<sequence id="1" taxon="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_2_pseudo_no_4" totalcount="4" value="N"/>
 <sequence id="2" taxon="TS1_Cres_GBS_GoughsCave_Jacobi2004_AR_d_1_pseudo_no_3" totalcount="4" value="N"/>
 <sequence id="3" taxon="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_p_1_pseudo_no_3" totalcount="4" value="N"/>
 <sequence id="4" taxon="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
