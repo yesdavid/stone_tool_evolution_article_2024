@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
-<!-- based on the following tamplate: https://github.com/CompEvol/sampled-ancestors/blob/master/examples/bears.xml -->
+<!-- based on the following tamplate: https://github.com/CompEvol/sampled-ancestors/blob/master/examples/bears.xml - constant rate FBD -->
 <!-- see also: https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf - alternative parameterisation, fossil age uncertainty and offset  -->
 <!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMPruneLikelihood.xml - multiple traits, BM model, contraband package -->
 <!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMMVNShiftLikelihoodOneTrait_FBDTree_RateCatClock.xml - multiple rate categories, nCat = 2, contraband package -->
@@ -199,17 +199,16 @@
             </distribution>
 
             <!--Priors on trait model parameters -->
+
             <!-- BM model prior -->
             <!-- trait evolutionary rate, the diagonal elements in the variance-covariance matrix -->
             <distribution id="varValuesPrior" spec="beast.math.distributions.Prior" x="@varValues">
                 <distr id="varValuesLogNormal" spec="beast.math.distributions.LogNormalDistributionModel" S="0.3" M="1.0"/>
             </distribution>
-
             <!-- trait correlations, the off-diagonal elements in the variance-covariance matrix -->
             <distribution id="covValuesPrior" spec="beast.math.distributions.Prior" x="@covValues">
                 <distr id="covValuesUniform" spec="beast.math.distributions.Uniform" lower="-1.0" upper="1.0"/>
             </distribution>
-
             <!-- trait values at the root -->
             <distribution id="rootValuesPrior" spec="beast.math.distributions.Prior" x="@rootValues">
                 <distr id="rootValuesNormal" spec="beast.math.distributions.Normal" mean="0.0" sigma="2.0"/>
@@ -219,7 +218,6 @@
             <distribution id="rateValuesPrior" spec="beast.math.distributions.Prior" x="@rateValues">
 	            <distr id="rateValuesExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.2"/>
 	        </distribution>
-
             <distribution id="rateAssignmentsPrior" spec="beast.math.distributions.Prior" x="@rateAssignments">
 	            <distr id="rateAssignmentsUniform" spec="beast.math.distributions.Uniform" offset="0.0" lower="0.0" upper="1.0"/>
 	        </distribution>
