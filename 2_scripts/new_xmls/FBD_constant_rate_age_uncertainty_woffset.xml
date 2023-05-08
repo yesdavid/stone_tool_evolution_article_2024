@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel::beast.evolution.branchratemodel:beast.evolution.likelihood" required="" version="2.6">
 <!-- based on the following tamplate: https://github.com/CompEvol/sampled-ancestors/blob/master/examples/bears.xml - constant rate FBD -->
+<!-- see also: https://bitbucket.org/bjoelle/fbd_study_code/src/master/brachiopods/empirical_input/beast_analyses/brachiopods_FBD_interval_ages.xml - tree with offset in action -->
 <!-- see also: https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf - alternative parameterisation, fossil age uncertainty and offset  -->
 <!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMPruneLikelihood.xml - multiple traits, BM model, contraband package -->
 <!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMMVNShiftLikelihoodOneTrait_FBDTree_RateCatClock.xml - multiple rate categories, nCat = 2, contraband package -->
