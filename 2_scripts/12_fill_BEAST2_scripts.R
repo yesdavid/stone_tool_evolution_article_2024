@@ -103,7 +103,7 @@ for(current_script in xml_script_names){
     DNA_SEQUENCE_PLACEHOLDER_list[[i]] <- 
       paste0("<sequence id=\"", i, "\" taxon=\"", subset_taxa[i,]$taxon, "\" totalcount=\"4\" value=\"N\"/>\n")
   }
-  cat(unlist(DNA_SEQUENCE_PLACEHOLDER_list))
+  # cat(unlist(DNA_SEQUENCE_PLACEHOLDER_list))
   xml_1 <- gsub(pattern = "DNA_SEQUENCE_PLACEHOLDER",
                 replacement = paste0((unlist(DNA_SEQUENCE_PLACEHOLDER_list)), collapse = ""),
                 x = xml_1)
@@ -117,7 +117,7 @@ for(current_script in xml_script_names){
     TAXON_ID_PLACEHOLDER_list[[i]] <- 
       paste0("<taxon id=\"", subset_taxa[i,]$taxon,"\" spec=\"Taxon\"/>\n")
   }
-  cat(unlist(TAXON_ID_PLACEHOLDER_list))
+  # cat(unlist(TAXON_ID_PLACEHOLDER_list))
   xml_1 <- gsub(pattern = "TAXON_ID_PLACEHOLDER",
                 replacement = paste0((unlist(TAXON_ID_PLACEHOLDER_list)), collapse = ""),
                 x = xml_1)
