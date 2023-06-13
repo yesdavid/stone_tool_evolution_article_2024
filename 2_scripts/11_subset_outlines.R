@@ -418,9 +418,10 @@ data_w_events <-
 
 map_of_selected_artefacts_and_ages_ClimateEvents <- 
   base_map +
-  ggrepel::geom_label_repel(data = data_w_events,
+  ggrepel::geom_text_repel(data = data_w_events,
                            aes(x = Long, y = Lat,
-                               label = paste0(Site_ID_split, "\n(",median_SPD_age_calBP," calBP)")),
+                               # label = paste0(Site_ID_split, "\n(",median_SPD_age_calBP," calBP)")),
+                               label = Site_ID_split),
                            # alpha = 0.7,
                            size = 4,
                            min.segment.length = 0) +
