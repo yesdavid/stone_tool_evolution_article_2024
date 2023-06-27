@@ -14,6 +14,7 @@ Useful links:
 * [Taming the BEAST FBD tutorial](https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf) (alternative parameterisation, fossil age uncertainty and offset)
 * [Tree with offset xml template](https://bitbucket.org/bjoelle/fbd_study_code/src/master/brachiopods/empirical_input/beast_analyses/brachiopods_FBD_interval_ages.xml)
 * [SA FBD skyline template](https://github.com/gavryushkina/sampled-ancestor-bdsky/blob/master/templates/SAFBDSKY.xml)
+* [Taming the BEAST BDSky tutorial](https://taming-the-beast.org/tutorials/Skyline-analyses-for-macroevolution/)
 * [Contraband xml template](https://github.com/fkmendes/contraband/blob/master/examples/testing/BMPruneLikelihood.xml) (multiple traits, BM model)
 * [Contraband xml template](https://github.com/fkmendes/contraband/blob/master/examples/testing/BMMVNShiftLikelihoodOneTrait_FBDTree_RateCatClock.xml) (multiple clock rate categories, nCat = 2)
 
