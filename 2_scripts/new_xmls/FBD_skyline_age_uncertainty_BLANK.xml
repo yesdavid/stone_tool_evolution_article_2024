@@ -49,9 +49,9 @@
         </tree>
 
         <!-- FBD model -->
-        <parameter id="birthRateFBD" lower="0.0" name="stateNode">1.0 1.0</parameter> <!-- change required here for FBD skyline, add starting values for each interval-->
-        <parameter id="deathRateFBD" lower="0.0" name="stateNode">1.0 1.0</parameter>
-        <parameter id="samplingRateFBD" lower="0.0" name="stateNode">0.1 0.1</parameter>
+        <parameter id="birthRateFBD" lower="0.0" name="stateNode">BirthDeath_RATES_PLACEHOLDER</parameter> <!-- change required here for FBD skyline, add starting values for each interval-->
+        <parameter id="deathRateFBD" lower="0.0" name="stateNode">BirthDeath_RATES_PLACEHOLDER</parameter>
+        <parameter id="samplingRateFBD" lower="0.0" name="stateNode">Sampling_RATES_PLACEHOLDER</parameter>
         <parameter id="originFBD" lower="0.0" name="stateNode">ROOT_AGE_PLACEHOLDER</parameter>      
         <!-- BM-model state nodes-->
         <stateNode idref="rootValues"/>
@@ -82,9 +82,9 @@
                 <parameter id="rFBD" estimate="false" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
                 <parameter id="rhoFBD" estimate="false" lower="0.0" name="rho" upper="1.0">0.0</parameter>
                 <!-- change required here for FBD skyline, add change times, last entry must always be zero -->
-                <parameter name="birthRateChangeTimes" id="birthRateChangeTimesSASky" value="2. 0."/>
-                <parameter name="deathRateChangeTimes" id="deathRateChangeTimesSASky" value="2. 0."/>
-                <parameter name="samplingRateChangeTimes" id="samplingRateChangeTimesSASky" value="2. 0."/>
+                <parameter name="birthRateChangeTimes" id="birthRateChangeTimesSASky" value="RATECHANGETIMES_PLACEHOLDER"/>
+                <parameter name="deathRateChangeTimes" id="deathRateChangeTimesSASky" value="RATECHANGETIMES_PLACEHOLDER"/>
+                <parameter name="samplingRateChangeTimes" id="samplingRateChangeTimesSASky" value="RATECHANGETIMES_PLACEHOLDER"/>
                 <reverseTimeArrays spec='parameter.BooleanParameter' value='true true true true true'/> <!-- clarify order of change times, i.e., backwards (true) or fowards (false) -->
             </distribution> <!-- note no option to conditionOnSurvival in the SA package -->
 
@@ -196,7 +196,7 @@
     MOVE_FOSSILAGES_PLACEHOLDER
 
     <!-- ** Parameters to log to file ** -->
-    <logger id="tracelog" fileName="FBD_skyline_age_uncertainty.log" logEvery="PRINTGEN_PLACEHOLDER" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="CURRENT_FOLDER_PLACEHOLDER/output/FBD_skyline_age_uncertainty.log" logEvery="PRINTGEN_PLACEHOLDER" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="prior"/>
         <log idref="likelihood"/>        
@@ -231,7 +231,7 @@
     </logger>
 
     <!-- treelog -->
-    <logger id="treelog.t" spec="Logger" fileName="FBD_skyline_age_uncertainty.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
+    <logger id="treelog.t" spec="Logger" fileName="CURRENT_FOLDER_PLACEHOLDER/output/FBD_skyline_age_uncertainty.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
         <log id="TreeWithMetaDataLogger" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree" branchratemodel="@rateCatClock" sort="false"/>
     </logger>
 
