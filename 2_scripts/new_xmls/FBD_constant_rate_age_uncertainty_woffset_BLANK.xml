@@ -194,7 +194,7 @@
     MOVE_FOSSILAGES_WOFFSET_PLACEHOLDER
 
     <!-- ** Parameters to log to file ** -->
-    <logger id="tracelog" fileName="FBD_constant_rate_age_uncertainty_woffset.log" logEvery="PRINTGEN_PLACEHOLDER" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="CURRENT_FOLDER_PLACEHOLDER/output/FBD_constant_rate_age_uncertainty_woffset.log" logEvery="PRINTGEN_PLACEHOLDER" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="prior"/>
         <log idref="likelihood"/>        
@@ -230,7 +230,7 @@
     </logger>
 
     <!-- treelog -->
-    <logger id="treelog.t" spec="Logger" fileName="FBD_constant_rate_age_uncertainty_woffset.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
+    <logger id="treelog.t" spec="Logger" fileName="CURRENT_FOLDER_PLACEHOLDER/output/FBD_constant_rate_age_uncertainty_woffset.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
         <log id="TreeWithMetaDataLogger" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree" branchratemodel="@rateCatClock" sort="false"/>
     </logger>
 
