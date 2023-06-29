@@ -19,7 +19,7 @@ printgen <- 300000
 ##################################
 # load taxa file
 taxa_file_raw <- readr::read_tsv(file.path("1_data",
-                                       "final_subset_outlines_centered_scaled_FAD_LAD_C14_oneSigmaMinMax.tsv"))
+                                           "final_subset_outlines_centered_scaled_FAD_LAD_C14_oneSigmaMinMax.tsv"))
 number_of_taxa <- nrow(taxa_file_raw)
 
 age_scaler <- 1000
@@ -368,8 +368,8 @@ for(RUN_PLACEHOLDER in 1:number_of_independent_runs){
                   x = xml_1)
     ##################################
     
-    
-    if(current_script == "FBD_skyline_age_uncertainty_BLANK.xml" ){
+    # FIXED YOUNGEST AGE MUST NOT HAVE ANY PRIORS, AGE UNCERTAINTIES, OPERATORS, OR LOGGER
+    if(current_script == "FBD_skyline_age_uncertainty_BLANK.xml" | current_script == "FBD_constant_rate_age_uncertainty_BLANK.xml" ){
       subset_taxa_VARIABLE <- subset_taxa %>% 
         dplyr::filter(!(taxon %in% dplyr::pull(subset_taxa_skyline[which(subset_taxa_skyline$max == 0),"taxon"]))) # remove all information for the taxon which has been fixed to age 0, in order for it to not get assigned any prior, operator, age range or logger
     } else {
