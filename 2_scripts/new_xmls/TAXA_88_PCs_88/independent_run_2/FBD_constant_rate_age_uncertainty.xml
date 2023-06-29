@@ -1255,16 +1255,6 @@ TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4=0
                 <Uniform id="Uniform.87" lower="0" name="distr" upper="0.726"/>
  
             </distribution>
-<distribution id="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
-                <taxonset id="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4fossilAgeSampl" spec="TaxonSet">
-
-                    <taxon idref="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4"/>
-
-                </taxonset>
-
-                <Uniform id="Uniform.88" lower="0" name="distr" upper="0.183"/>
- 
-            </distribution>
 
 
         </distribution>        
@@ -1418,7 +1408,6 @@ TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4=0
 <operator id="tipDatesSampler.TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.003"/>
 <operator id="tipDatesSampler.TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.003"/>
 <operator id="tipDatesSampler.TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.003"/>
-<operator id="tipDatesSampler.TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.003"/>
 
 
     <!-- ** Parameters to log to file ** -->
@@ -1532,7 +1521,6 @@ TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4=0
 <log idref="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1.prior"/>
 <log idref="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1.prior"/>
 <log idref="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14.prior"/>
-<log idref="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4.prior"/>
 
     </logger>
 
