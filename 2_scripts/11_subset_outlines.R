@@ -15,7 +15,7 @@ filtered_C14_data_calibrated_for_outlines <- readr::read_csv(file.path("3_output
                                                                        "filtered_C14_data_calibrated_for_outlines.csv"))
 
 # load meta data from 1511NAC-database
-meta_outlines_AR_fac_artefactnames_w_metric_measures <- readr::read_csv(file.path("1_data",
+outlines_AR_fac_artefactnames_w_metric_measures <- readr::read_csv(file.path("1_data",
                                                                              "1511NAC_Database_mod",
                                                                              "outlines",
                                                                              "outlines_AR_fac_artefactnames_w_metric_measures.csv"))
@@ -43,7 +43,7 @@ dev.off()
 # select a single artefact, check whether the outline plotted here matches the original image of the artefact
 Momocs::filter(final_subset_outlines,
                Site == "Nadap") %>% 
-  Momocs::panel()
+  Momocs::panel(names = T)
 
 final_subset_outlines_centered <- Momocs::coo_center(final_subset_outlines)
 final_subset_outlines_centered_scaled <- Momocs::coo_scale(final_subset_outlines_centered)
