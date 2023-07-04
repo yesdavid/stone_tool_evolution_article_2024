@@ -70,9 +70,7 @@ final_subset_outlines_centered_scaled_PCA <- Momocs::PCA(final_subset_outlines_c
 saveRDS(final_subset_outlines_centered_scaled_PCA,
         file.path("1_data", 
                   "Outlines",
-                  paste0("TAXA", nrow(final_subset_outlines_centered_scaled_PCA$x), 
-                         "_PCs", ncol(final_subset_outlines_centered_scaled_PCA$x), 
-                         "_final_subset_outlines_centered_scaled_seed1_PCA.RDS")))
+                  "final_subset_outlines_centered_scaled_seed1_PCA.RDS"))
 
 #############################################################################################
 #############################################################################################
@@ -109,7 +107,7 @@ plot_of_selected_artefacts_and_ages_ageUncertainties <-
                       x=max,
                       xmin = oneSigma_rangeMax, 
                       xmax = oneSigma_rangeMin,
-                      color = max)) + 
+                      color = -max)) + 
   ggplot2::geom_pointrange() +
   scale_x_reverse() +
   theme_bw() +
@@ -130,7 +128,7 @@ plot_of_selected_artefacts_and_ages_ageUncertainties_SITES <-
                       x=median_SPD_age_calBP,
                       xmin = oneSigma_rangeMax, 
                       xmax = oneSigma_rangeMin,
-                      color = median_SPD_age_calBP)) + 
+                      color = -median_SPD_age_calBP)) + 
   ggplot2::geom_pointrange() +
   scale_x_reverse() +
   theme_bw() +
@@ -142,7 +140,7 @@ plot_of_selected_artefacts_and_ages_ageUncertainties_SITES
 
 ggsave(plot_of_selected_artefacts_and_ages_ageUncertainties_SITES,
        filename = file.path("3_output", "plot_of_selected_artefacts_and_ages_ageUncertainties_SITES.png"),
-       width = 40, height = 25, units = "cm", device = "png")
+       width = 20, height = 25, units = "cm", device = "png")
 
 ####################
 ### distribution map
@@ -198,23 +196,31 @@ data_w_events <-
                                          median_SPD_age_calBP < 11700 ~ "Holocene")) %>% 
   dplyr::mutate(Event = factor(Event, 
                                levels = c("GS-2", "GI-1", "GS-1", "Holocene"))) %>% 
-  unique()
+  unique() %>% 
+  arrange(desc(median_SPD_age_calBP)) %>% 
+  dplyr::mutate(...1 = 1:nrow(.)) %>% 
+  rename(row_ID = ...1)
 
-map_of_selected_artefacts_and_ages_ClimateEvents <- 
+map_of_selected_artefacts_and_ages_ClimateEvents <-
   base_map +
   ggrepel::geom_text_repel(data = data_w_events,
                            aes(x = Long, y = Lat,
                                # label = paste0(Site, "\n(",median_SPD_age_calBP," calBP)")),
-                               label = Site),
+                               label = row_ID), # Site
                            # alpha = 0.7,
                            size = 4,
-                           min.segment.length = 0) +
+                           force = 80,
+                           force_pull = 12#,
+                           # min.segment.length = 1.5
+                           ) +
   geom_jitter(data = data_w_events,
               aes(x = Long, y = Lat,
                   fill = -median_SPD_age_calBP),
               # alpha = 0.7,
               shape = 21,
-              size = 4) +
+              size = 3#,
+              #width = 0.35, height = 0.5
+              ) +
   facet_wrap(~Event) +
   theme(legend.position = "none")
 
@@ -222,4 +228,8 @@ map_of_selected_artefacts_and_ages_ClimateEvents
 
 ggsave(map_of_selected_artefacts_and_ages_ClimateEvents,
        filename = file.path("3_output", "map_of_selected_artefacts_and_ages_ClimateEvents.png"),
-       width = 50, height = 40, units = "cm", device = "png")
+       width = 30, height = 30, units = "cm", device = "png")
+
+readr::write_csv(data_w_events,
+                 file = file.path("3_output", "data_w_events.csv"))
+
