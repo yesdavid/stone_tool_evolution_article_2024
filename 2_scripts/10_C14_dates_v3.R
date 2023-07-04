@@ -3,6 +3,7 @@ library(dplyr)
 library(magrittr)
 library(ggplot2)
 library(rcarbon)
+library(Momocs)
 
 
 
@@ -108,11 +109,22 @@ C14_data <-
 # names(C14_data)
 
 # clean 14C spreadsheet
-C14_data_selected <- 
+C14_data_selected <-
   C14_data %>% 
   dplyr::select(!c("...19")) %>% 
   dplyr::filter(!(`LabCode/Ref` %in% "?") & !is.na(`LabCode/Ref`)) %>% # remove entries where 14C-labcode is unknown/not available
   unique()
+  
+  
+# C14_data_selected %>% 
+#   filter(!row_number() %in% which(duplicated(`LabCode/Ref`)))
+
+# subset(C14_data_selected,
+#        `LabCode/Ref` %in% C14_data_selected$`LabCode/Ref`[which(duplicated(C14_data_selected$`LabCode/Ref`))]) %>% 
+#   arrange(`LabCode/Ref`) %>% 
+#   View()
+  
+  
 
 
 C14_data_selected$C14_data_selected_unique_row_ID <- 1:nrow(C14_data_selected)
@@ -199,6 +211,15 @@ filtered_C14_data <-
   list_separate_siteID_df_separate_siteId %>% 
   filter(Site_ID_split %in% unique_sites_artefacts) 
 
+# subset(filtered_C14_data,
+#        `LabCode/Ref` %in% filtered_C14_data$`LabCode/Ref`[which(duplicated(filtered_C14_data$`LabCode/Ref`))]) %>%
+#   arrange(`LabCode/Ref`) %>%
+#   View()
+# subset(filtered_C14_data,
+#        `LabCode/Ref` %in% filtered_C14_data$`LabCode/Ref`[which(duplicated(filtered_C14_data$`LabCode/Ref`))]) %>%
+#   arrange(`LabCode/Ref`) %>%
+#   View()
+
 ####################
 # calibrate 14C-data
 ####################
@@ -208,7 +229,8 @@ filtered_C14_data$oneSigma_rangeMax <- NA
 for(i in unique(filtered_C14_data$Site_ID_split)){
 
     a <-
-      dplyr::filter(filtered_C14_data, Site_ID_split == i) 
+      dplyr::filter(filtered_C14_data, Site_ID_split == i) %>%
+      filter(!row_number() %in% which(duplicated(`LabCode/Ref`)))
     
     a_ams <-
     a %>% 
@@ -249,6 +271,7 @@ for(i in unique(filtered_C14_data$Site_ID_split)){
       arrange(., desc(PrDens)) %>% 
       mutate(cumsum_prdens = cumsum(PrDens)) %>% 
       filter(cumsum_prdens <= 0.6827*sum(PrDens))
+    range(onesigma$calBP)
     
     # ggplot(data = onesigma, 
     #        aes(x = calBP, y = PrDens)) + 
@@ -271,9 +294,9 @@ filtered_C14_data_calibrated <-
             # Site_ID_split,
             #"Site_ID.y"
             )) %>% 
-  unique() %>% 
-  filter(., median_SPD_age_calBP <= 16000 &
-           median_SPD_age_calBP >= 11000) 
+  unique() #%>% 
+  # filter(., median_SPD_age_calBP <= 16000 &
+  #          median_SPD_age_calBP >= 10000) 
 
 hist(filtered_C14_data_calibrated$median_SPD_age_calBP)
 
@@ -283,40 +306,34 @@ readr::write_csv(filtered_C14_data_calibrated,
                            "C14",
                            "filtered_C14_data_calibrated.csv"))
 
-# select(filtered_C14_data_calibrated,
-#        Site_ID_split, Dating_BP, median_SPD_age_calBP, Timeslice, `LabCode/Ref`, Conv_C14_date, AMS_C14_date) %>%
-#   unique() %>%
-#   # View()
-#   readr::write_csv(.,
-#                    file.path("3_output", 
-#                              "C14",
-#                              "filtered_C14_data_calibrated_COMPARISON.csv"))
 
-
-###########
-# visualise
-###########
-filtered_C14_data_calibrated %>% 
+# ###########
+# # visualise
+# ###########
+filtered_C14_data_calibrated %>%
   ggplot(aes(y = reorder(Site_ID_split, -median_SPD_age_calBP)))+
   geom_point(aes(x = median_SPD_age_calBP,
-                 color = -median_SPD_age_calBP), 
+                 color = -median_SPD_age_calBP),
              size = 2) +
   scale_x_reverse() +
   theme(legend.position = "none")
 
-timerange_per_siteID_fig <- 
-  filtered_C14_data_calibrated %>% 
+timerange_per_siteID_fig <-
+  filtered_C14_data_calibrated %>%
   ggplot(aes(y = reorder(Site_ID_split, -median_SPD_age_calBP)))+
-  geom_pointrange(aes(y = reorder(Site_ID_split, -median_SPD_age_calBP), 
+  geom_pointrange(aes(y = reorder(Site_ID_split, -median_SPD_age_calBP),
                       x = median_SPD_age_calBP,
-                      xmin = oneSigma_rangeMax, 
+                      xmin = oneSigma_rangeMax,
                       xmax = oneSigma_rangeMin,
                       color = -median_SPD_age_calBP)) +
   scale_x_reverse() +
   theme_bw() +
   theme(legend.position = "none") +
   xlab("Years calBP") +
-  ylab("Site ID")
+  ylab("Site ID") +
+  xlim(max(filtered_C14_data_calibrated$oneSigma_rangeMax), 
+       min(filtered_C14_data_calibrated$oneSigma_rangeMin))
+timerange_per_siteID_fig
 
 ggsave(timerange_per_siteID_fig,
        path = file.path("3_output",
@@ -326,16 +343,18 @@ ggsave(timerange_per_siteID_fig,
        height = 30,
        units = "cm")
 
-# filtered_C14_data_calibrated %>% 
-#   ggplot(aes(y = reorder(Macro_region, Lat)))+
-#   geom_point(aes(x = median_SPD_age_calBP,
-#                  color = -median_SPD_age_calBP), 
-#              size = 2) +
-#   scale_x_reverse() +
-#   theme(legend.position = "none") 
+filtered_C14_data_calibrated %>%
+  ggplot(aes(y = reorder(Macro_region, Lat)))+
+  geom_point(aes(x = median_SPD_age_calBP,
+                 color = -median_SPD_age_calBP),
+             size = 2) +
+  scale_x_reverse() +
+  theme(legend.position = "none")
+
+# save relevant ages for outlines
 
 filtered_C14_data_calibrated_for_outlines <-
-filtered_C14_data_calibrated %>% 
+filtered_C14_data_calibrated %>%
    select(Site_ID_split, Long, Lat,
           median_SPD_age_calBP,
           oneSigma_rangeMin,
@@ -350,99 +369,99 @@ filtered_C14_data_calibrated %>%
   #           "Dated material","Dated species",
   #           "Informaton on pretreatment","Source (Database/Literature)",
   #           "Org. Lit. Reference (if given)","Other comments/observation"
-     ) %>% 
-  unique() 
-
-readr::write_csv(filtered_C14_data_calibrated_for_outlines,
-                 file.path("3_output", 
-                           "C14",
-                           "filtered_C14_data_calibrated_for_outlines.csv"))
-
-####################
-### distribution map
-####################
-
-world <- rgeos::gBuffer(rworldmap::getMap(resolution = "high"), byid=TRUE, width=0)
-
-# create an extent which spans only the distribution of our samples
-# potentially, the extents have to be manually in-/decreased
-data_extent <- as(raster::extent(min(filtered_C14_data_calibrated$Long, #minimum longitude
-                                     na.rm = T)-3, 
-                                 max(filtered_C14_data_calibrated$Long, #maximum longitude
-                                     na.rm = T)+3, 
-                                 min(filtered_C14_data_calibrated$Lat, #minimum latitude
-                                     na.rm = T)-3, 
-                                 max(filtered_C14_data_calibrated$Lat, #maximum latidude
-                                     na.rm = T)+3), # order: xmin, xmax, ymin, ymax
-                  "SpatialPolygons")
-
-sp::proj4string(data_extent) <- sp::CRS(sp::proj4string(world)) # set the coordinate reference system of the data to be the same as the world map.
-
-world_clip <- raster::intersect(world, data_extent) # select only those parts of the world map within our bounding box/extent 
-
-world_clip_f <- fortify(world_clip) # transforms it into a data frame
-
-# base map
-base_map <- 
-ggplot() +
-  geom_polygon(data = world_clip_f, 
-               aes(x = long, 
-                   y = lat, 
-                   group = group),
-               fill = NA, 
-               colour = "grey") +
-  coord_fixed() +
-  coord_quickmap() +  
-  theme_classic() + 
-  xlab("Longitude") +
-  ylab("Latitude")  +
-  # labs(color = "Country") + # capitalize 
-  scale_y_continuous(expand = c(0,0)) + 
-  scale_x_continuous(expand = c(0,0)) +
-  scale_color_gradient(low = "green", high = "brown") +
-  theme(legend.position = "right", # or "none"
-        text = element_text(size=20))
-
-#################################
-# assign dates to climatic events
-#################################
-data_w_events <- 
-  filtered_C14_data_calibrated %>% 
-  mutate(Event = case_when(median_SPD_age_calBP >= 14600 ~ "GS-2",
-                           median_SPD_age_calBP < 14600 & median_SPD_age_calBP >= 12900~ "GI-1",
-                           median_SPD_age_calBP < 12900 & median_SPD_age_calBP >= 11700~ "GS-1",
-                           median_SPD_age_calBP < 11700 ~ "Holocene")) %>% 
-  mutate(Event = factor(Event, 
-                        levels = c("GS-2", "GI-1", "GS-1", "Holocene"))) %>% 
-  select(., Event, Long, Lat, median_SPD_age_calBP, Macro_region, TaxUnit_unique, TaxUnit) %>% 
+     ) %>%
   unique()
 
-# plot sites + dates by events
-dates_sites_per_event_fig <- 
-base_map +
-  geom_jitter(data = data_w_events,
-              aes(x = Long, y = Lat,
-                  color = median_SPD_age_calBP),
-              # alpha = 0.7,
-              size = 2) +
-  ggrepel::geom_text_repel(data = data_w_events,
-                           aes(x = Long, y = Lat,
-                               label = median_SPD_age_calBP),
-                           # alpha = 0.7,
-                           size = 4) +
-  facet_wrap(~Event) +
-  theme(legend.position = "none")
-
-dates_sites_per_event_fig
-
-
-ggsave(dates_sites_per_event_fig,
-       path = file.path("3_output",
-                        "C14"),
-       filename = "dates_sites_per_event_fig.png",
-       width = 30,
-       height = 30,
-       units = "cm")
+readr::write_csv(filtered_C14_data_calibrated_for_outlines,
+                 file.path("3_output",
+                           "C14",
+                           "filtered_C14_data_calibrated_for_outlines.csv"))
+# 
+# ####################
+# ### distribution map
+# ####################
+# 
+# world <- rgeos::gBuffer(rworldmap::getMap(resolution = "high"), byid=TRUE, width=0)
+# 
+# # create an extent which spans only the distribution of our samples
+# # potentially, the extents have to be manually in-/decreased
+# data_extent <- as(raster::extent(min(filtered_C14_data_calibrated$Long, #minimum longitude
+#                                      na.rm = T)-3, 
+#                                  max(filtered_C14_data_calibrated$Long, #maximum longitude
+#                                      na.rm = T)+3, 
+#                                  min(filtered_C14_data_calibrated$Lat, #minimum latitude
+#                                      na.rm = T)-3, 
+#                                  max(filtered_C14_data_calibrated$Lat, #maximum latidude
+#                                      na.rm = T)+3), # order: xmin, xmax, ymin, ymax
+#                   "SpatialPolygons")
+# 
+# sp::proj4string(data_extent) <- sp::CRS(sp::proj4string(world)) # set the coordinate reference system of the data to be the same as the world map.
+# 
+# world_clip <- raster::intersect(world, data_extent) # select only those parts of the world map within our bounding box/extent 
+# 
+# world_clip_f <- fortify(world_clip) # transforms it into a data frame
+# 
+# # base map
+# base_map <- 
+# ggplot() +
+#   geom_polygon(data = world_clip_f, 
+#                aes(x = long, 
+#                    y = lat, 
+#                    group = group),
+#                fill = NA, 
+#                colour = "grey") +
+#   coord_fixed() +
+#   coord_quickmap() +  
+#   theme_classic() + 
+#   xlab("Longitude") +
+#   ylab("Latitude")  +
+#   # labs(color = "Country") + # capitalize 
+#   scale_y_continuous(expand = c(0,0)) + 
+#   scale_x_continuous(expand = c(0,0)) +
+#   scale_color_gradient(low = "green", high = "brown") +
+#   theme(legend.position = "right", # or "none"
+#         text = element_text(size=20))
+# 
+# #################################
+# # assign dates to climatic events
+# #################################
+# data_w_events <- 
+#   filtered_C14_data_calibrated %>% 
+#   mutate(Event = case_when(median_SPD_age_calBP >= 14600 ~ "GS-2",
+#                            median_SPD_age_calBP < 14600 & median_SPD_age_calBP >= 12900~ "GI-1",
+#                            median_SPD_age_calBP < 12900 & median_SPD_age_calBP >= 11700~ "GS-1",
+#                            median_SPD_age_calBP < 11700 ~ "Holocene")) %>% 
+#   mutate(Event = factor(Event, 
+#                         levels = c("GS-2", "GI-1", "GS-1", "Holocene"))) %>% 
+#   select(., Event, Long, Lat, median_SPD_age_calBP, Macro_region, TaxUnit_unique, TaxUnit) %>% 
+#   unique()
+# 
+# # plot sites + dates by events
+# dates_sites_per_event_fig <- 
+# base_map +
+#   geom_jitter(data = data_w_events,
+#               aes(x = Long, y = Lat,
+#                   color = median_SPD_age_calBP),
+#               # alpha = 0.7,
+#               size = 2) +
+#   ggrepel::geom_text_repel(data = data_w_events,
+#                            aes(x = Long, y = Lat,
+#                                label = median_SPD_age_calBP),
+#                            # alpha = 0.7,
+#                            size = 4) +
+#   facet_wrap(~Event) +
+#   theme(legend.position = "none")
+# 
+# dates_sites_per_event_fig
+# 
+# 
+# ggsave(dates_sites_per_event_fig,
+#        path = file.path("3_output",
+#                         "C14"),
+#        filename = "dates_sites_per_event_fig.png",
+#        width = 30,
+#        height = 30,
+#        units = "cm")
 
 
 
