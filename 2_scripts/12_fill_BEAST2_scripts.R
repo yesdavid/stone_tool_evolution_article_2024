@@ -1,5 +1,9 @@
 library(magrittr)
 
+##################################
+number_of_independent_runs <- 2
+##################################
+
 data_w_events <- 
   readr::read_csv(file = file.path("3_output", "data_w_events.csv"))
 
@@ -33,21 +37,30 @@ artefact_sets <-
   list(stratSubsByEvent_size_4,
        stratSubsByEvent_size_8,
        stratSubsByEvent_size_16,
-       all_available_artefacts)
+       all_available_artefacts
+       )
 
 
 outlines_centered_scaled_subset_PCA_raw <- readRDS(file = file.path("1_data",
                                                                     "Outlines",
                                                                     "final_subset_outlines_centered_scaled_seed1_PCA.RDS"))
+Momocs::PCcontrib(outlines_centered_scaled_subset_PCA_raw,
+                  nax = 1:10)
+Momocs::scree_plot(outlines_centered_scaled_subset_PCA_raw)
+Momocs::scree(outlines_centered_scaled_subset_PCA_raw)
+
 taxa_file_raw_raw <- readr::read_tsv(file.path("1_data",
                                                "final_subset_outlines_centered_scaled_FAD_LAD_C14_oneSigmaMinMax.tsv"))
 
-
-subsets_number_of_PC_axes <- c(10,
-                               ceiling(ncol(outlines_centered_scaled_subset_PCA_raw$x)/2),
-                               ncol(outlines_centered_scaled_subset_PCA_raw$x))
+subsets_number_of_PC_axes <- 9
+# subsets_number_of_PC_axes <- c(10,
+#                                ceiling(ncol(outlines_centered_scaled_subset_PCA_raw$x)/2),
+#                                ncol(outlines_centered_scaled_subset_PCA_raw$x))
 
 # loop for different artefact subsets
+current_artefact_set_counter_sbatch_run <- list()
+current_artefact_set_counter_sbatch_resume <- list()
+
 for(current_artefact_set_counter in 1:length(artefact_sets)){
   
   
@@ -60,6 +73,8 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
   outlines_centered_scaled_subset_PCA <- Momocs::filter(outlines_centered_scaled_subset_PCA_raw,
                                                         ARTEFACTNAME %in% current_artefact_set)
   
+  current_subset_number_of_PC_axes_sbatch_run <- list()
+  current_subset_number_of_PC_axes_sbatch_resume <- list()
   
   # loop for different PC-axes subsets
   for(current_subset_number_of_PC_axes in subsets_number_of_PC_axes){
@@ -71,8 +86,8 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
     ##################################
     
     ##################################
-    chainlength_in_millions <- 50
-    printgen <- 500000
+    chainlength_in_millions <- 500
+    printgen <- 5000000
     ##################################
     
     ##################################
@@ -157,18 +172,19 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
                            "new_xmls"),
                  pattern = "_BLANK.xml")
     ##################################
-    
-    ##################################
-    number_of_independent_runs <- 4
+
     ##################################
     
-    ##################################
+    current_run_sbatch_run <- list()
+    current_run_sbatch_resume <- list()
+    
     for(RUN_PLACEHOLDER in 1:number_of_independent_runs){
-      
-      
       
       CURRENT_FOLDER_PLACEHOLDER <- file.path(paste0("TAXA_", number_of_artefacts_used, "_PCs_", number_of_pc_axes_used),
                                               paste0("independent_run_",RUN_PLACEHOLDER))
+      
+      current_script_sbatch_run <- list()
+      current_script_sbatch_resume <- list()
       
       for(current_script in xml_script_names){
         xml <- readr::read_file(file.path("2_scripts",
@@ -354,6 +370,13 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
         ##################################
         
         ##################################
+        # number of branches in the tree = 2n-2 NoBRANCHES_PLACEHOLDER
+        xml_1 <- gsub(pattern = "NoBRANCHES_PLACEHOLDER",
+                      replacement = paste(2*nrow(subset_taxa)-2, collapse = " "),
+                      x = xml_1)
+        ##################################
+       
+        ##################################
         # RATECATASSIGN_PLACEHOLDER 
         # for constant rate; has to be 0 times number of TAXA
         xml_1 <- gsub(pattern = "RATECATASSIGN_PLACEHOLDER",
@@ -515,28 +538,62 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
         dir.create(file.path(out_path, "output"),
                    recursive = T)
         
+        current_script_name <- 
+          paste0(gsub(x = current_script, 
+                      pattern = "_BLANK.xml",
+                      replacement = ""))
+        # xml
         readr::write_file(x = xml_1,
                           file = file.path(out_path,
-                                           gsub(x = current_script, 
-                                                pattern = "_BLANK",
-                                                replacement = "")))
+                                           paste0(current_script_name,
+                                                  ".xml")))
+        # sh run
         readr::write_file(x = sh_run_1,
                           file = file.path(out_path,
-                                           paste0("run_", gsub(x = current_script, 
-                                                               pattern = "_BLANK.xml",
-                                                               replacement = ".sh"))))
+                                           paste0("run_", current_script_name,
+                                                  ".sh")))
+        # sh resume
         readr::write_file(x = sh_resume_1,
                           file = file.path(out_path,
-                                           paste0("resume_", gsub(x = current_script, 
-                                                                  pattern = "_BLANK.xml",
-                                                                  replacement = ".sh"))))
+                                           paste0("resume_", current_script_name,
+                                                  ".sh")))
+        
+        current_script_sbatch_run[[current_script]] <- paste0("sbatch ", file.path(CURRENT_FOLDER_PLACEHOLDER,
+                                                              paste0("run_", current_script_name,
+                                                                     ".sh")))
+        current_script_sbatch_resume[[current_script]] <- paste0("sbatch ", file.path(CURRENT_FOLDER_PLACEHOLDER,
+                                                                 paste0("resume_", current_script_name,
+                                                                        ".sh")))
+        
+        
       }
-     
+      current_run_sbatch_run[[RUN_PLACEHOLDER]] <- unlist(current_script_sbatch_run)
+      current_run_sbatch_resume[[RUN_PLACEHOLDER]] <- unlist(current_script_sbatch_resume)
+    
     }
   
+    current_subset_number_of_PC_axes_sbatch_run[[current_subset_number_of_PC_axes]] <- unlist(current_run_sbatch_run)
+    current_subset_number_of_PC_axes_sbatch_resume[[current_subset_number_of_PC_axes]] <- unlist(current_run_sbatch_resume)
+    
   }
+  
+  current_artefact_set_counter_sbatch_run[[current_artefact_set_counter]] <- unlist(current_subset_number_of_PC_axes_sbatch_run)
+  current_artefact_set_counter_sbatch_resume[[current_artefact_set_counter]] <- unlist(current_subset_number_of_PC_axes_sbatch_resume)
   
 }
 
 
 
+cat(unlist(current_artefact_set_counter_sbatch_run),
+    file = file.path("2_scripts",
+                     "new_xmls",
+                     "sbatch_all_RUN.txt"),
+    sep = "\n")
+           
+
+cat(unlist(current_artefact_set_counter_sbatch_resume),
+    file = file.path("2_scripts",
+                     "new_xmls",
+                     "sbatch_all_RESUME.txt"),
+    sep = "\n")
+           
