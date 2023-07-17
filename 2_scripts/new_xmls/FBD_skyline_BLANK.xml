@@ -152,7 +152,7 @@
 
                 <!-- the morphological clock model -->
                 <branchRateModel id="rateCatClock" spec="contraband.clock.RateCategoryClockModel" nCat="2">
-                    <rates id="rateValues" spec="parameter.RealParameter" lower="0" upper="1000">0.1 0.5</rates>
+                    <rates id="rateValues" spec="parameter.RealParameter" lower="0" upper="1000">0.00000001 0.00000005</rates>
                     <rateCatAssign id="rateAssignments" spec="parameter.IntegerParameter" lower="0" upper="1">RATECATASSIGN_PLACEHOLDER</rateCatAssign>
                     <tree idref="TheTree"/>
                 </branchRateModel>
