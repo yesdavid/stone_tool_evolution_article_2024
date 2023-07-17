@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel::beast.evolution.branchratemodel:beast.evolution.likelihood" required="" version="2.6">
+<!-- based on the following template: https://github.com/CompEvol/sampled-ancestors/blob/master/examples/bears.xml - constant rate FBD -->
+<!-- see also: https://bitbucket.org/bjoelle/fbd_study_code/src/master/brachiopods/empirical_input/beast_analyses/brachiopods_FBD_interval_ages.xml - tree with offset in action -->
+<!-- see also: https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf - alternative parameterisation, fossil age uncertainty and offset  -->
+<!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMPruneLikelihood.xml - multiple traits, BM model, contraband package -->
+<!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMMVNShiftLikelihoodOneTrait_FBDTree_RateCatClock.xml - multiple rate categories, nCat = 2, contraband package -->
+
+<!-- ** Data and taxon names ** -->
+<data
+    id="dnaSequence"
+    spec="Alignment"
+    name="alignment">
+
+    <!-- Empty sequence alignment -->
+    DNA_SEQUENCE_PLACEHOLDER
+
+</data>
+
+<map name="Uniform">beast.math.distributions.Uniform</map>
+<map name="Exponential">beast.math.distributions.Exponential</map>
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal">beast.math.distributions.Normal</map>
+<map name="Beta">beast.math.distributions.Beta</map>
+<map name="Gamma">beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+<map name="prior">beast.math.distributions.Prior</map>
+<map name="InverseGamma">beast.math.distributions.InverseGamma</map>
+<map name="OneOnX">beast.math.distributions.OneOnX</map>
+<map name="Dirichlet">beast.math.distributions.Dirichlet</map>
+
+<run id="mcmc" spec="MCMC" chainLength="CHAINLENGTH_PLACEHOLDER">
+
+    <!-- ** Declare model parameters and variables, plus some starting values ** -->  
+    <state id="state" spec="State" storeEvery="PRINTGEN_PLACEHOLDER">
+
+        <tree id="TheTree" spec="beast.evolution.tree.Tree" name="stateNode">
+
+            <taxonset id="TaxonSet" spec="TaxonSet">
+                TAXON_ID_PLACEHOLDER
+            </taxonset>
+
+            <!-- Insert age data, use data-backward for macroevolution -->
+            <!-- If you do not place priors and operators on the sample ages, they will be fixed to the values specified here -->
+            <!-- In this example, all ages estimated including the youngest. Requires offset parameter, see below -->
+            <trait id="FossilSet" spec="beast.evolution.tree.TraitSet" traitname="date-backward">                       
+                FOSSILSET_WOFFSET_PLACEHOLDER
+                <taxa idref="TaxonSet"/>
+            </trait>
+            
+        </tree>
+
+        <!-- FBD model -->
+        <parameter id="birthRateFBD" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="deathRateFBD" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="samplingRateFBD" lower="0.0" name="stateNode">0.1</parameter>
+        <parameter id="originFBD" lower="0.0" name="stateNode">ROOT_AGE_WOFFSET_PLACEHOLDER</parameter>        
+        <!-- BM-model state nodes-->
+        <stateNode idref="rootValues"/>
+        <stateNode idref="varValues"/>        
+        <stateNode idref="covValues"/>
+        <!--Clock model 
+        <stateNode idref="rateValues"/>
+        <stateNode idref="rateAssignments"/>
+	-->
+	<!-- RW: initital values and parameters -->
+        <stateNode id="rateCategories.c:bears" spec="parameter.IntegerParameter" dimension="NoBRANCHES_PLACEHOLDER">1</stateNode>
+        <parameter id="ucldMean.c:bears" name="stateNode">1.0</parameter>
+        <parameter id="ucldStdev.c:bears" lower="0.0" name="stateNode">0.1</parameter>       
+        
+    </state>
+
+    <!-- Starting tree block -->
+    <init id="RandomTheTree" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@TheTree" taxa="@dnaSequence">
+        <populationModel id="ConstantPopulation0.t" spec="ConstantPopulation">
+            <parameter id="randomPopSize.t" spec="parameter.RealParameter" name="popSize">1.0</parameter>
+        </populationModel>
+    </init>
+
+    <!-- ** The Posterior ** -->
+    <!-- Specify your posterior, within this you'll specify your prior and likelihood -->
+    <distribution id="posterior" spec="util.CompoundDistribution">
+
+        <!-- ** The Priors ** -->
+        <distribution id="prior" spec="util.CompoundDistribution">
+
+            <!-- the tree prior, the constant rate FBD model --> 
+            <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="false"  birthRate="@birthRateFBD" deathRate="@deathRateFBD" samplingRate="@samplingRateFBD" origin="@originFBD" tree="@TheTree">
+                <parameter id="rFBD" estimate="false" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                <parameter id="rhoFBD" estimate="false" lower="0.0" name="rho" upper="1.0">0.0</parameter>
+                <!-- for fully extinct trees-->
+                <treeWOffset id="treeWOffset" spec="beast.evolution.tree.TreeWOffset" tree="@TheTree" offset="TREEOFFSET_PLACEHOLDER"/>
+            </distribution> <!-- note no option to conditionOnSurvival in the SA package -->
+
+            <!-- Priors on the FBD model parameters -->
+            <distribution id="birthRatePriorFBD" spec="beast.math.distributions.Prior" x="@birthRateFBD">
+        	  <distr id="birthRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>
+            <distribution id="deathRatePriorFBD" spec="beast.math.distributions.Prior" x="@deathRateFBD">
+        	  <distr id="deathRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>  
+            <distribution id="samplingRatePriorFBD" spec="beast.math.distributions.Prior" x="@samplingRateFBD">
+        	  <distr id="samplingRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>  
+            <distribution id="originPriorFBD" spec="beast.math.distributions.Prior" x="@originFBD">
+	            <distr id="originFBDUniform" spec="beast.math.distributions.Uniform" upper="Infinity"/>
+            </distribution>
+
+            <!--Priors on trait model parameters -->
+
+            <!-- BM model prior -->
+            <!-- trait evolutionary rate, the diagonal elements in the variance-covariance matrix -->
+            <distribution id="varValuesPrior" spec="beast.math.distributions.Prior" x="@varValues">
+                <distr id="varValuesLogNormal" spec="beast.math.distributions.LogNormalDistributionModel" S="0.3" M="1.0"/>
+            </distribution>
+            <!-- trait correlations, the off-diagonal elements in the variance-covariance matrix -->
+            <distribution id="covValuesPrior" spec="beast.math.distributions.Prior" x="@covValues">
+                <distr id="covValuesUniform" spec="beast.math.distributions.Uniform" lower="-1.0" upper="1.0"/>
+            </distribution>
+            <!-- trait values at the root -->
+            <distribution id="rootValuesPrior" spec="beast.math.distributions.Prior" x="@rootValues">
+                <distr id="rootValuesNormal" spec="beast.math.distributions.Normal" mean="0.0" sigma="2.0"/>
+            </distribution>
+
+            <!-- clock model 
+            <distribution id="rateValuesPrior" spec="beast.math.distributions.Prior" x="@rateValues">
+	            <distr id="rateValuesExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.2"/>
+	        </distribution>
+            <distribution id="rateAssignmentsPrior" spec="beast.math.distributions.Prior" x="@rateAssignments">
+	            <distr id="rateAssignmentsUniform" spec="beast.math.distributions.Uniform" offset="0.0" lower="0.0" upper="1.0"/>
+	        </distribution>
+	    -->
+	    <!-- RW: prior on the mean clock rate -->            
+                <prior id="MeanRatePrior.c:bears" name="distribution" x="@ucldMean.c:bears">
+                                    
+                    <Exponential id="Exponential.1" name="distr">
+                                            
+                        <parameter id="RealParameter.7" estimate="false" name="mean">0.1</parameter>
+                                        
+                    </Exponential>
+                                
+                </prior>
+
+                <!-- RW: prior on the standard deviation -->                                        
+                <prior id="ucldStdevPrior.c:bears" name="distribution" x="@ucldStdev.c:bears">
+                                    
+                    <Gamma id="Gamma.0" name="distr">
+                                            
+                        <parameter id="RealParameter.3" estimate="false" name="alpha">0.5396</parameter>
+                                            
+                        <parameter id="RealParameter.4" estimate="false" name="beta">0.3819</parameter>
+                                        
+                    </Gamma>
+                                
+                </prior>
+
+            <!-- insert prior fossil ages here -->
+            PRIOR_FOSSILAGES_WOFFSET_PLACEHOLDER
+
+        </distribution>        
+
+        <!-- ** The likelihood ** -->
+        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+
+            <!-- START Morphological likelihood CONTRABAND-Package -->
+            <distribution id="PCMLikelihood" spec="contraband.prunelikelihood.BMPruneLikelihood">
+
+                <tree idref="TheTree"/>
+                
+                <!-- trait values for species of interest, an array of elements in the trait matrix-->
+                <!-- For example
+                    trait1 trait2 trait3
+                    sp1     T11    T12    T13
+                    sp2     T21    T22    T23
+                    sp3     T31    T32    T33
+                    the input here should be T11 T12 T13 T21 T22 T23 T31 T32 T33
+                -->
+                <traits id="oneTraitData" spec="parameter.RealParameter" minordimension="MINORDIMENSION_PLACEHOLDER" keys= "ONETRAITDATA_PLACEHOLDER">
+                TRAITDATA_PLACEHOLDER
+                </traits>
+
+                <!-- the morphological clock model
+                <branchRateModel id="rateCatClock" spec="contraband.clock.RateCategoryClockModel" nCat="2">
+                    <rates id="rateValues" spec="parameter.RealParameter" lower="0" upper="1000">0.00000001 0.00000005</rates>
+                    <rateCatAssign id="rateAssignments" spec="parameter.IntegerParameter" lower="0" upper="1">RATECATASSIGN_PLACEHOLDER</rateCatAssign>
+                    <tree idref="TheTree"/>
+                </branchRateModel>
+ 		-->
+		<!-- RW: describe the clock model -->                            
+                    <branchRateModel id="RelaxedClock.c:bears" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@ucldMean.c:bears" rateCategories="@rateCategories.c:bears" tree="@TheTree">
+                                            
+                        <LogNormal id="LogNormalDistributionModel.c:bears" S="@ucldStdev.c:bears" meanInRealSpace="true" name="distr">
+                                                    
+                            <parameter id="RealParameter.2" estimate="false" lower="0.0" name="M" upper="1.0">1.0</parameter>
+                                                
+                        </LogNormal>
+                                        
+                    </branchRateModel>
+
+                <!-- parameters in the BM model -->
+                <!-- here we assume each trait has its own evolutionary rate -->
+                <!-- if we assume all traits to share one common rate, we should set the flag by oneRateOnly="true" -->
+                <!-- the flag upperMatrix="true" here is to ensure the non-singular variance-covariance matrix -->
+                <nodeMath id="pcmNodeMath" spec="contraband.math.NodeMath" traits="@oneTraitData" upperMatrix="true">
+                    <sigmasq id="varValues" spec="parameter.RealParameter">1.0</sigmasq>
+                    <correlation id="covValues" spec="parameter.RealParameter">0.0</correlation>
+                    <rootValues id="rootValues" spec="parameter.RealParameter">0.0</rootValues>
+                </nodeMath>
+            </distribution> <!-- END Morphological (PCM) likleihood -->            
+        </distribution> <!-- End Likelihood -->
+    </distribution> <!-- End Posterior -->
+
+    <!-- ** MCMC moves ** - I have shuffled these into non-arbitrary groups -->
+    <!-- FBD model parameters -->
+    <operator id="birthRateFBDScaler.t" spec="ScaleOperator" parameter="@birthRateFBD" weight="3.0"/>
+    <operator id="deathRateFBDScaler.t" spec="ScaleOperator" parameter="@deathRateFBD" weight="3.0"/>
+    <operator id="samplingRateFBDScaler.t" spec="ScaleOperator" parameter="@samplingRateFBD" weight="3.0"/>
+    <operator id="originScalerFBD" spec="ScaleOperator" parameter="@originFBD" scaleFactor="0.75" weight="3.0"/>    
+    <!-- parameters in the BM model -->
+    <operator id="varValueScaler" spec="ScaleOperator" parameter="@varValues" scaleFactor="0.75" weight="6.0"/>
+    <operator id="covValueRandomWalk" spec="RealRandomWalkOperator" parameter="@covValues" windowSize="1.0" weight="10.0"/>
+    <operator id="rootValuesRandomWalk" spec="RealRandomWalkOperator" parameter="@rootValues" windowSize="1.0" weight="6.0"/>
+    <!-- clock model 
+    <operator id="rateAssignmentWalker" spec="IntRandomWalkOperator" parameter="@rateAssignments" windowSize="1" weight="10.0"/>
+    <operator id="rateValueScaler" spec="ScaleOperator" parameter="@rateValues" scaleFactor="0.75" weight="3.0"/>
+    --> 
+    <!-- RW: operator on the standard deviation -->
+        <operator id="ucldStdevScaler.c:bears" spec="ScaleOperator" parameter="@ucldStdev.c:bears" scaleFactor="0.5" weight="3.0"/>
+        <!-- RW: operator on the mean clock rate -->                
+        <operator id="ucldMeanScaler.c:bears" spec="ScaleOperator" parameter="@ucldMean.c:bears" scaleFactor="0.5" weight="1.0"/>
+
+        <operator id="CategoriesRandomWalk.c:bears" spec="IntRandomWalkOperator" parameter="@rateCategories.c:bears" weight="10.0" windowSize="1"/>
+            
+        <operator id="CategoriesSwapOperator.c:bears" spec="SwapOperator" intparameter="@rateCategories.c:bears" weight="10.0"/>
+            
+        <operator id="CategoriesUniform.c:bears" spec="UniformOperator" parameter="@rateCategories.c:bears" weight="10.0"/>
+            
+        <!-- RW: joint operator on the mean clock rate and tree heaight; optional -->    
+        <operator id="relaxedUpDownOperator.c:bears" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
+                    
+            <up idref="ucldMean.c:bears"/>
+                    
+            <down idref="TheTree"/>
+                
+        </operator>
+    <!-- tree topology -->
+    <operator id="LeafToSAFBD" spec="LeafToSampledAncestorJump" tree="@TheTree" weight="10.0"/>
+    <operator id="SAWilsonBaldingFBD" spec="SAWilsonBalding" tree="@TheTree" weight="10.0"/>
+    <operator id="SAWideFBD" spec="SAExchange" isNarrow="false" tree="@TheTree" weight="10.0"/>
+    <operator id="SANarrowFBD" spec="SAExchange" tree="@TheTree" weight="10.0"/>
+    <operator id="SAUniformOperatorFBD" spec="SAUniform" tree="@TheTree" weight="20.0"/>
+    <operator id="SATreeRootScalerFBD" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@TheTree" weight="1.0"/>
+    <operator id="SATreeScalerFBD" spec="SAScaleOperator" scaleFactor="0.95" tree="@TheTree" weight="3.0"/>
+    <!-- Insert moves on fossil ages -->
+    MOVE_FOSSILAGES_WOFFSET_PLACEHOLDER
+
+    <!-- ** Parameters to log to file ** -->
+    <logger id="tracelog" fileName="CURRENT_FOLDER_PLACEHOLDER/output/FBD_constant_rate_age_uncertainty_woffset.log" logEvery="PRINTGEN_PLACEHOLDER" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="prior"/>
+        <log idref="likelihood"/>        
+        <log idref="PCMLikelihood"/>
+        <log idref="FBD"/>
+        <log id="TreeHeight.t" spec="beast.evolution.tree.TreeHeightLogger" tree="@TheTree"/>
+        <log id="SACountFBD" spec="beast.evolution.tree.SampledAncestorLogger" tree="@TheTree"/>
+        <log id="offset" spec="beast.evolution.tree.OffsetLogger" treeWOffset="@treeWOffset"/>
+        <!-- FBD model parameters -->
+        <log idref="birthRateFBD"/>
+        <log idref="deathRateFBD"/>
+        <log idref="samplingRateFBD"/>
+        <log idref="rFBD"/>
+        <log idref="rhoFBD"/>
+        <log idref="originFBD"/>
+        <!-- Clock model parameters        
+        <log idref="rateValues"/>
+        <log idref="rateAssignments"/>
+	-->  
+	<!-- RW: clock model loggers -->    
+            <log idref="ucldMean.c:bears"/>        
+            <log idref="ucldStdev.c:bears"/>
+            <log id="rate.c:bears" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:bears" tree="@TheTree"/>
+        <!-- BM model parameters -->
+        <log idref="varValues"/>
+        <log idref="covValues"/>
+        <log idref="rootValues"/>
+        <!-- Insert fossil ages -->
+        LOG_FOSSILAGES_PLACEHOLDER
+    </logger>
+
+    <!-- screenlog -->
+    <logger id="screenlog" spec="Logger" logEvery="PRINTGEN_PLACEHOLDER">
+        <log idref="posterior"/>
+        <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <!-- treelog -->
+    <logger id="treelog.t" spec="Logger" fileName="CURRENT_FOLDER_PLACEHOLDER/output/FBD_constant_rate_age_uncertainty_woffset.trees" logEvery="PRINTGEN_PLACEHOLDER" mode="tree">
+        <log id="TreeWithMetaDataLogger" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree" branchratemodel="@RelaxedClock.c:bears" sort="false"/>
+    </logger>
+
+</run>
+
+</beast>
