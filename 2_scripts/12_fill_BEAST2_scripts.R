@@ -52,10 +52,12 @@ Momocs::scree(outlines_centered_scaled_subset_PCA_raw)
 taxa_file_raw_raw <- readr::read_tsv(file.path("1_data",
                                                "final_subset_outlines_centered_scaled_FAD_LAD_C14_oneSigmaMinMax.tsv"))
 
-subsets_number_of_PC_axes <- 9
-# subsets_number_of_PC_axes <- c(10,
-#                                ceiling(ncol(outlines_centered_scaled_subset_PCA_raw$x)/2),
-#                                ncol(outlines_centered_scaled_subset_PCA_raw$x))
+
+subsets_number_of_PC_axes <- c(9,
+                               10,
+                               20,
+                               ceiling(ncol(outlines_centered_scaled_subset_PCA_raw$x)/2),
+                               ncol(outlines_centered_scaled_subset_PCA_raw$x))
 
 # loop for different artefact subsets
 current_artefact_set_counter_sbatch_run <- list()
@@ -86,8 +88,8 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
     ##################################
     
     ##################################
-    chainlength_in_millions <- 500
-    printgen <- 5000000
+    chainlength_in_millions <- 9000
+    printgen <- 90000000
     ##################################
     
     ##################################
@@ -450,12 +452,12 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
           MOVE_FOSSILAGES_PLACEHOLDER_list[[i]] <- 
             paste0("<operator id=\"tipDatesSampler.", taxon_name, "fossilAgeSampl",
                    "\" spec=\"SampledNodeDateRandomWalker\" taxonset=\"@", taxon_name, "fossilAgeSampl",
-                   "\" tree=\"@TheTree\" weight=\"3.0\" windowSize=\"0.003\"/>\n")
+                   "\" tree=\"@TheTree\" weight=\"3.0\" windowSize=\"0.006\"/>\n")
           
           MOVE_FOSSILAGES_WOFFSET_PLACEHOLDER_list[[i]] <- 
             paste0("<operator id=\"tipDatesSampler.", taxon_name, "fossilAgeSampl",
                    "\" spec=\"SampledNodeDateRandomWalker\" taxonset=\"@", taxon_name, "fossilAgeSampl",
-                   "\" tree=\"@TheTree\" treeWOffset=\"@treeWOffset\" weight=\"3.0\" windowSize=\"0.003\"/>\n")
+                   "\" tree=\"@TheTree\" treeWOffset=\"@treeWOffset\" weight=\"3.0\" windowSize=\"0.006\"/>\n")
         }
         xml_1 <- 
           gsub(pattern = "MOVE_FOSSILAGES_PLACEHOLDER",
@@ -505,11 +507,15 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
         ## sh run
         sh_run_1 <- 
           gsub(pattern = "RUN_PLACEHOLDER",
-               replacement = RUN_PLACEHOLDER,
+               replacement = paste0("U",RUN_PLACEHOLDER), #rUn
                x = sh_run)
         sh_run_1 <- 
           gsub(pattern = "CURRENT_FOLDER_PLACEHOLDER",
                replacement = CURRENT_FOLDER_PLACEHOLDER,
+               x = sh_run_1)
+        sh_run_1 <- 
+          gsub(pattern = "RUN_SCRIPT_PLACEHOLDER",
+               replacement = paste0(number_of_artefacts_used, number_of_pc_axes_used, ":", CURRENT_SCRIPT_PLACEHOLDER),
                x = sh_run_1)
         sh_run_1 <- 
           gsub(pattern = "CURRENT_SCRIPT_PLACEHOLDER",
@@ -518,11 +524,15 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
         ## sh resume
         sh_resume_1 <- 
           gsub(pattern = "RUN_PLACEHOLDER",
-               replacement = RUN_PLACEHOLDER,
+               replacement = paste0("E",RUN_PLACEHOLDER), #rEsume
                x = sh_resume)
         sh_resume_1 <- 
           gsub(pattern = "CURRENT_FOLDER_PLACEHOLDER",
                replacement = CURRENT_FOLDER_PLACEHOLDER,
+               x = sh_resume_1)
+        sh_resume_1 <- 
+          gsub(pattern = "RUN_SCRIPT_PLACEHOLDER",
+               replacement = paste0(number_of_artefacts_used, number_of_pc_axes_used, ":", CURRENT_SCRIPT_PLACEHOLDER),
                x = sh_resume_1)
         sh_resume_1 <- 
           gsub(pattern = "CURRENT_SCRIPT_PLACEHOLDER",
