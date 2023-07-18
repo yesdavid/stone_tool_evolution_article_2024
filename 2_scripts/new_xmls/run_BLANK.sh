@@ -6,7 +6,7 @@
 #SBATCH --time=24:00:00
 #
 # job name 
-#PBS -N RUN_PLACEHOLDER_CURRENT_SCRIPT_PLACEHOLDER
+#PBS -N RUN_PLACEHOLDER:RUN_SCRIPT_PLACEHOLDER
 #
 # first non-empty non-comment line ends PBS options
 

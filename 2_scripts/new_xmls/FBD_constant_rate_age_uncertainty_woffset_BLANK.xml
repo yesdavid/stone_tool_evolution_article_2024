@@ -189,7 +189,7 @@
     <operator id="SANarrowFBD" spec="SAExchange" tree="@TheTree" weight="10.0"/>
     <operator id="SAUniformOperatorFBD" spec="SAUniform" tree="@TheTree" weight="20.0"/>
     <operator id="SATreeRootScalerFBD" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@TheTree" weight="1.0"/>
-    <operator id="SATreeScalerFBD" spec="SAScaleOperator" scaleFactor="0.95" tree="@TheTree" weight="3.0"/>
+    <operator id="SATreeScalerFBD" spec="SAScaleOperator" scaleFactor="0.42" tree="@TheTree" weight="3.0"/>
     <!-- Insert moves on fossil ages -->
     MOVE_FOSSILAGES_WOFFSET_PLACEHOLDER
 
