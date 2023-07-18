@@ -233,3 +233,13 @@ ggsave(map_of_selected_artefacts_and_ages_ClimateEvents,
 readr::write_csv(data_w_events,
                  file = file.path("3_output", "data_w_events.csv"))
 
+for(i in 1:nrow(data_w_events)){
+  cat(paste0(data_w_events[i,"row_ID"], ": ", data_w_events[i,"Site"], ", "),
+      append = T,
+      file = file.path("3_output", "data_w_events.txt"))
+  
+}
+
+
+
+
