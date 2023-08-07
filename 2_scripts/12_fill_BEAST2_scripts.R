@@ -44,20 +44,18 @@ artefact_sets <-
 outlines_centered_scaled_subset_PCA_raw <- readRDS(file = file.path("1_data",
                                                                     "Outlines",
                                                                     "final_subset_outlines_centered_scaled_seed1_PCA.RDS"))
-Momocs::PCcontrib(outlines_centered_scaled_subset_PCA_raw,
-                  nax = 1:10)
-Momocs::scree_plot(outlines_centered_scaled_subset_PCA_raw)
-Momocs::scree(outlines_centered_scaled_subset_PCA_raw)
 
 taxa_file_raw_raw <- readr::read_tsv(file.path("1_data",
                                                "final_subset_outlines_centered_scaled_FAD_LAD_C14_oneSigmaMinMax.tsv"))
 
 
-subsets_number_of_PC_axes <- c(9,
+subsets_number_of_PC_axes <- c(2,3,6,
+                               9,
                                10,
                                20,
                                ceiling(ncol(outlines_centered_scaled_subset_PCA_raw$x)/2),
-                               ncol(outlines_centered_scaled_subset_PCA_raw$x))
+                               ncol(outlines_centered_scaled_subset_PCA_raw$x)
+                               )
 
 # loop for different artefact subsets
 current_artefact_set_counter_sbatch_run <- list()
@@ -83,13 +81,13 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
     
     ##################################
     pcs <- outlines_centered_scaled_subset_PCA$x[,1:current_subset_number_of_PC_axes]
-    number_of_artefacts_used <- nrow(pcs)
-    number_of_pc_axes_used <- ncol(pcs) 
+    number_of_artefacts_used <- nrow(outlines_centered_scaled_subset_PCA$x)
+    number_of_pc_axes_used <- current_subset_number_of_PC_axes 
     ##################################
     
     ##################################
-    chainlength_in_millions <- 9000
-    printgen <- 90000000
+    chainlength_in_millions <- 5000
+    printgen <- 500000
     ##################################
     
     ##################################
@@ -336,9 +334,14 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
                       x = xml_1)
         ## TRAITDATA_PLACEHOLDER
         PCaxis_traits <- c()
-        for(i in 1:nrow(subset_taxa)){
-          PCaxis_traits <- c(PCaxis_traits, pcs[i,])
+        if(any(class(pcs) != "numeric")){ # to deal with only one PC/trait
+          for(i in 1:nrow(subset_taxa)){
+            PCaxis_traits <- c(PCaxis_traits, pcs[i,])
+          }
+        } else if (class(pcs) == "numeric"){
+          PCaxis_traits <- pcs
         }
+        
         names(PCaxis_traits) <- NULL
         xml_1 <- gsub(pattern = "TRAITDATA_PLACEHOLDER",
                       replacement = paste0(PCaxis_traits, collapse = " "),
