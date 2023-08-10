@@ -349,29 +349,29 @@ for(current_artefact_set_counter in 1:length(artefact_sets)){
         ##################################
         
         ##################################
-        ## FOSSILSET_PLACEHOLDER
-        # TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_3=2.78,
-        FOSSILSET_PLACEHOLDER_list <- list()
-        for(i in 1:nrow(subset_taxa)){
-          taxon_name <- subset_taxa[i,]$taxon
-          if(i != nrow(subset_taxa)){ # add comma at the end of the line as long as it's not the last entry
-            FOSSILSET_PLACEHOLDER_list[[i]] <- 
-              paste0(taxon_name,
-                     "=", 
-                     round(subset(subset_taxa, taxon == taxon_name)$max, digits = 3),
-                     ",\n", 
-                     collapse ="")
-          } else {
-            FOSSILSET_PLACEHOLDER_list[[i]] <- 
-              paste0(taxon_name,
-                     "=", 
-                     round(subset(subset_taxa, taxon == taxon_name)$max, digits = 3),
-                     collapse ="")
-          }
-        }
-        xml_1 <- gsub(pattern = "FOSSILSET_PLACEHOLDER",
-                      replacement = paste0((unlist(FOSSILSET_PLACEHOLDER_list)), collapse = ""),
-                      x = xml_1)
+        # ## FOSSILSET_PLACEHOLDER
+        # # TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_3=2.78,
+        # FOSSILSET_PLACEHOLDER_list <- list()
+        # for(i in 1:nrow(subset_taxa)){
+        #   taxon_name <- subset_taxa[i,]$taxon
+        #   if(i != nrow(subset_taxa)){ # add comma at the end of the line as long as it's not the last entry
+        #     FOSSILSET_PLACEHOLDER_list[[i]] <- 
+        #       paste0(taxon_name,
+        #              "=", 
+        #              round(subset(subset_taxa, taxon == taxon_name)$max, digits = 3),
+        #              ",\n", 
+        #              collapse ="")
+        #   } else {
+        #     FOSSILSET_PLACEHOLDER_list[[i]] <- 
+        #       paste0(taxon_name,
+        #              "=", 
+        #              round(subset(subset_taxa, taxon == taxon_name)$max, digits = 3),
+        #              collapse ="")
+        #   }
+        # }
+        # xml_1 <- gsub(pattern = "FOSSILSET_PLACEHOLDER",
+        #               replacement = paste0((unlist(FOSSILSET_PLACEHOLDER_list)), collapse = ""),
+        #               x = xml_1)
         ##################################
         
         ##################################
