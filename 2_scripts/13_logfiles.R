@@ -85,9 +85,9 @@ for(i in output_folder_paths){
 all_combinations_results_table <- 
   do.call(rbind.data.frame, taxa_pc_combination_list)
 
-readr::write_csv(all_combinations_results_table,
-                 file = file.path("3_output",
-                                  "all_combinations_results_table.csv"))
+# readr::write_csv(all_combinations_results_table,
+#                  file = file.path("3_output",
+#                                   "all_combinations_results_table.csv"))
 
 
 a <-
@@ -95,18 +95,22 @@ a <-
   # tibble::as.tibble() %>%
   subset(variable %in% c("prior", "likelihood", "posterior")) %>%
   dplyr::filter(ESS < 200) %>% 
-  dplyr::select(TAXA_PC, current_model, ESS) %>% 
+  dplyr::select(TAXA_PC, current_model) %>% 
   unique()
+
+sbatch_resume_file <- 
+  file.path("2_scripts", "new_xmls", paste0("resume_ESSunder200_", Sys.Date(),".txt"))
 
 sbatch_resume_fun <- 
   function(x){
     cat("sbatch ", x$TAXA_PC, "/independent_run_1/resume_", x$current_model, ".sh", "\n", 
         "sbatch ", x$TAXA_PC, "/independent_run_2/resume_", x$current_model, ".sh", "\n",
         sep = "",
-        file = file.path("2_scripts", "new_xmls", "resume_ESSunder200.txt"),
+        file = sbatch_resume_file,
         append = T)
   }
 
+file.create(sbatch_resume_file)
 for(i in 1:nrow(a)){
   sbatch_resume_fun(a[i,])
 }
