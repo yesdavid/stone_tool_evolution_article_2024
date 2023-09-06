@@ -3,51 +3,36 @@ library(coda)
 library(dplyr)
 library(magrittr)
 
-
-burnin_prop <- 0.2 # e.g., 0.5 == 50% burn-in
-
-output_folder_paths <- 
+done_output_folder_paths <- 
   list.dirs(file.path(
     "2_scripts",
     "new_xmls",
-    "BEAST2_contraband"),
+    "done"),
     recursive = F,
     full.names = F)
 
-taxa_pc_combination_list <- list()
-# pb = txtProgressBar(min = 0, max = length(output_folder_paths), initial = 0) 
-for(i in output_folder_paths){
+done_taxa_pc_combination_list <- list()
+for(i in done_output_folder_paths){
   cat(i, "\n")
   current <- file.path("2_scripts",
                        "new_xmls",
-                       "BEAST2_contraband",
+                       "done",
                        i)
   
-  output_IR1 <-
-    list.files(file.path(current,
-                         "independent_run_1",
-                         "output"),
-               pattern = "*.log",
+  output_combined_chains <-
+    list.files(current,
+               pattern = "*COMBINED.log",
                full.names = T)
-  
-  # output_IR2 <-
-  #   list.files(file.path(current,
-  #                        "independent_run_2",
-  #                        "output"),
-  #              pattern = "*.log",
-  #              full.names = T)
-  
-  
+
   current_model_list <- list()
-  for (ii in output_IR1) {
+  for (ii in output_combined_chains) {
     
     current_model <- 
       gsub(strsplit(ii, split = "/")[[1]][length(strsplit(ii, split = "/")[[1]])],
            pattern = ".log", replacement = "")
     print(current_model)
     
-    logfile <- read.table(ii, header = T) %>%
-      dplyr::slice_head(prop = burnin_prop) # % burn-in of slice_head (i.e., the first % rows)
+    logfile <- read.table(ii, header = T)
     
     variables_log <- colnames(logfile)
     
@@ -71,97 +56,24 @@ for(i in output_folder_paths){
     }
     current_model_list[[current_model]] <- 
       do.call(rbind.data.frame, curent_model_variables_log_list)
-
+    
+    rm("logfile")
   } 
   
-  taxa_pc_combination_list[[i]] <- 
+  done_taxa_pc_combination_list[[i]] <- 
     do.call(rbind.data.frame, current_model_list)
-  
-  # setTxtProgressBar(pb,i)
-  
-}
-# close(pb)
-
-all_combinations_results_table <- 
-  do.call(rbind.data.frame, taxa_pc_combination_list)
-
-# readr::write_csv(all_combinations_results_table,
-#                  file = file.path("3_output",
-#                                   "all_combinations_results_table.csv"))
-
-
-a <-
-  all_combinations_results_table %>% 
-  # tibble::as.tibble() %>%
-  subset(variable %in% c("prior", "likelihood", "posterior")) %>%
-  dplyr::filter(ESS < 200) %>% 
-  dplyr::select(TAXA_PC, current_model) %>% 
-  unique()
-
-sbatch_resume_file <- 
-  file.path("2_scripts", "new_xmls", paste0("resume_ESSunder200_", Sys.Date(),".txt"))
-
-sbatch_resume_fun <- 
-  function(x){
-    cat("sbatch ", x$TAXA_PC, "/independent_run_1/resume_", x$current_model, ".sh", "\n", 
-        "sbatch ", x$TAXA_PC, "/independent_run_2/resume_", x$current_model, ".sh", "\n",
-        sep = "",
-        file = sbatch_resume_file,
-        append = T)
-  }
-
-file.create(sbatch_resume_file)
-for(i in 1:nrow(a)){
-  sbatch_resume_fun(a[i,])
 }
 
+done_all_combinations_results_table <- 
+  do.call(rbind.data.frame, done_taxa_pc_combination_list)
 
-# Rachel
-ESS_check = function(log, var = "posterior") {
-  library(coda)
-  effectiveSize(as.mcmc(log[var])) >= 200
-}
+done_all_combinations_results_table$current_model <- gsub(pattern = "_COMBINED",
+                                                          replacement = "",
+                                                          x = done_all_combinations_results_table$current_model)
 
-# logf = list.files(path = file.path("2_scripts", "new_xmls", "BEAST2_contraband"), pattern = "*.log", recursive = T, full.names = T)
-logf = unique(readLines(file.path("2_scripts", "new_xmls", "resume_ESSunder200_paths.txt")))
-
-cat("total number of log files = ", length(logf), "\n",file = "ESS_log.txt")
-
-for(i in logf){
-  
-  cat(i, "\n")
-  
-  if(file.exists(i)){
-    log = read.table(i, header = T, stringsAsFactors = F, comment.char = "#")
-  } else{
-    cat(i, "does not exist!\n")
-    next
-  }	
-  
-  #if(!ESS_check(log, var = "prior")) cat(i, "LOW ESS prior!\n", file = "ESS.log", append =TRUE)
-  #if(!ESS_check(log, var = "likelihood")) cat(i, "LOW ESS likelihood!\n", file = "ESS.log", append = TRUE)
-  #if(!ESS_check(log, var = "posterior")) cat(i, "LOW ESS posterior!\n", file = "ESS.log", append = TRUE)
-  
-  log <- log[-c(1:(length(log$Sample) * 0.2)),]
-  
-  if( ((!ESS_check(log, var = "prior")) || (!ESS_check(log, var = "likelihood")) || (!ESS_check(log, var = "posterior"))) ) {
-    
-    # report convergence issues
-    cat(i, "\n", file = "ESS_log2.txt", append = TRUE)
-  } else {
-    # split string
-    j = strsplit(i, "[.]")[[1]][1]
-
-    # move files
-    system(paste0("mv ", j, ".* done/"))
-    # mkdir -p done/TAXA_87_PCs_9/independent_run_2/output/ && cp TAXA_87_PCs_9/independent_run_2/output/ULNC_FBD_skyline_age_uncertainty.* done/TAXA_87_PCs_9/independent_run_2/output/
-
-  }	
-}
-
-readLines("ESS_log2.txt")
-
-
+readr::write_csv(done_all_combinations_results_table,
+                 file = file.path("3_output",
+                                  "done_all_combinations_results_table.csv"))
 
 ###############
 taxa_fun <- function(x){as.integer(strsplit(x, split = "_")[[1]][2])}
@@ -170,7 +82,7 @@ trait_fun <- function(x){as.integer(strsplit(x, split = "_")[[1]][4])}
 ##############################
 # nCat2
 nCat2_rate_results <- 
-all_combinations_results_table %>% 
+done_all_combinations_results_table %>% 
   # dplyr::filter(current_model == "FBD_constant_rates") %>%
   dplyr::filter(variable %in% c("rateValues.1", "rateValues.2")) %>% 
   dplyr::select("TAXA_PC", "variable", "mean", "median", "current_model") %>% 
@@ -205,6 +117,15 @@ nCat2_rate_median_plot <-
   ggplot2::facet_wrap(~current_model,
                       ncol = 2,
                       dir = "v")
+
+ggplot2::ggsave(nCat2_rate_median_plot,
+       filename = file.path("3_output", "nCat2_rate_median_plot.png"),
+       width = 22, height = 20, units = "cm", device = "png")
+ggplot2::ggsave(nCat2_rate_median_plot,
+       filename = file.path("3_output", "nCat2_rate_median_plot.tif"),
+       width = 22, height = 20, units = "cm", device = "tiff")
+
+
 nCat2_rate_mean_plot <- 
   nCat2_rate_results %>% 
   ggplot2::ggplot(data = .) +
@@ -223,12 +144,17 @@ nCat2_rate_mean_plot <-
                       ncol = 2,
                       dir = "v")
 
-
+ggplot2::ggsave(nCat2_rate_mean_plot,
+       filename = file.path("3_output", "nCat2_rate_mean_plot.png"),
+       width = 22, height = 20, units = "cm", device = "png")
+ggplot2::ggsave(nCat2_rate_mean_plot,
+       filename = file.path("3_output", "nCat2_rate_mean_plot.tif"),
+       width = 22, height = 20, units = "cm", device = "tiff")
 
 ##############################
 # ULNC
 ULNC_rate_results <- 
-  all_combinations_results_table %>% 
+  done_all_combinations_results_table %>% 
   # dplyr::filter(current_model == "FBD_constant_rates") %>%
   dplyr::filter(variable %in% c("rate.mean", "rate.variance")) %>% 
   dplyr::select("TAXA_PC", "variable", "mean", "median", "current_model") %>% 
@@ -250,12 +176,12 @@ ULNC_rate_plot <-
   ggplot2::ggplot(data = .) +
   ggplot2::geom_tile(ggplot2::aes(x = taxa, 
                                   y = traits, 
-                                  fill = log(median)),
+                                  fill = median),
                      color = "black") +
   ggplot2::scale_fill_gradient2(low = "blue",
                                 mid = "white",
                                 high = "red") +
-  ggplot2::labs(fill = "log(median(rate.mean))",
+  ggplot2::labs(fill = "median(rate.mean)",
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
@@ -264,12 +190,36 @@ ULNC_rate_plot <-
                       dir = "v")
 
 
+ggplot2::ggsave(ULNC_rate_plot,
+       filename = file.path("3_output", "ULNC_rate_plot.png"),
+       width = 22, height = 20, units = "cm", device = "png")
+ggplot2::ggsave(ULNC_rate_plot,
+       filename = file.path("3_output", "ULNC_rate_plot.tif"),
+       width = 22, height = 20, units = "cm", device = "tiff")
 
 
 
-cowplot::plot_grid(nCat2_rate_mean_plot,
-                   nCat2_rate_median_plot,
-                   ULNC_rate_plot,
+cowplot_ULNC_NCATmeanMedian <- 
+cowplot::plot_grid(nCat2_rate_mean_plot +
+                     ggplot2::facet_wrap(~current_model,
+                                         ncol = 1) + 
+                     ggplot2::theme(legend.position="bottom"),
+                   nCat2_rate_median_plot +
+                     ggplot2::facet_wrap(~current_model,
+                                         ncol = 1) + 
+                     ggplot2::theme(legend.position="bottom"),
+                   ULNC_rate_plot +
+                     ggplot2::facet_wrap(~current_model,
+                                         ncol = 1) + 
+                     ggplot2::theme(legend.position="bottom"),
                    labels = "AUTO",
-                   ncol = 1,
+                   ncol = 3,
                    byrow = T)
+
+ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
+                filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.png"),
+                width = 30, height = 30, units = "cm", device = "png", bg = "white")
+ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
+                filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.tif"),
+                width = 30, height = 30, units = "cm", device = "tiff")
+

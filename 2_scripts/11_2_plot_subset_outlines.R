@@ -1,4 +1,5 @@
 library(magrittr)
+library(ggplot2)
 #############################################################################################
 #############################################################################################
 
@@ -13,7 +14,7 @@ data_w_events_raw <-
                    site_names_ID_vs_clean,
                    by = "Site")
 
-data_w_events_raw$Event <- factor(data_w_events$Event, 
+data_w_events_raw$Event <- factor(data_w_events_raw$Event, 
                               levels = c("GS-2", "GI-1", "GS-1", "Holocene"))
 
 data_w_events <- 
@@ -28,9 +29,12 @@ final_subset_outlines_centered_scaled_PCA <- readRDS(file = file.path("1_data",
                                                                       "final_subset_outlines_centered_scaled_seed1_PCA.RDS"))
 final_subset_outlines_centered_scaled_PCA$fac <- 
   dplyr::left_join(final_subset_outlines_centered_scaled_PCA$fac,
+                   dplyr::select(data_w_events, ARTEFACTNAME, Event),
+                   by="ARTEFACTNAME")
+final_subset_outlines_centered_scaled_PCA$fac <-
+  dplyr::left_join(final_subset_outlines_centered_scaled_PCA$fac,
                    site_names_ID_vs_clean,
                    by = "Site")
-
 
 taxa_file <- readr::read_tsv(file.path("1_data",
                                        "final_subset_outlines_centered_scaled_FAD_LAD_C14_oneSigmaMinMax.tsv"))
@@ -118,8 +122,92 @@ ggplot2::ggsave(plot = cowplot_PCA_scree_contrib_plot,
                 bg = "white")
 
 #############################################################################################
+# PCA
 #############################################################################################
-library(ggplot2)
+
+pca_data <- as.data.frame(final_subset_outlines_centered_scaled_PCA$x)
+pca_data$ARTEFACTNAME <- rownames(pca_data)
+
+pca_data_metaInfo <-
+  dplyr::left_join(final_subset_outlines_centered_scaled_PCA$fac,
+                   pca_data,
+                   by = "ARTEFACTNAME")
+
+a <- 
+  ggplot2::ggplot(data = pca_data_metaInfo,
+                  ggplot2::aes(x = PC1, y = PC2,
+                               fill = as.factor(Event))) +
+  geom_point(size = 3,
+             # fill = "white",
+             shape = 21) +
+  coord_fixed(ratio =1) +
+  theme_classic() +
+  theme(legend.position = "right",
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 16)) +
+  geom_hline(yintercept=0, linetype="dashed", alpha = 0.5) + 
+  geom_vline(xintercept=0, linetype="dashed", alpha = 0.5) +
+  ggthemes::scale_fill_colorblind() +
+  xlab(paste0("PC1 (", 
+              round(final_subset_outlines_centered_scaled_PCA$eig[1]*100, digits = 1), 
+              "%)")) +
+  ylab(paste0("PC2 (", 
+              round(final_subset_outlines_centered_scaled_PCA$eig[2]*100, digits = 1), 
+              "%)")) +
+  guides(color = FALSE, 
+         fill = FALSE) #+
+  # geom_polygon(stat = "ellipse", aes(color = as.factor(Event), fill = "white"), alpha = 0)
+a
+
+cowplot::plot_grid(a,
+                   cowplot::plot_grid(pc_scree_plot,
+                                      pc_contrib_plot_nax1_9,
+                                      labels = c('B', 'C'),
+                                      ncol = 2, byrow = T,
+                                      rel_widths = c(2, 1)),
+                   labels = c('A', ''),
+                   nrow = 2)
+
+abcd <- 
+cowplot::plot_grid(a+ theme(aspect.ratio = 1),
+                   a+ theme(aspect.ratio = 1)+aes(x=PC3, y=PC4) +
+                     xlab(paste0("PC3 (", 
+                                 round(final_subset_outlines_centered_scaled_PCA$eig[3]*100, digits = 1), 
+                                 "%)")) +
+                     ylab(paste0("PC4 (", 
+                                 round(final_subset_outlines_centered_scaled_PCA$eig[4]*100, digits = 1), 
+                                 "%)")),
+                   a+ theme(aspect.ratio = 1)+aes(x=PC5, y=PC6) +
+                     xlab(paste0("PC5 (", 
+                                 round(final_subset_outlines_centered_scaled_PCA$eig[5]*100, digits = 1), 
+                                 "%)")) +
+                     ylab(paste0("PC6 (", 
+                                 round(final_subset_outlines_centered_scaled_PCA$eig[6]*100, digits = 1), 
+                                 "%)")),
+                   a+ theme(aspect.ratio = 1)+aes(x=PC7, y=PC8) +
+                     xlab(paste0("PC7 (", 
+                                 round(final_subset_outlines_centered_scaled_PCA$eig[7]*100, digits = 1), 
+                                 "%)")) +
+                     ylab(paste0("PC8 (", 
+                                 round(final_subset_outlines_centered_scaled_PCA$eig[8]*100, digits = 1), 
+                                 "%)")),
+                   ncol = 2,
+                   labels = "AUTO")
+abcd
+
+cowplot::plot_grid(abcd,
+                   cowplot::plot_grid(pc_scree_plot,
+                                      pc_contrib_plot_nax1_9,
+                                      labels = c('E', 'F'),
+                                      ncol = 2, byrow = T#,
+                                      # rel_widths = c(2, 1)
+                                      ),
+                   labels = c(''),
+                   nrow = 1)
+#############################################################################################
+#############################################################################################
 
 plot_of_selected_artefacts_and_ages_ageUncertainties <- 
   ggplot2::ggplot(data = taxa_file, 
