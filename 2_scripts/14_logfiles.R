@@ -33,29 +33,41 @@ for(i in done_output_folder_paths){
     print(current_model)
     
     logfile <- read.table(ii, header = T)
-    
-    variables_log <- colnames(logfile)
-    
-    curent_model_variables_log_list <- list()
-    for(iii in 2:length(variables_log)){
-      curent_model_variables_log_list[[iii]] <- 
-        data.frame(TAXA_PC = i,
-                   Taxa = strsplit(i, split = "_")[[1]][2],
-                   traits = strsplit(i, split = "_")[[1]][4],
-                   current_model = current_model,
-                   variable = variables_log[iii],
-                   mean = mean(coda::as.mcmc(logfile[,variables_log[iii]])),
-                   median = median(coda::as.mcmc(logfile[,variables_log[iii]])),
-                   HPDinterval = coda::HPDinterval(coda::as.mcmc(logfile[,variables_log[iii]])),
-                   ESS = if(length(unique(coda::as.mcmc(logfile[,variables_log[iii]])))>1){
-                     coda::effectiveSize(coda::as.mcmc(logfile[,variables_log[iii]]))
-                   } else {
-                     NA
-                   })
-      # coda::traceplot(coda::as.mcmc(logfile[,variables_log[iii]]))
-    }
+
+      clockmodel_ULNC_nCAT <- 
+        if(length(strsplit(current_model, split = "ULNC")[[1]]) == 1){
+          "nCat"
+        } else {
+          "ULNC"
+        }
+      
+      if(clockmodel_ULNC_nCAT == "nCat"){
+
+        curent_model_variables_log <-
+          data.frame(TAXA_PC = i,
+                     Taxa = strsplit(i, split = "_")[[1]][2],
+                     traits = strsplit(i, split = "_")[[1]][4],
+                     current_model = current_model,
+                     clockmodel = clockmodel_ULNC_nCAT,
+                     medianRate = median(c(coda::as.mcmc(logfile[,"rateValues.1"], coda::as.mcmc(logfile[,"rateValues.2"])))), #use the average of the two rate categories for the nCat model
+                     varianceRate = abs(median(coda::as.mcmc(logfile[,"rateValues.1"])) - median(coda::as.mcmc(logfile[,"rateValues.2"])))
+                     )
+        
+      } else if(clockmodel_ULNC_nCAT == "ULNC"){
+
+        curent_model_variables_log <- 
+            data.frame(TAXA_PC = i,
+                       Taxa = strsplit(i, split = "_")[[1]][2],
+                       traits = strsplit(i, split = "_")[[1]][4],
+                       current_model = current_model,
+                       clockmodel = clockmodel_ULNC_nCAT,
+                       medianRate = median(coda::as.mcmc(logfile[,"rate.mean"])),
+                       varianceRate = median(coda::as.mcmc(logfile[,"rate.variance"]))
+                       )
+      }
+      
     current_model_list[[current_model]] <- 
-      do.call(rbind.data.frame, curent_model_variables_log_list)
+      curent_model_variables_log
     
     rm("logfile")
   } 
@@ -75,151 +87,211 @@ readr::write_csv(done_all_combinations_results_table,
                  file = file.path("3_output",
                                   "done_all_combinations_results_table.csv"))
 
-###############
-taxa_fun <- function(x){as.integer(strsplit(x, split = "_")[[1]][2])}
-trait_fun <- function(x){as.integer(strsplit(x, split = "_")[[1]][4])}
 
 ##############################
+# RW: Actually, thinking about it more, aren’t we showing two different things here?
+#   Rate 1 – Rate 2 reflects the difference between the rate categories, whereas rate.mean is the overall rate. 
+# 
+# I think I would separate these two aspects of the clock model (which are both relevant): 
+#   1. Rates
+# - use the average of the two rate categories for the nCat model
+# - use rate.mean for the UCLN clock model (as you do in this fig)
+# 2. Variance
+# - use medianRate1 – medianRate2 (as you do in this fig)
+# - use the estimated variance / standard deviation of the UCLN clock model
+
+done_all_combinations_results_table <- 
+  readr::read_csv(file = file.path("3_output",
+                                  "done_all_combinations_results_table.csv"))
+
+#################### Rates
 # nCat2
-nCat2_rate_results <- 
-done_all_combinations_results_table %>% 
-  # dplyr::filter(current_model == "FBD_constant_rates") %>%
-  dplyr::filter(variable %in% c("rateValues.1", "rateValues.2")) %>% 
-  dplyr::select("TAXA_PC", "variable", "mean", "median", "current_model") %>% 
-  dplyr::mutate(current_model = factor(current_model, levels = c("FBD_constant_rates",
+nCat2_rate_median_plot <- 
+  done_all_combinations_results_table %>%
+  dplyr::filter(clockmodel == "nCat") %>%
+  dplyr::mutate(Taxa = factor(Taxa),
+                traits = factor(traits),
+                current_model = factor(current_model, levels = c("FBD_constant_rates",
                                                                  "FBD_constant_rate_age_uncertainty",
                                                                  "FBD_constant_rate_age_uncertainty_woffset",
                                                                  "FBD_skyline",
-                                                                 "FBD_skyline_age_uncertainty")),
-                taxa = sapply(TAXA_PC, FUN = taxa_fun),
-                traits = sapply(TAXA_PC, FUN = trait_fun)) %>% 
-  dplyr::arrange(., taxa, traits) %>% 
-  dplyr::mutate(taxa = factor(taxa, levels = unique(taxa)),
-                traits = factor(traits, levels = unique(traits))) %>% 
-  reshape(., idvar = c("TAXA_PC", "current_model"), timevar = "variable", direction = "wide") %>% 
-  dplyr::mutate(difference_between_means = mean.rateValues.1 - mean.rateValues.2,
-                difference_between_medians = median.rateValues.1 - median.rateValues.2)
-
-nCat2_rate_median_plot <- 
-  nCat2_rate_results %>% 
+                                                                 "FBD_skyline_age_uncertainty"))) %>% 
   ggplot2::ggplot(data = .) +
-  ggplot2::geom_tile(ggplot2::aes(x = taxa.rateValues.2, 
-                                  y = traits.rateValues.2, 
-                                  fill = difference_between_medians),
+  ggplot2::geom_tile(ggplot2::aes(x = Taxa,
+                                  y = traits,
+                                  fill = medianRate),
                      color = "black") +
   ggplot2::scale_fill_gradient2(low = "blue",
                                 mid = "white",
                                 high = "red") +
-  ggplot2::labs(fill = "medianRate1-medianRate2",
+  ggplot2::labs(fill = "Median rate (median(rate1, rate2))",
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
   ggplot2::facet_wrap(~current_model,
-                      ncol = 2,
-                      dir = "v")
+                      ncol = 1,
+                      dir = "v") + 
+  ggplot2::theme(legend.position="bottom")
 
-ggplot2::ggsave(nCat2_rate_median_plot,
-       filename = file.path("3_output", "nCat2_rate_median_plot.png"),
-       width = 22, height = 20, units = "cm", device = "png")
-ggplot2::ggsave(nCat2_rate_median_plot,
-       filename = file.path("3_output", "nCat2_rate_median_plot.tif"),
-       width = 22, height = 20, units = "cm", device = "tiff")
+nCat2_rate_median_plot
 
 
-nCat2_rate_mean_plot <- 
-  nCat2_rate_results %>% 
-  ggplot2::ggplot(data = .) +
-  ggplot2::geom_tile(ggplot2::aes(x = taxa.rateValues.2, 
-                                  y = traits.rateValues.2, 
-                                  fill = difference_between_means),
-                     color = "black") +
-  ggplot2::scale_fill_gradient2(low = "blue",
-                                mid = "white",
-                                high = "red") +
-  ggplot2::labs(fill = "meanRate1-meanRate2",
-                x = "Number of taxa",
-                y = "Number of traits") +
-  ggplot2::theme_bw() +
-  ggplot2::facet_wrap(~current_model,
-                      ncol = 2,
-                      dir = "v")
-
-ggplot2::ggsave(nCat2_rate_mean_plot,
-       filename = file.path("3_output", "nCat2_rate_mean_plot.png"),
-       width = 22, height = 20, units = "cm", device = "png")
-ggplot2::ggsave(nCat2_rate_mean_plot,
-       filename = file.path("3_output", "nCat2_rate_mean_plot.tif"),
-       width = 22, height = 20, units = "cm", device = "tiff")
-
-##############################
 # ULNC
-ULNC_rate_results <- 
-  done_all_combinations_results_table %>% 
-  # dplyr::filter(current_model == "FBD_constant_rates") %>%
-  dplyr::filter(variable %in% c("rate.mean", "rate.variance")) %>% 
-  dplyr::select("TAXA_PC", "variable", "mean", "median", "current_model") %>% 
-  dplyr::mutate(current_model = factor(current_model, levels = c("ULNC_FBD_constant_rates",
+ULNC_rate_plot <- 
+  done_all_combinations_results_table %>%
+  dplyr::filter(clockmodel == "ULNC") %>%
+  dplyr::mutate(Taxa = factor(Taxa),
+                traits = factor(traits),
+                current_model = factor(current_model, levels = c("ULNC_FBD_constant_rates",
                                                                  "ULNC_FBD_constant_rate_age_uncertainty",
                                                                  "ULNC_FBD_constant_rate_age_uncertainty_woffset",
                                                                  "ULNC_FBD_skyline",
-                                                                 "ULNC_FBD_skyline_age_uncertainty")),
-                taxa = sapply(TAXA_PC, FUN = taxa_fun),
-                traits = sapply(TAXA_PC, FUN = trait_fun)) %>% 
-  dplyr::arrange(., taxa, traits) %>% 
-  dplyr::mutate(taxa = factor(taxa, levels = unique(taxa)),
-                traits = factor(traits, levels = unique(traits)))
-
-ULNC_rate_plot <- 
-  ULNC_rate_results %>% 
-  tibble::as.tibble() %>% 
-  subset(., variable == "rate.mean") %>% 
+                                                                 "ULNC_FBD_skyline_age_uncertainty"))) %>% 
   ggplot2::ggplot(data = .) +
-  ggplot2::geom_tile(ggplot2::aes(x = taxa, 
-                                  y = traits, 
-                                  fill = median),
+  ggplot2::geom_tile(ggplot2::aes(x = Taxa,
+                                  y = traits,
+                                  fill = medianRate),
                      color = "black") +
   ggplot2::scale_fill_gradient2(low = "blue",
                                 mid = "white",
                                 high = "red") +
-  ggplot2::labs(fill = "median(rate.mean)",
+  ggplot2::labs(fill = "Median rate (median(rate.mean))",
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
   ggplot2::facet_wrap(~current_model,
-                      ncol = 2,
-                      dir = "v")
+                      ncol = 1,
+                      dir = "v") + 
+  ggplot2::theme(legend.position="bottom")
+
+ULNC_rate_plot
 
 
-ggplot2::ggsave(ULNC_rate_plot,
-       filename = file.path("3_output", "ULNC_rate_plot.png"),
-       width = 22, height = 20, units = "cm", device = "png")
-ggplot2::ggsave(ULNC_rate_plot,
-       filename = file.path("3_output", "ULNC_rate_plot.tif"),
-       width = 22, height = 20, units = "cm", device = "tiff")
-
-
-
+## cowplot rates
 cowplot_ULNC_NCATmeanMedian <- 
-cowplot::plot_grid(nCat2_rate_mean_plot +
-                     ggplot2::facet_wrap(~current_model,
-                                         ncol = 1) + 
-                     ggplot2::theme(legend.position="bottom"),
-                   nCat2_rate_median_plot +
-                     ggplot2::facet_wrap(~current_model,
-                                         ncol = 1) + 
-                     ggplot2::theme(legend.position="bottom"),
-                   ULNC_rate_plot +
-                     ggplot2::facet_wrap(~current_model,
-                                         ncol = 1) + 
-                     ggplot2::theme(legend.position="bottom"),
-                   labels = "AUTO",
-                   ncol = 3,
-                   byrow = T)
+  cowplot::plot_grid(nCat2_rate_median_plot +
+                       ggplot2::facet_wrap(~current_model,
+                                           ncol = 1) + 
+                       ggplot2::theme(legend.position="bottom"),
+                     ULNC_rate_plot +
+                       ggplot2::facet_wrap(~current_model,
+                                           ncol = 1) + 
+                       ggplot2::theme(legend.position="bottom"),
+                     labels = "AUTO",
+                     ncol = 2,
+                     byrow = T)
+
+cowplot_ULNC_NCATmeanMedian
 
 ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
                 filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.png"),
-                width = 30, height = 30, units = "cm", device = "png", bg = "white")
+                width = 20, height = 30, units = "cm", device = "png", bg = "white")
 ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
                 filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.tif"),
-                width = 30, height = 30, units = "cm", device = "tiff")
+                width = 20, height = 30, units = "cm", device = "tiff")
+
+
+
+#################### Variances
+
+# nCat2
+nCat2_variance_median_plot <- 
+  done_all_combinations_results_table %>%
+  dplyr::filter(clockmodel == "nCat") %>%
+  dplyr::mutate(Taxa = factor(Taxa),
+                traits = factor(traits),
+                current_model = factor(current_model, levels = c("FBD_constant_rates",
+                                                                 "FBD_constant_rate_age_uncertainty",
+                                                                 "FBD_constant_rate_age_uncertainty_woffset",
+                                                                 "FBD_skyline",
+                                                                 "FBD_skyline_age_uncertainty"))) %>% 
+  ggplot2::ggplot(data = .) +
+  ggplot2::geom_tile(ggplot2::aes(x = Taxa,
+                                  y = traits,
+                                  fill = varianceRate),
+                     color = "black") +
+  ggplot2::scale_fill_gradient2(low = "blue",
+                                mid = "white",
+                                high = "red") +
+  ggplot2::labs(fill = "Median variance (abs(median(rate1)-median(rate2)))",
+                x = "Number of taxa",
+                y = "Number of traits") +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap(~current_model,
+                      ncol = 1,
+                      dir = "v") + 
+  ggplot2::theme(legend.position="bottom")
+
+nCat2_variance_median_plot
+
+
+# ULNC
+ULNC_variance_plot <- 
+  done_all_combinations_results_table %>%
+  dplyr::filter(clockmodel == "ULNC") %>%
+  dplyr::mutate(Taxa = factor(Taxa),
+                traits = factor(traits),
+                current_model = factor(current_model, levels = c("ULNC_FBD_constant_rates",
+                                                                 "ULNC_FBD_constant_rate_age_uncertainty",
+                                                                 "ULNC_FBD_constant_rate_age_uncertainty_woffset",
+                                                                 "ULNC_FBD_skyline",
+                                                                 "ULNC_FBD_skyline_age_uncertainty"))) %>% 
+  ggplot2::ggplot(data = .) +
+  ggplot2::geom_tile(ggplot2::aes(x = Taxa,
+                                  y = traits,
+                                  fill = varianceRate),
+                     color = "black") +
+  ggplot2::scale_fill_gradient2(low = "blue",
+                                mid = "white",
+                                high = "red") +
+  ggplot2::labs(fill = "Median variance (median(rate.variance))",
+                x = "Number of taxa",
+                y = "Number of traits") +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap(~current_model,
+                      ncol = 1,
+                      dir = "v") + 
+  ggplot2::theme(legend.position="bottom")
+
+ULNC_variance_plot
+
+
+## cowplot variances
+cowplot_ULNC_NCAT_variance <- 
+  cowplot::plot_grid(nCat2_variance_median_plot +
+                       ggplot2::facet_wrap(~current_model,
+                                           ncol = 1) + 
+                       ggplot2::theme(legend.position="bottom"),
+                     ULNC_variance_plot +
+                       ggplot2::facet_wrap(~current_model,
+                                           ncol = 1) + 
+                       ggplot2::theme(legend.position="bottom"),
+                     labels = "AUTO",
+                     ncol = 2,
+                     byrow = T)
+
+cowplot_ULNC_NCAT_variance
+
+ggplot2::ggsave(cowplot_ULNC_NCAT_variance,
+                filename = file.path("3_output", "cowplot_ULNC_NCAT_variance.png"),
+                width = 20, height = 30, units = "cm", device = "png", bg = "white")
+ggplot2::ggsave(cowplot_ULNC_NCAT_variance,
+                filename = file.path("3_output", "cowplot_ULNC_NCAT_variance.tif"),
+                width = 20, height = 30, units = "cm", device = "tiff")
+
+
+
+####################### cowplot rates and variances
+
+cowplot::plot_grid(nCat2_rate_median_plot,
+                   ULNC_rate_plot,
+                   nCat2_variance_median_plot,
+                   ULNC_variance_plot,
+                   labels = "AUTO",
+                   ncol = 2,
+                   byrow = T)
+
+
+
+
 
