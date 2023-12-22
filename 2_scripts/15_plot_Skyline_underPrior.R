@@ -8,37 +8,27 @@ library(magrittr)
 ######################################
 ######################################
 
-# logfile <- beastio::readLog("2_scripts/new_xmls/done/TAXA_16_PCs_9/independent_run_1/output/FBD_skyline.log",
-#                                 burnin=0.1)
-
 selected_taxatrait_combinations <- 
-  c("TAXA_16_PCs_2",
-    "TAXA_16_PCs_9",
-    "TAXA_16_PCs_44",
-    "TAXA_87_PCs_2",
-    "TAXA_87_PCs_9",
-    "TAXA_87_PCs_44")
+  list.files(file.path("2_scripts", "new_xmls", "underPrior"),
+             pattern = ".log")
+  
 
 # list_of_plots <- list()
 birth_death_div_turn_long_list <- list()
 rates_list <- list()
 for(i in selected_taxatrait_combinations){
   
-  current_logfile_path <- paste0("2_scripts/new_xmls/done/", i, "/FBD_skyline_age_uncertainty_COMBINED.log")
-  
-  if(file.exists(current_logfile_path)){
     
-    logfile <- beastio::readLog(current_logfile_path)
+    logfile <- beastio::readLog(file.path("2_scripts", "new_xmls", "underPrior", i))
     # Episodic Diversification Analysis
     # specify the output files
-    
     deathRates <-
       coda::as.mcmc(logfile) %>%
       beastio::getLogFileSubset(., 
                                 "deathRateFBD.",
                                 start = T) 
     deathRates_HPD <- 
-    deathRates %>% 
+      deathRates %>% 
       beastio::getHPDMedian() %>% 
       as.data.frame() %>%
       dplyr::mutate(., item = as.factor("Death"))
@@ -51,7 +41,7 @@ for(i in selected_taxatrait_combinations){
                                 "birthRateFBD.",
                                 start = T) 
     birthRates_HPD <- 
-    birthRates %>% 
+      birthRates %>% 
       beastio::getHPDMedian() %>% 
       as.data.frame() %>%
       dplyr::mutate(., item = as.factor("Birth"))
@@ -61,7 +51,7 @@ for(i in selected_taxatrait_combinations){
     # if it goes up, the overall population of tools increases
     # if flat, there has been a constant number of tools over time; the environmental events would not have had any influence
     # The diversification rate represent the rate at which the species diversity increases
-
+    
     logfile_diversification <-
       beastio::getLogFileSubset(coda::as.mcmc(logfile),
                                 "birthRateFBD.",
@@ -75,8 +65,6 @@ for(i in selected_taxatrait_combinations){
       as.data.frame(row.names = paste0("divRateFBD.", c(1:4))) %>%
       dplyr::mutate(., item = as.factor("Diversification"))
     divRates$Event <- c("GS-2", "GI-1", "GS-1", "Holocene")
-    
-    
     
     # turnover = death / birth
     # The turnover rate is the rate at which one species is replaced by another species due to a birth plus death event. 
@@ -96,95 +84,76 @@ for(i in selected_taxatrait_combinations){
       dplyr::mutate(., item = as.factor("Turnover"))
     turnoverRates$Event <- c("GS-2", "GI-1", "GS-1", "Holocene")
     
- 
-    
-    
-    ### combine and plot
-    
+    rm(list = c("logfile"))
+    gc()
+    ### combine 
     rates <- rbind(deathRates_HPD, 
                    birthRates_HPD, 
                    divRates,
                    turnoverRates)
     rates$item <- as.factor(rates$item)
     rates$Event <- factor(rates$Event, levels = c("GS-2", "GI-1", "GS-1", "Holocene"))
-    rates$taxa <- factor(strsplit(i, "_")[[1]][2],
-                         levels = c("16", "32", "87"))
-    rates$traits <- factor(strsplit(i, "_")[[1]][4],
+    rates$taxa <- factor(strsplit(strsplit(i, "_ULNC")[[1]][1], "_")[[1]][2],
+                         levels = c("16","32", "87"))
+    rates$traits <- factor(strsplit(strsplit(i, "_ULNC")[[1]][1], "_")[[1]][4],
                            levels = c("2", "9", "44"))
     
-    rates_list[[i]] <- 
+    rates_list[[strsplit(i, "_ULNC")[[1]][1]]] <- 
       rates
     
-    # list_of_plots[[i]] <- 
-    #   rates %>% 
-    #   ggplot2::ggplot() +
-    #   ggplot2::geom_point(ggplot2::aes(x = Event,
-    #                           y = med)) +
-    #   ggplot2::geom_errorbar(ggplot2::aes(x = Event,
-    #                              ymin = lower, ymax = upper),
-    #                          width = 0.1) +
-    #   ggplot2::geom_line(ggplot2::aes(x = Event,
-    #                          y = med,
-    #                          group = item)) +
-    #   ggplot2::facet_wrap(~item,
-    #              # scales = "free_y",
-    #              nrow = 4) +
-    #   ggplot2::theme_bw() +
-    #   ggplot2::theme(legend.position = "none") +
-    #   ggplot2::ylab("Rate") +
-    #   ggplot2::xlab("Greenland Stadials/Interstadials") #+
-    #   # ggplot2::ggtitle(label = i)
-    
-    
+    rm(list = c("deathRates_HPD", "birthRates_HPD","divRates", "turnoverRates"))
+    gc()
     # data
     deathRates_long <-
-    as.data.frame(deathRates) %>%
+      as.data.frame(deathRates) %>%
       tidyr::pivot_longer(cols = colnames(deathRates),
                           names_to = "rate") %>%
       tibble::add_column(type = "death")
-
+    
     birthRates_long <-
       as.data.frame(birthRates) %>%
       tidyr::pivot_longer(cols = colnames(birthRates),
                           names_to = "rate") %>%
       tibble::add_column(type = "birth")
-
+    
     logfile_diversification_long <-
       as.data.frame(logfile_diversification) %>%
       tidyr::pivot_longer(cols = colnames(logfile_diversification),
                           names_to = "rate") %>%
       tibble::add_column(type = "diversification")
-
+    
     logfile_turnover_long <-
       as.data.frame(logfile_turnover) %>%
       tidyr::pivot_longer(cols = colnames(logfile_turnover),
                           names_to = "rate") %>%
       tibble::add_column(type = "turnover")
-
-    birth_death_div_turn_long_list[[i]] <-
-    rbind(deathRates_long,
-          birthRates_long,
-          logfile_diversification_long,
-          logfile_turnover_long) %>%
-      tibble::add_column(taxaTraits = i)
-  }
+    
+    birth_death_div_turn_long_list[[strsplit(i, "_ULNC")[[1]][1]]] <-
+      rbind(deathRates_long,
+            birthRates_long,
+            logfile_diversification_long,
+            logfile_turnover_long) %>%
+      tibble::add_column(taxaTraits = strsplit(i, "_ULNC")[[1]][1])
+  
   
 }
 
 
 ################################################
 ################################################
-rates_df <- 
+rates_underPrior_df <- 
   do.call(rbind.data.frame, rates_list)
-head(rates_df)
-# readr::write_csv(rates_df,
-#                  file = file.path("3_output", "rates_df_Taxa_16_87_Traits_2_9_44_FBD_skyline_age_uncertainty.csv"))
-# rates_df <- 
-#   readr::read_csv(file.path("3_output", "rates_df_Taxa_16_87_Traits_2_9_44_FBD_skyline_age_uncertainty.csv"))
+head(rates_underPrior_df)
+  # readr::write_csv(rates_underPrior_df,
+  #                 file = file.path("3_output", "rates_underPrior_Taxa_16_32_87_Traits_2_9_44_ULNC_FBD_skyline_age_uncertainty.csv"))
+# rates_underPrior_df <-
+#   readr::read_csv(file.path("3_output", "rates_underPrior_Taxa_16_32_87_Traits_2_9_44_ULNC_FBD_skyline_age_uncertainty.csv"))
 
+rates_underPrior_df$Event <- factor(rates_underPrior_df$Event,
+                         levels = c("GS-2","GI-1","GS-1","Holocene"))
 
 death_panel <- 
-  rates_df %>%
+  rates_underPrior_df %>%
   subset(., item == "Death") %>%
   ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = Event,
@@ -198,7 +167,7 @@ death_panel <-
                                   group = item)) +
   ggplot2::facet_wrap(taxa~traits,
                       # scales = "free_y",
-                      nrow = 2,
+                      nrow = 3,
                       dir = "h") +
   ggplot2::theme_bw() +
   ggplot2::theme(legend.position = "none") +
@@ -208,7 +177,7 @@ death_panel <-
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 
 birth_panel <- 
-  rates_df %>%
+  rates_underPrior_df %>%
   subset(., item == "Birth") %>%
   ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = Event,
@@ -222,7 +191,7 @@ birth_panel <-
                                   group = item)) +
   ggplot2::facet_wrap(taxa~traits,
                       # scales = "free_y",
-                      nrow = 2,
+                      nrow = 3,
                       dir = "h") +
   ggplot2::theme_bw() +
   ggplot2::theme(legend.position = "none") +
@@ -232,7 +201,7 @@ birth_panel <-
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 
 div_panel <- 
-  rates_df %>%
+  rates_underPrior_df %>%
   subset(., item == "Diversification") %>%
   ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = Event,
@@ -246,7 +215,7 @@ div_panel <-
                                   group = item)) +
   ggplot2::facet_wrap(taxa~traits,
                       # scales = "free_y",
-                      nrow = 2,
+                      nrow = 3,
                       dir = "h") +
   ggplot2::theme_bw() +
   ggplot2::theme(legend.position = "none") +
@@ -256,7 +225,7 @@ div_panel <-
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 
 turn_panel <- 
-  rates_df %>%
+  rates_underPrior_df %>%
   subset(., item == "Turnover") %>%
   ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = Event,
@@ -270,7 +239,7 @@ turn_panel <-
                                   group = item)) +
   ggplot2::facet_wrap(taxa~traits,
                       # scales = "free_y",
-                      nrow = 2,
+                      nrow = 3,
                       dir = "h") +
   ggplot2::theme_bw() +
   ggplot2::theme(legend.position = "none") +
@@ -291,110 +260,143 @@ skyline_results_cowplot
 
 
 ggplot2::ggsave(skyline_results_cowplot,
-                filename = file.path("3_output", "FBD_skyline_age_uncertainty_results_plot_grob.png"),
+                filename = file.path("3_output", "ULNC_FBD_skyline_age_uncertainty_underPrior_results_plot_grob.png"),
                 width = 35, height = 25, units = "cm", device = "png")
 ggplot2::ggsave(skyline_results_cowplot,
-                filename = file.path("3_output", "FBD_skyline_age_uncertainty_results_plot_grob.eps"),
+                filename = file.path("3_output", "ULNC_FBD_skyline_age_uncertainty_underPrior_results_plot_grob.eps"),
                 width = 35, height = 25, units = "cm", device = "eps")
 
 
-# ################################################
-# ################################################
-# 
-# birth_death_div_turn_long_df <- 
-#   do.call(rbind.data.frame, birth_death_div_turn_long_list)
-# 
-# # kruskal-wallis test
-# ## within a taxa-trait set
-# comparing_rates_within_taxaTraitSet_kruskal <- 
-# birth_death_div_turn_long_df %>% 
-#   group_by(taxaTraits, type) %>% 
-#   dplyr::do(broom::tidy(kruskal.test(x = .$value,
-#                                      g = .$rate,
-#                                      p.adjust.method = "BH"))) %>% 
-#   dplyr::ungroup() 
-# subset(comparing_rates_within_taxaTraitSet_kruskal, p.value >= 0.05)
-# readr::write_csv(comparing_rates_within_taxaTraitSet_kruskal,
-#                  file = file.path("3_output", "comparing_rates_within_taxaTraitSet_kruskal.csv"))
-# 
-# ## between taxa-trait sets
-# comparing_rates_between_taxaTraitSet_kruskal <- 
-# birth_death_div_turn_long_df %>% 
-#   group_by(type, rate) %>% 
-#   dplyr::do(broom::tidy(kruskal.test(x = .$value,
-#                                      g = .$taxaTraits,
-#                                      p.adjust.method = "BH"))) %>% 
-#   dplyr::ungroup() 
-# subset(comparing_rates_between_taxaTraitSet_kruskal, p.value >= 0.05)
-# readr::write_csv(comparing_rates_between_taxaTraitSet_kruskal,
-#                  file = file.path("3_output", "comparing_rates_between_taxaTraitSet_kruskal.csv"))
-# 
-# # pairwise wilcox-test
-# ## comparing birth, death, turnover, and diversification between time-bin 1, 2, 3, 4
-# comparing_rates_within_taxaTraitSet_pairwise <- 
-# birth_death_div_turn_long_df %>% 
-#   group_by(taxaTraits, type) %>% 
-#   dplyr::do(broom::tidy(pairwise.wilcox.test(x = .$value,
-#                                              g = .$rate,
-#                                              p.adjust.method = "BH"))) %>% 
-#   dplyr::ungroup() 
-# subset(comparing_rates_within_taxaTraitSet_pairwise, p.value >= 0.05)
-# readr::write_csv(comparing_rates_within_taxaTraitSet_pairwise,
-#                  file = file.path("3_output", "comparing_rates_within_taxaTraitSet_pairwise.csv"))
-# 
-# ## comparing birth, death, turnover, and diversification between taxa-trait combinations
-# comparing_rates_between_taxaTraitSet_pairwise <- 
-# birth_death_div_turn_long_df %>% 
-#   group_by(type, rate) %>% 
-#   dplyr::do(broom::tidy(pairwise.wilcox.test(x = .$value,
-#                                              g = .$taxaTraits,
-#                                              p.adjust.method = "BH"))) %>% 
-#   dplyr::ungroup() 
-# subset(comparing_rates_between_taxaTraitSet_pairwise, p.value >= 0.05)
-# readr::write_csv(comparing_rates_between_taxaTraitSet_pairwise,
-#                  file = file.path("3_output", "comparing_rates_between_taxaTraitSet_pairwise.csv"))
+
+##############################################
+# plot and compare trace files
+##############################################
+
+selected_taxatrait_combinations <- 
+  c("TAXA_16_PCs_2",
+    "TAXA_16_PCs_9",
+    "TAXA_16_PCs_44",
+    "TAXA_32_PCs_2",
+    "TAXA_32_PCs_9",
+    "TAXA_32_PCs_44",
+    "TAXA_87_PCs_2",
+    "TAXA_87_PCs_9",
+    "TAXA_87_PCs_44")
+
+for (i in selected_taxatrait_combinations) {
+  
+  underPrior_ulnc_skyline_ageUnc <- paste0("2_scripts/new_xmls/underPrior/", i, "_ULNC_FBD_skyline_age_uncertainty_underPrior.log" )
+  ulnc_skyline_ageUnc <- paste0("2_scripts/new_xmls/done/", i, "/ULNC_FBD_skyline_age_uncertainty_COMBINED.log" )
+  
+  trace_underPrior <- RevGadgets::readTrace(underPrior_ulnc_skyline_ageUnc)[[1]] %>% 
+    dplyr::select("prior",
+                  "birthRateFBD.1","birthRateFBD.2","birthRateFBD.3","birthRateFBD.4",
+                  "deathRateFBD.1","deathRateFBD.2","deathRateFBD.3","deathRateFBD.4",
+                  "samplingRateFBD.1","samplingRateFBD.2","samplingRateFBD.3","samplingRateFBD.4")
+  trace_underPrior$underPrior <- TRUE
+  trace <- RevGadgets::readTrace(ulnc_skyline_ageUnc)[[1]] %>% 
+    dplyr::select("prior",
+                  "birthRateFBD.1","birthRateFBD.2","birthRateFBD.3","birthRateFBD.4",
+                  "deathRateFBD.1","deathRateFBD.2","deathRateFBD.3","deathRateFBD.4",
+                  "samplingRateFBD.1","samplingRateFBD.2","samplingRateFBD.3","samplingRateFBD.4")
+  trace$underPrior <- FALSE
+  
+  traces_both <- 
+  rbind(trace_underPrior, 
+        trace)
+  
+  traces_long <- 
+    traces_both %>% 
+    data.table::melt()
+  
+  prior_plot <- 
+  traces_long %>% 
+    subset(variable %in% c("prior")) %>% 
+    ggplot() +
+    geom_density(aes(x = value,
+                     group = underPrior,
+                     fill = underPrior),
+                 alpha = 0.5) +
+    facet_wrap(~variable,
+               # scales="free",
+               ncol = 4) +
+    theme_bw()
+  
+  birthrate_plot <- 
+  traces_long %>% 
+    subset(variable %in% c("birthRateFBD.1","birthRateFBD.2","birthRateFBD.3","birthRateFBD.4")) %>% 
+  ggplot() +
+    geom_density(aes(x = value,
+                     group = underPrior,
+                     fill = underPrior),
+                 alpha = 0.5) +
+    facet_wrap(~variable,
+               # scales="free",
+               ncol = 4) +
+    theme_bw()
+  
+  deathrate_plot <- 
+  traces_long %>% 
+    subset(variable %in% c("deathRateFBD.1","deathRateFBD.2","deathRateFBD.3","deathRateFBD.4")) %>% 
+    ggplot() +
+    geom_density(aes(x = value,
+                     group = underPrior,
+                     fill = underPrior),
+                 alpha = 0.5) +
+    facet_wrap(~variable,
+               # scales="free",
+               ncol = 4) +
+    theme_bw()
+  
+  samplingrate_plot <- 
+  traces_long %>% 
+    subset(variable %in% c("samplingRateFBD.1","samplingRateFBD.2","samplingRateFBD.3","samplingRateFBD.4")) %>% 
+    ggplot() +
+    geom_density(aes(x = value,
+                     group = underPrior,
+                     fill = underPrior),
+                 alpha = 0.5) +
+    facet_wrap(~variable,
+               # scales="free",
+               ncol = 4) +
+    theme_bw()
+
+  cowplot::plot_grid(#prior_plot,
+                     birthrate_plot,
+                     deathrate_plot,
+                     samplingrate_plot,
+                     ncol = 1,
+                     labels = "AUTO")
+  # traces_long %>% 
+  #   subset(variable %in% c("samplingRateFBD.1","samplingRateFBD.2","samplingRateFBD.3","samplingRateFBD.4")) %>% 
+  # ggpubr::ggboxplot(., x = "underPrior", y = "value",
+  #           color = "underPrior", palette = "jco") +
+  #   ggpubr::stat_compare_means(method = "wilcox.test")
+  
+}
 
 
 
 
-# ################################################
-# ################################################
-# library(RevGadgets)
-# 
-# logfile_rates <-
-#   logfile %>%
-#   coda::as.mcmc() %>%
-#   as.data.frame() %>%
-#   dplyr::select(c("birthRateFBD.1", "birthRateFBD.2", "birthRateFBD.3", "birthRateFBD.4",
-#                   "deathRateFBD.1", "deathRateFBD.2", "deathRateFBD.3", "deathRateFBD.4",
-#                   "samplingRateFBD.1", "samplingRateFBD.2", "samplingRateFBD.3", "samplingRateFBD.4")) %>%
-#   dplyr::mutate(diversificationRateFBD.1 = birthRateFBD.1 - deathRateFBD.1,
-#                 diversificationRateFBD.2 = birthRateFBD.2 - deathRateFBD.2,
-#                 diversificationRateFBD.3 = birthRateFBD.3 - deathRateFBD.3,
-#                 diversificationRateFBD.4 = birthRateFBD.4 - deathRateFBD.4,
-#                 turnoverRateFBD.1 = deathRateFBD.1 / birthRateFBD.1,
-#                 turnoverRateFBD.2 = deathRateFBD.2 / birthRateFBD.2,
-#                 turnoverRateFBD.3 = deathRateFBD.3 / birthRateFBD.3,
-#                 turnoverRateFBD.4 = deathRateFBD.4 / birthRateFBD.4) %>%
-#   tidyr::pivot_longer(cols = 1:ncol(.),
-#                       values_to = "rate")
-# 
-# logfile_rates_name_type <-
-#   logfile_rates %>%
-#   dplyr::left_join(.,
-#                    data.frame(name = unique(logfile_rates$name)) %>%
-#                      dplyr::mutate(., type = sapply(name, function(x){
-#                        strsplit(x, split = "Rate")[[1]][1]})) %>%
-#                      dplyr::mutate(., timeBin = sapply(name, function(x){
-#                        strsplit(x, split = "RateFBD.")[[1]][2]})))
-# 
-# 
-# logfile_rates_name_type %>%
-#   ggplot2::ggplot(data = .) +
-#   ggplot2::geom_boxplot(ggplot2::aes(y = (rate), x = timeBin)) +
-#   ggplot2::facet_wrap(~factor(type,
-#                      levels = c("birth", "death", "sampling",
-#                                 "diversification", "turnover")),
-#              scales = "free",
-#              ncol = 2) +
-#   ggplot2::theme_bw()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
