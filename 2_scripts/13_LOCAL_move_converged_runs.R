@@ -188,7 +188,7 @@ for (current_log_or_tre in c("trees", "log")) {
       data.frame(filename = list.files(file.path(done_path,
                                                  current_folder),
                                        pattern = paste0("COMBINED.", current_log_or_tre))) %>% 
-      mutate(model_name = sapply(.$filename, function(x){
+      dplyr::mutate(model_name = sapply(.$filename, function(x){
         strsplit(x, split = paste0("_COMBINED.",current_log_or_tre))[[1]][1]
       }))
       
@@ -202,7 +202,7 @@ for (current_log_or_tre in c("trees", "log")) {
                                                      current_folder),
                                            recursive = T,
                                            pattern = paste0(".", current_log_or_tre))) %>% 
-          mutate(model_name = sapply(.$filename, function(x){
+          dplyr::mutate(model_name = sapply(.$filename, function(x){
             strsplit(x, split = "/")[[1]][3]
           }) %>% 
             lapply(., function(x){
@@ -211,7 +211,7 @@ for (current_log_or_tre in c("trees", "log")) {
           ) %>% 
           subset(., !is.na(model_name)) %>% 
           subset(., !(model_name %in% already_combined_files$model_name)) %>% 
-          pull(filename)
+          dplyr::pull(filename)
       } else {
         all_current_files <-
           list.files(file.path(done_path,
