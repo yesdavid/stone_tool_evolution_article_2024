@@ -5,7 +5,7 @@ Ben Marwick² ORCID: [0000-0001-7879-4531](http://orcid.org/0000-0001-7879-4531)
 Felix Riede¹ ORCID: [0000-0002-4879-7157](http://orcid.org/0000-0002-4879-7157)    
 Rachel Warnock³ ORCID: [0000-0002-9151-4642](http://orcid.org/0000-0002-9151-4642)    
 
-¹ Department of Archaeology and Heritage Studies, Aarhus University, Denmark 
+¹ Department of Archaeology and Heritage Studies, Aarhus University, Denmark  
 ² Department of Anthropology, University of Washington, USA   
 ³ GeoZentrum Nordbayern, Friedrich-Alexander-University Erlangen, Germany  
 
