@@ -1,15 +1,15 @@
-# Research Compendium for: "A macroevolutionary analysis of European Late Upper Palaeolithic stone tool shape using a Bayesian phylogenetic framework"
+# Research Compendium for: "A macroevolutionary analysis of European Late Upper Palaeolithic stone tool shape using a Bayesian phylodynamic framework"
 
-David N. Matzig¹,✉ ORCID: [0000-0001-7349-5401](http://orcid.org/0000-0001-7349-5401)  
-Rachel Warnock² ORCID: [0000-0002-9151-4642](http://orcid.org/0000-0002-9151-4642)  
-Ben Marwick³ ORCID: [0000-0001-7879-4531](http://orcid.org/0000-0001-7879-4531)  
+David N. Matzig¹,✉ ORCID: [0000-0001-7349-5401](http://orcid.org/0000-0001-7349-5401)
+Ben Marwick² ORCID: [0000-0001-7879-4531](http://orcid.org/0000-0001-7879-4531)  
 Felix Riede¹ ORCID: [0000-0002-4879-7157](http://orcid.org/0000-0002-4879-7157)    
+Rachel Warnock³ ORCID: [0000-0002-9151-4642](http://orcid.org/0000-0002-9151-4642)    
 
-¹ Department of Archaeology and Heritage Studies, Aarhus University, Denmark  
-² Geozentrum Nordbayern, FAU Erlangen, Germany  
-³ Department of Anthropology, University of Washington, USA  
+¹ Department of Archaeology and Heritage Studies, Aarhus University, Denmark 
+² Department of Anthropology, University of Washington, USA   
+³ GeoZentrum Nordbayern, Friedrich-Alexander-University Erlangen, Germany  
 
-✉Correspondence: David N. Matzig <david.matzig@cas.au.dk>  
+✉ Correspondence: David N. Matzig <david.matzig@cas.au.dk>  
 
 
 ### Compendium DOI:
