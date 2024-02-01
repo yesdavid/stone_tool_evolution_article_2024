@@ -115,3 +115,46 @@ data_w_events <-
 readr::write_csv(data_w_events,
                  file = file.path("1_data", "data_w_events.csv"))
 
+
+
+
+
+
+# take a picture of the outlines arranged in a panel
+## GS-2
+png(filename = file.path("3_output", "Figures", "final_subset_outlines_panel_GS-2.png"),
+    width = 3000, height = 3000, units = "px", bg = "white")
+Momocs::filter(final_subset_outlines,
+               ARTEFACTNAME %in% subset(data_w_events, Event == "GS-2")$ARTEFACTNAME) %>% 
+  Momocs::panel(
+    cols = "black")
+dev.off()
+## GI-1
+png(filename = file.path("3_output", "Figures", "final_subset_outlines_panel_GI-1.png"),
+    width = 3000, height = 3000, units = "px", bg = "white")
+Momocs::filter(final_subset_outlines,
+               ARTEFACTNAME %in% subset(data_w_events, Event == "GI-1")$ARTEFACTNAME) %>% 
+  Momocs::panel(
+    cols = "black")
+dev.off()
+## GS-1
+png(filename = file.path("3_output", "Figures", "final_subset_outlines_panel_GS-1.png"),
+    width = 3000, height = 3000, units = "px", bg = "white")
+Momocs::filter(final_subset_outlines,
+               ARTEFACTNAME %in% subset(data_w_events, Event == "GS-1")$ARTEFACTNAME) %>% 
+  Momocs::panel(
+    cols = "black")
+dev.off()
+## Holocene
+png(filename = file.path("3_output", "Figures", "final_subset_outlines_panel_Holocene.png"),
+    width = 3000, height = 3000, units = "px", bg = "white")
+Momocs::filter(final_subset_outlines,
+               ARTEFACTNAME %in% subset(data_w_events, Event == "Holocene")$ARTEFACTNAME) %>% 
+  Momocs::panel(
+    cols = "black")
+dev.off()
+
+
+
+
+

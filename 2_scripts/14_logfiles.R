@@ -124,7 +124,7 @@ nCat2_rate_median_plot <-
   ggplot2::scale_fill_gradient2(low = "blue",
                                 mid = "white",
                                 high = "red") +
-  ggplot2::labs(fill = "Median rate (median(rate1, rate2))",
+  ggplot2::labs(fill = "Median rate", # (median(rate1, rate2))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
@@ -155,7 +155,7 @@ ULNC_rate_plot <-
   ggplot2::scale_fill_gradient2(low = "blue",
                                 mid = "white",
                                 high = "red") +
-  ggplot2::labs(fill = "Median rate (median(rate.mean))",
+  ggplot2::labs(fill = "Median rate", #(median(rate.mean))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
@@ -167,28 +167,28 @@ ULNC_rate_plot <-
 ULNC_rate_plot
 
 
-## cowplot rates
-cowplot_ULNC_NCATmeanMedian <- 
-  cowplot::plot_grid(nCat2_rate_median_plot +
-                       ggplot2::facet_wrap(~current_model,
-                                           ncol = 1) + 
-                       ggplot2::theme(legend.position="bottom"),
-                     ULNC_rate_plot +
-                       ggplot2::facet_wrap(~current_model,
-                                           ncol = 1) + 
-                       ggplot2::theme(legend.position="bottom"),
-                     labels = "AUTO",
-                     ncol = 2,
-                     byrow = T)
-
-cowplot_ULNC_NCATmeanMedian
-
-ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
-                filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.png"),
-                width = 20, height = 30, units = "cm", device = "png", bg = "white")
-ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
-                filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.tif"),
-                width = 20, height = 30, units = "cm", device = "tiff")
+# ## cowplot rates
+# cowplot_ULNC_NCATmeanMedian <- 
+#   cowplot::plot_grid(nCat2_rate_median_plot +
+#                        ggplot2::facet_wrap(~current_model,
+#                                            ncol = 1) + 
+#                        ggplot2::theme(legend.position="bottom"),
+#                      ULNC_rate_plot +
+#                        ggplot2::facet_wrap(~current_model,
+#                                            ncol = 1) + 
+#                        ggplot2::theme(legend.position="bottom"),
+#                      labels = "AUTO",
+#                      ncol = 2,
+#                      byrow = T)
+# 
+# cowplot_ULNC_NCATmeanMedian
+# 
+# ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
+#                 filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.png"),
+#                 width = 20, height = 30, units = "cm", device = "png", bg = "white")
+# ggplot2::ggsave(cowplot_ULNC_NCATmeanMedian,
+#                 filename = file.path("3_output", "cowplot_ULNC_NCATmeanMedian.tif"),
+#                 width = 20, height = 30, units = "cm", device = "tiff")
 
 
 
@@ -213,7 +213,7 @@ nCat2_variance_median_plot <-
   ggplot2::scale_fill_gradient2(low = "blue",
                                 mid = "white",
                                 high = "red") +
-  ggplot2::labs(fill = "Median variance (abs(median(rate1)-median(rate2)))",
+  ggplot2::labs(fill = "Median variance", # (abs(median(rate1)-median(rate2)))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
@@ -244,7 +244,7 @@ ULNC_variance_plot <-
   ggplot2::scale_fill_gradient2(low = "blue",
                                 mid = "white",
                                 high = "red") +
-  ggplot2::labs(fill = "Median variance (median(rate.variance))",
+  ggplot2::labs(fill = "Median variance", # (median(rate.variance))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
@@ -256,40 +256,69 @@ ULNC_variance_plot <-
 ULNC_variance_plot
 
 
-## cowplot variances
-cowplot_ULNC_NCAT_variance <- 
-  cowplot::plot_grid(nCat2_variance_median_plot +
-                       ggplot2::facet_wrap(~current_model,
-                                           ncol = 1) + 
-                       ggplot2::theme(legend.position="bottom"),
-                     ULNC_variance_plot +
-                       ggplot2::facet_wrap(~current_model,
-                                           ncol = 1) + 
-                       ggplot2::theme(legend.position="bottom"),
-                     labels = "AUTO",
-                     ncol = 2,
-                     byrow = T)
+# ## cowplot variances
+# cowplot_ULNC_NCAT_variance <- 
+#   cowplot::plot_grid(nCat2_variance_median_plot +
+#                        ggplot2::facet_wrap(~current_model,
+#                                            ncol = 1) + 
+#                        ggplot2::theme(legend.position="bottom"),
+#                      ULNC_variance_plot +
+#                        ggplot2::facet_wrap(~current_model,
+#                                            ncol = 1) + 
+#                        ggplot2::theme(legend.position="bottom"),
+#                      labels = "AUTO",
+#                      ncol = 2,
+#                      byrow = T)
+# 
+# cowplot_ULNC_NCAT_variance
+# 
+# ggplot2::ggsave(cowplot_ULNC_NCAT_variance,
+#                 filename = file.path("3_output", "cowplot_ULNC_NCAT_variance.png"),
+#                 width = 20, height = 30, units = "cm", device = "png", bg = "white")
+# ggplot2::ggsave(cowplot_ULNC_NCAT_variance,
+#                 filename = file.path("3_output", "cowplot_ULNC_NCAT_variance.tif"),
+#                 width = 20, height = 30, units = "cm", device = "tiff")
 
-cowplot_ULNC_NCAT_variance
 
-ggplot2::ggsave(cowplot_ULNC_NCAT_variance,
-                filename = file.path("3_output", "cowplot_ULNC_NCAT_variance.png"),
-                width = 20, height = 30, units = "cm", device = "png", bg = "white")
-ggplot2::ggsave(cowplot_ULNC_NCAT_variance,
-                filename = file.path("3_output", "cowplot_ULNC_NCAT_variance.tif"),
-                width = 20, height = 30, units = "cm", device = "tiff")
+############################################################################################
+####################### cowplot rates+variances nCat2
 
-
-
-####################### cowplot rates and variances
-
-cowplot::plot_grid(nCat2_rate_median_plot,
-                   ULNC_rate_plot,
-                   nCat2_variance_median_plot,
-                   ULNC_variance_plot,
+cowplot_NCAT_meanMedian_variance <- 
+  cowplot::plot_grid(nCat2_rate_median_plot + 
+                       ggplot2::theme(legend.key.size = ggplot2::unit(1, "cm")),
+                   nCat2_variance_median_plot + 
+                     ggplot2::theme(legend.key.size = ggplot2::unit(1, "cm")),
                    labels = "AUTO",
                    ncol = 2,
                    byrow = T)
+
+ggplot2::ggsave(cowplot_NCAT_meanMedian_variance,
+                filename = file.path("3_output", "Figures", "cowplot_NCAT_meanMedian_variance.png"),
+                width = 20, height = 30, units = "cm", device = "png", bg = "white")
+ggplot2::ggsave(cowplot_NCAT_meanMedian_variance,
+                filename = file.path("3_output", "Figures", "cowplot_NCAT_meanMedian_variance.tif"),
+                width = 20, height = 30, units = "cm", device = "tiff")
+
+############################################################################################
+####################### cowplot rates+variances ULNC
+
+cowplot_ULNC_meanMedian_variance <- 
+  cowplot::plot_grid(ULNC_rate_plot + 
+                       ggplot2::theme(legend.key.size = ggplot2::unit(1, "cm")),
+                   ULNC_variance_plot + 
+                     ggplot2::theme(legend.key.size = ggplot2::unit(1, "cm")),
+                   labels = "AUTO",
+                   ncol = 2,
+                   byrow = T)
+
+ggplot2::ggsave(cowplot_ULNC_meanMedian_variance,
+                filename = file.path("3_output", "Figures", "cowplot_ULNC_meanMedian_variance.png"),
+                width = 20, height = 30, units = "cm", device = "png", bg = "white")
+ggplot2::ggsave(cowplot_ULNC_meanMedian_variance,
+                filename = file.path("3_output", "Figures", "cowplot_ULNC_meanMedian_variance.tif"),
+                width = 20, height = 30, units = "cm", device = "tiff")
+
+
 
 
 

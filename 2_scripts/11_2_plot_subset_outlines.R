@@ -41,36 +41,39 @@ taxa_file <- readr::read_tsv(file.path("1_data",
 
 
 
+
+
+
 #############################################################################################
 #############################################################################################
 
 
-data_w_events %>% 
-  ggplot2::ggplot(data = .,
-                  ggplot2::aes(y = forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP), 
-                               x = median_SPD_age_calBP)) +
-  ggplot2::geom_rect(ggplot2::aes(ymin = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[1], 
-                                  ymax = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[length(levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP)))], 
-                                  xmin = 16000, xmax = 14600), 
-                     color="transparent", 
-                     fill="grey90", 
-                     alpha=0.03) +
-  ggplot2::geom_rect(ggplot2::aes(ymin = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[1], 
-                                  ymax = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[length(levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP)))], 
-                                  xmin = 12900, xmax = 11700), 
-                     color="transparent", 
-                     fill="grey90", 
-                     alpha=0.03) +
-  ggplot2::geom_line(linewidth = 3,
-                     color = "grey40") +
-  ggplot2::geom_point(ggplot2::aes(y = forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP),
-                                   x = median_SPD_age_calBP,
-                                   fill = Region),
-                      color = "white",
-                      shape = 21,
-                      size = 3) +
-  ggplot2::scale_x_reverse() +
-  ggplot2::theme_bw()
+# data_w_events %>% 
+#   ggplot2::ggplot(data = .,
+#                   ggplot2::aes(y = forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP), 
+#                                x = median_SPD_age_calBP)) +
+#   ggplot2::geom_rect(ggplot2::aes(ymin = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[1], 
+#                                   ymax = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[length(levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP)))], 
+#                                   xmin = 16000, xmax = 14600), 
+#                      color="transparent", 
+#                      fill="grey90", 
+#                      alpha=0.03) +
+#   ggplot2::geom_rect(ggplot2::aes(ymin = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[1], 
+#                                   ymax = levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP))[length(levels(forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP)))], 
+#                                   xmin = 12900, xmax = 11700), 
+#                      color="transparent", 
+#                      fill="grey90", 
+#                      alpha=0.03) +
+#   ggplot2::geom_line(linewidth = 3,
+#                      color = "grey40") +
+#   ggplot2::geom_point(ggplot2::aes(y = forcats::fct_reorder(TaxUnit, -median_SPD_age_calBP),
+#                                    x = median_SPD_age_calBP,
+#                                    fill = Region),
+#                       color = "white",
+#                       shape = 21,
+#                       size = 3) +
+#   ggplot2::scale_x_reverse() +
+#   ggplot2::theme_bw()
 
 
 
