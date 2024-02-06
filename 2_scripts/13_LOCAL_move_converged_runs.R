@@ -1,3 +1,7 @@
+# !!!! in lines 246 onwards: make sure the absolute paths match the ones on your machine!
+
+
+
 # check whether prior, likelihood, and posterior have converged/ESS>>200. If yes, move to "done", if no, create file to run "resume.sh"
 
 if (!require("coda", character.only=T, quietly=T)) {
@@ -243,10 +247,10 @@ for (current_log_or_tre in c("trees", "log")) {
         for(current_converged in unique(tally_converged_chains$model)){
           
           command_to_combine_files <- 
-            paste0("/home/au656892/Downloads/BEAST.v2.6.2.Linux/beast/bin/logcombiner", 
-                   " -log /home/au656892/Documents/Doktor/2_projects/stone_tool_evolution_article_2022/2_scripts/new_xmls/done/", current_folder, "/independent_run_1/output/", current_converged,
-                   " -log /home/au656892/Documents/Doktor/2_projects/stone_tool_evolution_article_2022/2_scripts/new_xmls/done/", current_folder, "/independent_run_2/output/", current_converged,
-                   " -o /home/au656892/Documents/Doktor/2_projects/stone_tool_evolution_article_2022/2_scripts/new_xmls/done/", current_folder, "/", strsplit(current_converged,
+            paste0("/home/Downloads/BEAST.v2.6.2.Linux/beast/bin/logcombiner", 
+                   " -log /home/Documents/stone_tool_evolution_article_2022/2_scripts/new_xmls/done/", current_folder, "/independent_run_1/output/", current_converged,
+                   " -log /home/Documents/stone_tool_evolution_article_2022/2_scripts/new_xmls/done/", current_folder, "/independent_run_2/output/", current_converged,
+                   " -o /home/Documents/stone_tool_evolution_article_2022/2_scripts/new_xmls/done/", current_folder, "/", strsplit(current_converged,
                                                                                                                                                               split = "\\.")[[1]][1],
                    "_COMBINED.",current_log_or_tre,
                    " -b 20",
