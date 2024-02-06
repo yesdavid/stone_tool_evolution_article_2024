@@ -121,17 +121,21 @@ nCat2_rate_median_plot <-
                                   y = traits,
                                   fill = medianRate),
                      color = "black") +
-  ggplot2::scale_fill_gradient2(low = "blue",
-                                mid = "white",
+  ggplot2::scale_fill_gradient2(mid = "blue",
                                 high = "red") +
   ggplot2::labs(fill = "Median rate", # (median(rate1, rate2))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
+  ggplot2::coord_cartesian(expand = F) +
   ggplot2::facet_wrap(~current_model,
                       ncol = 1,
                       dir = "v") + 
-  ggplot2::theme(legend.position="bottom")
+  ggplot2::theme(legend.position="bottom",
+                 panel.border = ggplot2::element_blank(), 
+                 panel.grid.major = ggplot2::element_blank(),
+                 panel.grid.minor = ggplot2::element_blank(), 
+                 axis.line = ggplot2::element_line(colour = "black"))
 
 nCat2_rate_median_plot
 
@@ -152,17 +156,21 @@ ULNC_rate_plot <-
                                   y = traits,
                                   fill = medianRate),
                      color = "black") +
-  ggplot2::scale_fill_gradient2(low = "blue",
-                                mid = "white",
+  ggplot2::scale_fill_gradient2(mid = "blue",
                                 high = "red") +
   ggplot2::labs(fill = "Median rate", #(median(rate.mean))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
+  ggplot2::coord_cartesian(expand = F) +
   ggplot2::facet_wrap(~current_model,
                       ncol = 1,
                       dir = "v") + 
-  ggplot2::theme(legend.position="bottom")
+  ggplot2::theme(legend.position="bottom",
+                 panel.border = ggplot2::element_blank(), 
+                 panel.grid.major = ggplot2::element_blank(),
+                 panel.grid.minor = ggplot2::element_blank(), 
+                 axis.line = ggplot2::element_line(colour = "black"))
 
 ULNC_rate_plot
 
@@ -210,17 +218,21 @@ nCat2_variance_median_plot <-
                                   y = traits,
                                   fill = varianceRate),
                      color = "black") +
-  ggplot2::scale_fill_gradient2(low = "blue",
-                                mid = "white",
+  ggplot2::scale_fill_gradient2(mid = "blue",
                                 high = "red") +
   ggplot2::labs(fill = "Median variance", # (abs(median(rate1)-median(rate2)))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
+  ggplot2::coord_cartesian(expand = F) +
   ggplot2::facet_wrap(~current_model,
                       ncol = 1,
                       dir = "v") + 
-  ggplot2::theme(legend.position="bottom")
+  ggplot2::theme(legend.position="bottom",
+                 panel.border = ggplot2::element_blank(), 
+                 panel.grid.major = ggplot2::element_blank(),
+                 panel.grid.minor = ggplot2::element_blank(), 
+                 axis.line = ggplot2::element_line(colour = "black"))
 
 nCat2_variance_median_plot
 
@@ -241,17 +253,21 @@ ULNC_variance_plot <-
                                   y = traits,
                                   fill = varianceRate),
                      color = "black") +
-  ggplot2::scale_fill_gradient2(low = "blue",
-                                mid = "white",
+  ggplot2::scale_fill_gradient2(mid = "blue",
                                 high = "red") +
   ggplot2::labs(fill = "Median variance", # (median(rate.variance))
                 x = "Number of taxa",
                 y = "Number of traits") +
   ggplot2::theme_bw() +
+  ggplot2::coord_cartesian(expand = F) +
   ggplot2::facet_wrap(~current_model,
                       ncol = 1,
                       dir = "v") + 
-  ggplot2::theme(legend.position="bottom")
+  ggplot2::theme(legend.position="bottom",
+                 panel.border = ggplot2::element_blank(), 
+                 panel.grid.major = ggplot2::element_blank(),
+                 panel.grid.minor = ggplot2::element_blank(), 
+                 axis.line = ggplot2::element_line(colour = "black"))
 
 ULNC_variance_plot
 
@@ -291,6 +307,7 @@ cowplot_NCAT_meanMedian_variance <-
                    labels = "AUTO",
                    ncol = 2,
                    byrow = T)
+cowplot_NCAT_meanMedian_variance
 
 ggplot2::ggsave(cowplot_NCAT_meanMedian_variance,
                 filename = file.path("3_output", "Figures", "cowplot_NCAT_meanMedian_variance.png"),
@@ -310,6 +327,7 @@ cowplot_ULNC_meanMedian_variance <-
                    labels = "AUTO",
                    ncol = 2,
                    byrow = T)
+cowplot_ULNC_meanMedian_variance
 
 ggplot2::ggsave(cowplot_ULNC_meanMedian_variance,
                 filename = file.path("3_output", "Figures", "cowplot_ULNC_meanMedian_variance.png"),
