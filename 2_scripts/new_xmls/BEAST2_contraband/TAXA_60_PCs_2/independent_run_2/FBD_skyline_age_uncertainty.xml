@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+<!-- based on the following template: https://github.com/gavryushkina/sampled-ancestor-bdsky/blob/master/templates/SAFBDSKY.xml - FBD skyline -->
+<!-- see also: https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf - alternative parameterisation, fossil age uncertainty and offset  -->
+<!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMPruneLikelihood.xml - multiple traits, BM model, contraband package -->
+<!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMMVNShiftLikelihoodOneTrait_FBDTree_RateCatClock.xml - multiple rate categories, nCat = 2, contraband package -->
+
+<!-- ** Data and taxon names ** -->
+<data
+    id="dnaSequence"
+    spec="Alignment"
+    name="alignment">
+
+    <!-- Empty sequence alignment -->
+    <sequence id="1" taxon="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18" totalcount="4" value="N"/>
+<sequence id="2" taxon="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="3" taxon="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="4" taxon="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="5" taxon="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10" totalcount="4" value="N"/>
+<sequence id="6" taxon="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="7" taxon="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17" totalcount="4" value="N"/>
+<sequence id="8" taxon="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20" totalcount="4" value="N"/>
+<sequence id="9" taxon="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="10" taxon="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7" totalcount="4" value="N"/>
+<sequence id="11" taxon="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="12" taxon="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="13" taxon="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="14" taxon="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9" totalcount="4" value="N"/>
+<sequence id="15" taxon="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16" totalcount="4" value="N"/>
+<sequence id="16" taxon="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="17" taxon="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="18" taxon="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="19" taxon="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22" totalcount="4" value="N"/>
+<sequence id="20" taxon="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7" totalcount="4" value="N"/>
+<sequence id="21" taxon="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="22" taxon="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="23" taxon="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8" totalcount="4" value="N"/>
+<sequence id="24" taxon="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6" totalcount="4" value="N"/>
+<sequence id="25" taxon="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="26" taxon="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="27" taxon="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7" totalcount="4" value="N"/>
+<sequence id="28" taxon="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="29" taxon="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6" totalcount="4" value="N"/>
+<sequence id="30" taxon="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5" totalcount="4" value="N"/>
+<sequence id="31" taxon="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="32" taxon="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="33" taxon="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="34" taxon="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="35" taxon="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="36" taxon="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="37" taxon="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4" totalcount="4" value="N"/>
+<sequence id="38" taxon="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5" totalcount="4" value="N"/>
+<sequence id="39" taxon="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21" totalcount="4" value="N"/>
+<sequence id="40" taxon="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18" totalcount="4" value="N"/>
+<sequence id="41" taxon="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13" totalcount="4" value="N"/>
+<sequence id="42" taxon="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="43" taxon="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10" totalcount="4" value="N"/>
+<sequence id="44" taxon="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="45" taxon="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="46" taxon="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6" totalcount="4" value="N"/>
+<sequence id="47" taxon="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30" totalcount="4" value="N"/>
+<sequence id="48" taxon="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5" totalcount="4" value="N"/>
+<sequence id="49" taxon="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="50" taxon="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45" totalcount="4" value="N"/>
+<sequence id="51" taxon="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="52" taxon="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4" totalcount="4" value="N"/>
+<sequence id="53" taxon="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4" totalcount="4" value="N"/>
+<sequence id="54" taxon="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="55" taxon="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23" totalcount="4" value="N"/>
+<sequence id="56" taxon="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="57" taxon="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="58" taxon="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="59" taxon="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14" totalcount="4" value="N"/>
+<sequence id="60" taxon="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4" totalcount="4" value="N"/>
+
+
+</data>
+
+<map name="Uniform">beast.math.distributions.Uniform</map>
+<map name="Exponential">beast.math.distributions.Exponential</map>
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal">beast.math.distributions.Normal</map>
+<map name="Beta">beast.math.distributions.Beta</map>
+<map name="Gamma">beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+<map name="prior">beast.math.distributions.Prior</map>
+<map name="InverseGamma">beast.math.distributions.InverseGamma</map>
+<map name="OneOnX">beast.math.distributions.OneOnX</map>
+<map name="Dirichlet">beast.math.distributions.Dirichlet</map>
+
+<run id="mcmc" spec="MCMC" chainLength="5000000000">
+
+    <!-- ** Declare model parameters and variables, plus some starting values ** -->  
+    <state id="state" spec="State" storeEvery="500000">
+
+        <tree id="TheTree" spec="beast.evolution.tree.Tree" name="stateNode">
+
+            <taxonset id="TaxonSet" spec="TaxonSet">
+                <taxon id="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18" spec="Taxon"/>
+<taxon id="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10" spec="Taxon"/>
+<taxon id="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17" spec="Taxon"/>
+<taxon id="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20" spec="Taxon"/>
+<taxon id="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7" spec="Taxon"/>
+<taxon id="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9" spec="Taxon"/>
+<taxon id="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16" spec="Taxon"/>
+<taxon id="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22" spec="Taxon"/>
+<taxon id="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7" spec="Taxon"/>
+<taxon id="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8" spec="Taxon"/>
+<taxon id="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6" spec="Taxon"/>
+<taxon id="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7" spec="Taxon"/>
+<taxon id="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6" spec="Taxon"/>
+<taxon id="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5" spec="Taxon"/>
+<taxon id="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21" spec="Taxon"/>
+<taxon id="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18" spec="Taxon"/>
+<taxon id="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13" spec="Taxon"/>
+<taxon id="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10" spec="Taxon"/>
+<taxon id="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6" spec="Taxon"/>
+<taxon id="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30" spec="Taxon"/>
+<taxon id="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5" spec="Taxon"/>
+<taxon id="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45" spec="Taxon"/>
+<taxon id="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4" spec="Taxon"/>
+<taxon id="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4" spec="Taxon"/>
+<taxon id="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23" spec="Taxon"/>
+<taxon id="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14" spec="Taxon"/>
+<taxon id="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4" spec="Taxon"/>
+
+            </taxonset>
+
+            <!-- Insert age data, use data-backward for macroevolution -->
+            <!-- If you do not place priors and operators on the sample ages, they will be fixed to the values specified here -->
+            <!-- In this example, all ages estimated except the youngest. Tree scaled to age of youngest sample -->
+            <trait id="FossilSet" spec="beast.evolution.tree.TraitSet" traitname="date-backward">                       
+                TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18=4.619,
+TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1=3.445,
+TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1=3.644,
+TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1=3.128,
+TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10=3.434,
+TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2=3.786,
+TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17=4.245,
+TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20=4.492,
+TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1=4.43,
+TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7=4.05,
+TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3=4.02,
+TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1=4.164,
+TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1=4.301,
+TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9=3.656,
+TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16=4.452,
+TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1=3.22,
+TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1=3.149,
+TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3=3.275,
+TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22=4.006,
+TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7=4.006,
+TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3=2.96,
+TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2=2.846,
+TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8=3.391,
+TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6=2.328,
+TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2=2.5,
+TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3=2.899,
+TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7=3.645,
+TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1=2.148,
+TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6=1.639,
+TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5=2.131,
+TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1=3.702,
+TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1=1.757,
+TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3=1.88,
+TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3=1.398,
+TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3=1.283,
+TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1=1.493,
+TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4=1.125,
+TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5=2.308,
+TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21=2.057,
+TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18=1.526,
+TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13=0.986,
+TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1=1.771,
+TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10=1.532,
+TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2=0.507,
+TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1=0.475,
+TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6=0.361,
+TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30=0.185,
+TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5=1.19,
+TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1=0.002,
+TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45=0.081,
+TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1=0.365,
+TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4=0.766,
+TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4=0.217,
+TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1=0.733,
+TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23=0.244,
+TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1=0.333,
+TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1=1.033,
+TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1=1.076,
+TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14=0.654,
+TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4=0                
+            <taxa idref="TaxonSet"/>
+            </trait>
+            
+        </tree>
+
+        <!-- FBD model -->
+        <parameter id="birthRateFBD" lower="0.0" name="stateNode">1.0 1.0 1.0 1.0</parameter> <!-- change required here for FBD skyline, add starting values for each interval-->
+        <parameter id="deathRateFBD" lower="0.0" name="stateNode">1.0 1.0 1.0 1.0</parameter>
+        <parameter id="samplingRateFBD" lower="0.0" name="stateNode">0.1 0.1 0.1 0.1</parameter>
+        <parameter id="originFBD" lower="0.0" name="stateNode">18.982</parameter>      
+        <!-- BM-model state nodes-->
+        <stateNode idref="rootValues"/>
+        <stateNode idref="varValues"/>        
+        <stateNode idref="covValues"/>
+        <!--Clock model -->
+        <stateNode idref="rateValues"/>
+        <stateNode idref="rateAssignments"/>        
+        
+    </state>
+
+    <!-- Starting tree block -->
+    <init id="RandomTheTree" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@TheTree" taxa="@dnaSequence">
+        <populationModel id="ConstantPopulation0.t" spec="ConstantPopulation">
+            <parameter id="randomPopSize.t" spec="parameter.RealParameter" name="popSize">1.0</parameter>
+        </populationModel>
+    </init>
+
+    <!-- ** The Posterior ** -->
+    <!-- Specify your posterior, within this you'll specify your prior and likelihood -->
+    <distribution id="posterior" spec="util.CompoundDistribution">
+
+        <!-- ** The Priors ** -->
+        <distribution id="prior" spec="util.CompoundDistribution">
+
+            <!-- the tree prior, the FBD skyline model, change spec --> 
+            <distribution id="FBD" spec="beast.evolution.speciation.BirthDeathSkylineModel" conditionOnRhoSampling="false"  birthRate="@birthRateFBD" deathRate="@deathRateFBD" samplingRate="@samplingRateFBD" origin="@originFBD" tree="@TheTree">
+                <parameter id="rFBD" estimate="false" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                <parameter id="rhoFBD" estimate="false" lower="0.0" name="rho" upper="1.0">0.0</parameter>
+                <!-- change required here for FBD skyline, add change times, last entry must always be zero -->
+                <parameter name="birthRateChangeTimes" id="birthRateChangeTimesSASky" value="3.582 1.882 0.682 0"/>
+                <parameter name="deathRateChangeTimes" id="deathRateChangeTimesSASky" value="3.582 1.882 0.682 0"/>
+                <parameter name="samplingRateChangeTimes" id="samplingRateChangeTimesSASky" value="3.582 1.882 0.682 0"/>
+                <reverseTimeArrays spec='parameter.BooleanParameter' value='true true true true true'/> <!-- clarify order of change times, i.e., backwards (true) or fowards (false) -->
+            </distribution> <!-- note no option to conditionOnSurvival in the SA package -->
+
+            <!-- Priors on the FBD model parameters -->
+            <distribution id="birthRatePriorFBD" spec="beast.math.distributions.Prior" x="@birthRateFBD">
+        	  <distr id="birthRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>
+            <distribution id="deathRatePriorFBD" spec="beast.math.distributions.Prior" x="@deathRateFBD">
+        	  <distr id="deathRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>  
+            <distribution id="samplingRatePriorFBD" spec="beast.math.distributions.Prior" x="@samplingRateFBD">
+        	  <distr id="samplingRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>  
+            <distribution id="originPriorFBD" spec="beast.math.distributions.Prior" x="@originFBD">
+	            <distr id="originFBDUniform" spec="beast.math.distributions.Uniform" upper="Infinity"/>
+            </distribution>
+
+            <!--Priors on trait model parameters -->
+
+            <!-- BM model prior -->
+            <!-- trait evolutionary rate, the diagonal elements in the variance-covariance matrix -->
+            <distribution id="varValuesPrior" spec="beast.math.distributions.Prior" x="@varValues">
+                <distr id="varValuesLogNormal" spec="beast.math.distributions.LogNormalDistributionModel" S="0.3" M="1.0"/>
+            </distribution>
+            <!-- trait correlations, the off-diagonal elements in the variance-covariance matrix -->
+            <distribution id="covValuesPrior" spec="beast.math.distributions.Prior" x="@covValues">
+                <distr id="covValuesUniform" spec="beast.math.distributions.Uniform" lower="-1.0" upper="1.0"/>
+            </distribution>
+            <!-- trait values at the root -->
+            <distribution id="rootValuesPrior" spec="beast.math.distributions.Prior" x="@rootValues">
+                <distr id="rootValuesNormal" spec="beast.math.distributions.Normal" mean="0.0" sigma="2.0"/>
+            </distribution>
+
+            <!-- clock model -->
+            <distribution id="rateValuesPrior" spec="beast.math.distributions.Prior" x="@rateValues">
+	            <distr id="rateValuesExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.2"/>
+	        </distribution>
+            <distribution id="rateAssignmentsPrior" spec="beast.math.distributions.Prior" x="@rateAssignments">
+	            <distr id="rateAssignmentsUniform" spec="beast.math.distributions.Uniform" offset="0.0" lower="0.0" upper="1.0"/>
+	        </distribution>
+
+            <!-- insert prior fossil ages here -->
+            <distribution id="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.1" lower="4.516" name="distr" upper="4.74"/>
+ 
+            </distribution>
+<distribution id="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.2" lower="3.104" name="distr" upper="3.787"/>
+ 
+            </distribution>
+<distribution id="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.3" lower="3.297" name="distr" upper="4.133"/>
+ 
+            </distribution>
+<distribution id="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.4" lower="2.777" name="distr" upper="3.758"/>
+ 
+            </distribution>
+<distribution id="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.5" lower="2.784" name="distr" upper="4.038"/>
+ 
+            </distribution>
+<distribution id="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.6" lower="3.419" name="distr" upper="4.188"/>
+ 
+            </distribution>
+<distribution id="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.7" lower="4.118" name="distr" upper="4.344"/>
+ 
+            </distribution>
+<distribution id="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.8" lower="3.508" name="distr" upper="4.878"/>
+ 
+            </distribution>
+<distribution id="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.9" lower="4.054" name="distr" upper="4.717"/>
+ 
+            </distribution>
+<distribution id="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.10" lower="3.457" name="distr" upper="4.339"/>
+ 
+            </distribution>
+<distribution id="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.11" lower="3.6" name="distr" upper="4.295"/>
+ 
+            </distribution>
+<distribution id="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.12" lower="4.022" name="distr" upper="4.284"/>
+ 
+            </distribution>
+<distribution id="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.13" lower="3.832" name="distr" upper="4.896"/>
+ 
+            </distribution>
+<distribution id="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.14" lower="3.438" name="distr" upper="3.962"/>
+ 
+            </distribution>
+<distribution id="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.15" lower="3.833" name="distr" upper="4.75"/>
+ 
+            </distribution>
+<distribution id="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.16" lower="2.797" name="distr" upper="3.786"/>
+ 
+            </distribution>
+<distribution id="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.17" lower="3.046" name="distr" upper="3.223"/>
+ 
+            </distribution>
+<distribution id="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.18" lower="3.094" name="distr" upper="3.769"/>
+ 
+            </distribution>
+<distribution id="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.19" lower="3.881" name="distr" upper="4.167"/>
+ 
+            </distribution>
+<distribution id="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.20" lower="3.881" name="distr" upper="4.167"/>
+ 
+            </distribution>
+<distribution id="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.21" lower="2.776" name="distr" upper="3.185"/>
+ 
+            </distribution>
+<distribution id="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.22" lower="2.076" name="distr" upper="3.076"/>
+ 
+            </distribution>
+<distribution id="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.23" lower="2.79" name="distr" upper="3.807"/>
+ 
+            </distribution>
+<distribution id="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.24" lower="1.976" name="distr" upper="2.743"/>
+ 
+            </distribution>
+<distribution id="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.25" lower="2.445" name="distr" upper="2.571"/>
+ 
+            </distribution>
+<distribution id="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.26" lower="2.787" name="distr" upper="2.996"/>
+ 
+            </distribution>
+<distribution id="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.27" lower="1.83" name="distr" upper="4.253"/>
+ 
+            </distribution>
+<distribution id="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.28" lower="2.086" name="distr" upper="2.212"/>
+ 
+            </distribution>
+<distribution id="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.29" lower="1.464" name="distr" upper="1.814"/>
+ 
+            </distribution>
+<distribution id="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.30" lower="1.905" name="distr" upper="2.3"/>
+ 
+            </distribution>
+<distribution id="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.31" lower="3.155" name="distr" upper="4.024"/>
+ 
+            </distribution>
+<distribution id="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.32" lower="1.709" name="distr" upper="1.806"/>
+ 
+            </distribution>
+<distribution id="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.33" lower="1.711" name="distr" upper="2.069"/>
+ 
+            </distribution>
+<distribution id="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.34" lower="1.089" name="distr" upper="1.675"/>
+ 
+            </distribution>
+<distribution id="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.35" lower="0.921" name="distr" upper="1.811"/>
+ 
+            </distribution>
+<distribution id="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.36" lower="1.085" name="distr" upper="1.714"/>
+ 
+            </distribution>
+<distribution id="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.37" lower="0.927" name="distr" upper="1.42"/>
+ 
+            </distribution>
+<distribution id="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.38" lower="2.227" name="distr" upper="2.389"/>
+ 
+            </distribution>
+<distribution id="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.39" lower="1.904" name="distr" upper="2.213"/>
+ 
+            </distribution>
+<distribution id="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.40" lower="1.46" name="distr" upper="1.643"/>
+ 
+            </distribution>
+<distribution id="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.41" lower="0.625" name="distr" upper="1.451"/>
+ 
+            </distribution>
+<distribution id="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.42" lower="1.606" name="distr" upper="1.945"/>
+ 
+            </distribution>
+<distribution id="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.43" lower="1.464" name="distr" upper="1.596"/>
+ 
+            </distribution>
+<distribution id="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.44" lower="0.38" name="distr" upper="0.669"/>
+ 
+            </distribution>
+<distribution id="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.45" lower="0.322" name="distr" upper="0.665"/>
+ 
+            </distribution>
+<distribution id="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.46" lower="0.249" name="distr" upper="0.58"/>
+ 
+            </distribution>
+<distribution id="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.47" lower="0" name="distr" upper="0.581"/>
+ 
+            </distribution>
+<distribution id="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.48" lower="0.635" name="distr" upper="1.576"/>
+ 
+            </distribution>
+<distribution id="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.49" lower="0" name="distr" upper="0.174"/>
+ 
+            </distribution>
+<distribution id="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.50" lower="0" name="distr" upper="0.377"/>
+ 
+            </distribution>
+<distribution id="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.51" lower="0" name="distr" upper="0.792"/>
+ 
+            </distribution>
+<distribution id="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.52" lower="0.387" name="distr" upper="0.976"/>
+ 
+            </distribution>
+<distribution id="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.53" lower="0.173" name="distr" upper="0.249"/>
+ 
+            </distribution>
+<distribution id="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.54" lower="0.327" name="distr" upper="0.979"/>
+ 
+            </distribution>
+<distribution id="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.55" lower="0" name="distr" upper="0.729"/>
+ 
+            </distribution>
+<distribution id="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.56" lower="0.161" name="distr" upper="0.674"/>
+ 
+            </distribution>
+<distribution id="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.57" lower="0.722" name="distr" upper="1.565"/>
+ 
+            </distribution>
+<distribution id="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.58" lower="0.805" name="distr" upper="1.416"/>
+ 
+            </distribution>
+<distribution id="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@TheTree">
+                <taxonset id="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14fossilAgeSampl" spec="TaxonSet">
+
+                    <taxon idref="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14"/>
+
+                </taxonset>
+
+                <Uniform id="Uniform.59" lower="0.32" name="distr" upper="0.925"/>
+ 
+            </distribution>
+
+
+        </distribution>        
+
+        <!-- ** The likelihood ** -->
+        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+
+            <!-- START Morphological likelihood CONTRABAND-Package -->
+            <distribution id="PCMLikelihood" spec="contraband.prunelikelihood.BMPruneLikelihood">
+
+                <tree idref="TheTree"/>
+                
+                <!-- trait values for species of interest, an array of elements in the trait matrix-->
+                <!-- For example
+                    trait1 trait2 trait3
+                    sp1     T11    T12    T13
+                    sp2     T21    T22    T23
+                    sp3     T31    T32    T33
+                    the input here should be T11 T12 T13 T21 T22 T23 T31 T32 T33
+                -->
+                <traits id="oneTraitData" spec="parameter.RealParameter" minordimension="2" keys= "TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18 TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1 TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1 TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1 TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10 TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2 TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17 TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20 TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1 TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7 TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3 TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1 TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1 TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9 TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16 TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1 TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1 TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3 TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22 TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7 TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3 TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2 TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8 TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6 TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2 TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3 TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7 TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1 TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6 TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5 TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1 TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1 TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3 TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3 TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3 TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1 TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4 TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5 TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21 TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18 TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13 TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1 TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10 TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2 TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1 TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6 TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30 TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5 TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1 TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45 TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1 TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4 TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4 TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1 TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23 TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1 TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1 TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1 TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14 TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4">
+                0.115771088699815 -0.108679192884551 0.0954580765934919 -0.128942605355071 0.974465341908685 0.404893289598538 -0.967373958842064 0.220726526269515 -0.258746615606599 -0.045176217699836 -0.449641411476792 -0.0693831863477515 0.328547786090851 -0.0688281613870461 -0.401690497425311 -0.0884799491890865 -0.139532137462901 -0.124812180174675 0.176652925699692 -0.109940911775803 0.228709441932231 -0.0989696322157854 1.10439522633584 0.591440263335987 -0.136750136561171 -0.129486466127448 0.378317251192013 -0.0224228734541386 0.755210803054536 0.224778464486158 -0.520237778716694 -0.0289274417769614 0.0474929220512976 -0.13711184427624 -0.443892736733629 -0.0740887113764031 0.433168784343114 -0.0319643183409251 0.229429427801338 -0.0226094689290507 -0.237252268839774 -0.0946625432544509 -0.575258570283774 0.00174448766790979 -0.0470059336837304 -0.122362773911321 -0.767970616046575 0.0691772941259921 0.32813474062251 -0.0709294851445727 0.0917134982032201 -0.12675201045262 0.460841885010073 -0.00373790633943834 -1.11908463468582 0.429554193310337 0.0748382949702182 -0.120768310964821 0.0625578874095167 -0.120116229884732 0.415555155453389 -0.0183801752419298 1.22637209389241 0.803399519558931 -0.226158092680092 -0.0753262684430842 -0.0597656073713421 -0.107407745079548 0.0374914866000024 -0.110200555666769 0.222751321604226 -0.104800196920063 -0.75767113867965 0.0823803859077113 -0.00552772362019851 -0.123615174999461 0.332030873902746 -0.0703725325827505 -0.0894391120140704 -0.10936219738527 0.187724491256668 -0.0224171731083664 0.385514400599245 0.00510407940114842 0.110683090408518 -0.102329884958015 -0.235268519562288 -0.0765251954047744 0.0967676242790463 -0.109037673182921 0.316634450177415 -0.0743049386382248 0.279364984738683 -0.0209200058211724 0.341798271574815 -0.049166793186841 0.011551607933621 -0.0629598119013223 0.00946556860361828 -0.132778508294158 0.141238433254142 -0.107118865636056 -0.450204162611035 -0.0598547527272518 0.138618023598355 -0.123605719965062 0.20566688743559 -0.0445322925402085 -0.347978024189764 -0.107600454838475 -0.936380946585486 0.227254845557592 -0.221885888820668 -0.0932509782223542 -1.44112949441237 0.962226702307181 -0.410938876130504 -0.0683566560212154 -0.532194853996504 -0.0154183381633884
+                </traits>
+
+                <!-- the morphological clock model -->
+                <branchRateModel id="rateCatClock" spec="contraband.clock.RateCategoryClockModel" nCat="2">
+                    <rates id="rateValues" spec="parameter.RealParameter" lower="0" upper="1000">0.00000001 0.00000005</rates>
+                    <rateCatAssign id="rateAssignments" spec="parameter.IntegerParameter" lower="0" upper="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</rateCatAssign>
+                    <tree idref="TheTree"/>
+                </branchRateModel>
+
+                <!-- parameters in the BM model -->
+                <!-- here we assume each trait has its own evolutionary rate -->
+                <!-- if we assume all traits to share one common rate, we should set the flag by oneRateOnly="true" -->
+                <!-- the flag upperMatrix="true" here is to ensure the non-singular variance-covariance matrix -->
+                <nodeMath id="pcmNodeMath" spec="contraband.math.NodeMath" traits="@oneTraitData" upperMatrix="true">
+                    <sigmasq id="varValues" spec="parameter.RealParameter">1.0</sigmasq>
+                    <correlation id="covValues" spec="parameter.RealParameter">0.0</correlation>
+                    <rootValues id="rootValues" spec="parameter.RealParameter">0.0</rootValues>
+                </nodeMath>
+            </distribution> <!-- END Morphological (PCM) likleihood -->            
+        </distribution> <!-- End Likelihood -->
+    </distribution> <!-- End Posterior -->
+
+    <!-- ** MCMC moves ** - I have shuffled these into non-arbitrary groups -->
+    <!-- FBD model parameters -->
+    <operator id="birthRateFBDScaler.t" spec="ScaleOperator" parameter="@birthRateFBD" weight="3.0"/>
+    <operator id="deathRateFBDScaler.t" spec="ScaleOperator" parameter="@deathRateFBD" weight="3.0"/>
+    <operator id="samplingRateFBDScaler.t" spec="ScaleOperator" parameter="@samplingRateFBD" weight="3.0"/>
+    <operator id="originScalerFBD" spec="ScaleOperator" parameter="@originFBD" scaleFactor="0.75" weight="3.0"/>    
+    <!-- parameters in the BM model -->
+    <operator id="varValueScaler" spec="ScaleOperator" parameter="@varValues" scaleFactor="0.75" weight="6.0"/>
+    <operator id="covValueRandomWalk" spec="RealRandomWalkOperator" parameter="@covValues" windowSize="1.0" weight="10.0"/>
+    <operator id="rootValuesRandomWalk" spec="RealRandomWalkOperator" parameter="@rootValues" windowSize="1.0" weight="6.0"/>
+    <!-- clock model --> 
+    <operator id="rateAssignmentWalker" spec="IntRandomWalkOperator" parameter="@rateAssignments" windowSize="1" weight="10.0"/>
+    <operator id="rateValueScaler" spec="ScaleOperator" parameter="@rateValues" scaleFactor="0.75" weight="3.0"/>
+    <!-- tree topology -->
+    <operator id="LeafToSAFBD" spec="LeafToSampledAncestorJump" tree="@TheTree" weight="10.0"/>
+    <operator id="SAWilsonBaldingFBD" spec="SAWilsonBalding" tree="@TheTree" weight="10.0"/>
+    <operator id="SAWideFBD" spec="SAExchange" isNarrow="false" tree="@TheTree" weight="10.0"/>
+    <operator id="SANarrowFBD" spec="SAExchange" tree="@TheTree" weight="10.0"/>
+    <operator id="SAUniformOperatorFBD" spec="SAUniform" tree="@TheTree" weight="20.0"/>
+    <operator id="SATreeRootScalerFBD" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@TheTree" weight="1.0"/>
+    <operator id="SATreeScalerFBD" spec="SAScaleOperator" scaleFactor="0.42" tree="@TheTree" weight="3.0"/>
+    <!-- Insert moves on fossil ages -->
+    <operator id="tipDatesSampler.TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+<operator id="tipDatesSampler.TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14fossilAgeSampl" spec="SampledNodeDateRandomWalker" taxonset="@TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14fossilAgeSampl" tree="@TheTree" weight="3.0" windowSize="0.006"/>
+
+
+    <!-- ** Parameters to log to file ** -->
+    <logger id="tracelog" fileName="TAXA_60_PCs_2/independent_run_2/output/FBD_skyline_age_uncertainty.log" logEvery="500000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="prior"/>
+        <log idref="likelihood"/>        
+        <log idref="PCMLikelihood"/>
+        <log idref="FBD"/>
+        <log id="TreeHeight.t" spec="beast.evolution.tree.TreeHeightLogger" tree="@TheTree"/>
+        <log id="SACountFBD" spec="beast.evolution.tree.SampledAncestorLogger" tree="@TheTree"/>
+        <!-- FBD model parameters -->
+        <log idref="birthRateFBD"/>
+        <log idref="deathRateFBD"/>
+        <log idref="samplingRateFBD"/>
+        <log idref="rFBD"/>
+        <log idref="rhoFBD"/>
+        <log idref="originFBD"/>
+        <!-- Clock model parameters -->        
+        <log idref="rateValues"/>
+        <log idref="rateAssignments"/>
+        <!-- BM model parameters -->
+        <log idref="varValues"/>
+        <log idref="covValues"/>
+        <log idref="rootValues"/>
+        <!-- Insert fossil ages -->
+        <log idref="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18.prior"/>
+<log idref="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1.prior"/>
+<log idref="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1.prior"/>
+<log idref="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1.prior"/>
+<log idref="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10.prior"/>
+<log idref="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2.prior"/>
+<log idref="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17.prior"/>
+<log idref="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20.prior"/>
+<log idref="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1.prior"/>
+<log idref="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7.prior"/>
+<log idref="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3.prior"/>
+<log idref="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1.prior"/>
+<log idref="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1.prior"/>
+<log idref="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9.prior"/>
+<log idref="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16.prior"/>
+<log idref="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1.prior"/>
+<log idref="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1.prior"/>
+<log idref="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3.prior"/>
+<log idref="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22.prior"/>
+<log idref="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7.prior"/>
+<log idref="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3.prior"/>
+<log idref="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2.prior"/>
+<log idref="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8.prior"/>
+<log idref="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6.prior"/>
+<log idref="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2.prior"/>
+<log idref="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3.prior"/>
+<log idref="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7.prior"/>
+<log idref="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1.prior"/>
+<log idref="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6.prior"/>
+<log idref="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5.prior"/>
+<log idref="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1.prior"/>
+<log idref="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1.prior"/>
+<log idref="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3.prior"/>
+<log idref="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3.prior"/>
+<log idref="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3.prior"/>
+<log idref="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1.prior"/>
+<log idref="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4.prior"/>
+<log idref="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5.prior"/>
+<log idref="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21.prior"/>
+<log idref="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18.prior"/>
+<log idref="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13.prior"/>
+<log idref="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1.prior"/>
+<log idref="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10.prior"/>
+<log idref="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2.prior"/>
+<log idref="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1.prior"/>
+<log idref="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6.prior"/>
+<log idref="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30.prior"/>
+<log idref="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5.prior"/>
+<log idref="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1.prior"/>
+<log idref="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45.prior"/>
+<log idref="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1.prior"/>
+<log idref="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4.prior"/>
+<log idref="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4.prior"/>
+<log idref="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1.prior"/>
+<log idref="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23.prior"/>
+<log idref="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1.prior"/>
+<log idref="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1.prior"/>
+<log idref="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1.prior"/>
+<log idref="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14.prior"/>
+
+    </logger>
+
+    <!-- screenlog -->
+    <logger id="screenlog" spec="Logger" logEvery="500000">
+        <log idref="posterior"/>
+        <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <!-- treelog -->
+    <logger id="treelog.t" spec="Logger" fileName="TAXA_60_PCs_2/independent_run_2/output/FBD_skyline_age_uncertainty.trees" logEvery="500000" mode="tree">
+        <log id="TreeWithMetaDataLogger" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree" branchratemodel="@rateCatClock" sort="false"/>
+    </logger>
+
+</run>
+
+</beast>

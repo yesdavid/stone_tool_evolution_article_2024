@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+<!-- based on the following template: https://github.com/gavryushkina/sampled-ancestor-bdsky/blob/master/templates/SAFBDSKY.xml - FBD skyline -->
+<!-- see also: https://taming-the-beast.org/tutorials/FBD-tutorial/FBD-tutorial.pdf - alternative parameterisation, fossil age uncertainty and offset  -->
+<!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMPruneLikelihood.xml - multiple traits, BM model, contraband package -->
+<!-- see also: https://github.com/fkmendes/contraband/blob/master/examples/testing/BMMVNShiftLikelihoodOneTrait_FBDTree_RateCatClock.xml - multiple rate categories, nCat = 2, contraband package -->
+
+<!-- ** Data and taxon names ** -->
+<data
+    id="dnaSequence"
+    spec="Alignment"
+    name="alignment">
+
+    <!-- Empty sequence alignment -->
+    <sequence id="1" taxon="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18" totalcount="4" value="N"/>
+<sequence id="2" taxon="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="3" taxon="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="4" taxon="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="5" taxon="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10" totalcount="4" value="N"/>
+<sequence id="6" taxon="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="7" taxon="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17" totalcount="4" value="N"/>
+<sequence id="8" taxon="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20" totalcount="4" value="N"/>
+<sequence id="9" taxon="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="10" taxon="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7" totalcount="4" value="N"/>
+<sequence id="11" taxon="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="12" taxon="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="13" taxon="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="14" taxon="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9" totalcount="4" value="N"/>
+<sequence id="15" taxon="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16" totalcount="4" value="N"/>
+<sequence id="16" taxon="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="17" taxon="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="18" taxon="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="19" taxon="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22" totalcount="4" value="N"/>
+<sequence id="20" taxon="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7" totalcount="4" value="N"/>
+<sequence id="21" taxon="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="22" taxon="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="23" taxon="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8" totalcount="4" value="N"/>
+<sequence id="24" taxon="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6" totalcount="4" value="N"/>
+<sequence id="25" taxon="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="26" taxon="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="27" taxon="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7" totalcount="4" value="N"/>
+<sequence id="28" taxon="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="29" taxon="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6" totalcount="4" value="N"/>
+<sequence id="30" taxon="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5" totalcount="4" value="N"/>
+<sequence id="31" taxon="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="32" taxon="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="33" taxon="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="34" taxon="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="35" taxon="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3" totalcount="4" value="N"/>
+<sequence id="36" taxon="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="37" taxon="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4" totalcount="4" value="N"/>
+<sequence id="38" taxon="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5" totalcount="4" value="N"/>
+<sequence id="39" taxon="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21" totalcount="4" value="N"/>
+<sequence id="40" taxon="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18" totalcount="4" value="N"/>
+<sequence id="41" taxon="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13" totalcount="4" value="N"/>
+<sequence id="42" taxon="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="43" taxon="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10" totalcount="4" value="N"/>
+<sequence id="44" taxon="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2" totalcount="4" value="N"/>
+<sequence id="45" taxon="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="46" taxon="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6" totalcount="4" value="N"/>
+<sequence id="47" taxon="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30" totalcount="4" value="N"/>
+<sequence id="48" taxon="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5" totalcount="4" value="N"/>
+<sequence id="49" taxon="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="50" taxon="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45" totalcount="4" value="N"/>
+<sequence id="51" taxon="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="52" taxon="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4" totalcount="4" value="N"/>
+<sequence id="53" taxon="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4" totalcount="4" value="N"/>
+<sequence id="54" taxon="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="55" taxon="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23" totalcount="4" value="N"/>
+<sequence id="56" taxon="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="57" taxon="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="58" taxon="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1" totalcount="4" value="N"/>
+<sequence id="59" taxon="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14" totalcount="4" value="N"/>
+<sequence id="60" taxon="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4" totalcount="4" value="N"/>
+
+
+</data>
+
+<map name="Uniform">beast.math.distributions.Uniform</map>
+<map name="Exponential">beast.math.distributions.Exponential</map>
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal">beast.math.distributions.Normal</map>
+<map name="Beta">beast.math.distributions.Beta</map>
+<map name="Gamma">beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+<map name="prior">beast.math.distributions.Prior</map>
+<map name="InverseGamma">beast.math.distributions.InverseGamma</map>
+<map name="OneOnX">beast.math.distributions.OneOnX</map>
+<map name="Dirichlet">beast.math.distributions.Dirichlet</map>
+
+<run id="mcmc" spec="MCMC" chainLength="5000000000">
+
+    <!-- ** Declare model parameters and variables, plus some starting values ** -->  
+    <state id="state" spec="State" storeEvery="500000">
+
+        <tree id="TheTree" spec="beast.evolution.tree.Tree" name="stateNode">
+
+            <taxonset id="TaxonSet" spec="TaxonSet">
+                <taxon id="TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18" spec="Taxon"/>
+<taxon id="TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10" spec="Taxon"/>
+<taxon id="TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17" spec="Taxon"/>
+<taxon id="TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20" spec="Taxon"/>
+<taxon id="TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7" spec="Taxon"/>
+<taxon id="TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9" spec="Taxon"/>
+<taxon id="TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16" spec="Taxon"/>
+<taxon id="TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1" spec="Taxon"/>
+<taxon id="TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22" spec="Taxon"/>
+<taxon id="TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7" spec="Taxon"/>
+<taxon id="TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8" spec="Taxon"/>
+<taxon id="TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6" spec="Taxon"/>
+<taxon id="TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7" spec="Taxon"/>
+<taxon id="TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6" spec="Taxon"/>
+<taxon id="TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5" spec="Taxon"/>
+<taxon id="TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5" spec="Taxon"/>
+<taxon id="TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21" spec="Taxon"/>
+<taxon id="TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18" spec="Taxon"/>
+<taxon id="TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13" spec="Taxon"/>
+<taxon id="TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10" spec="Taxon"/>
+<taxon id="TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2" spec="Taxon"/>
+<taxon id="TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6" spec="Taxon"/>
+<taxon id="TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30" spec="Taxon"/>
+<taxon id="TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5" spec="Taxon"/>
+<taxon id="TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45" spec="Taxon"/>
+<taxon id="TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4" spec="Taxon"/>
+<taxon id="TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4" spec="Taxon"/>
+<taxon id="TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23" spec="Taxon"/>
+<taxon id="TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1" spec="Taxon"/>
+<taxon id="TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14" spec="Taxon"/>
+<taxon id="TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4" spec="Taxon"/>
+
+            </taxonset>
+
+            <!-- Insert age data, use data-backward for macroevolution -->
+            <!-- If you do not place priors and operators on the sample ages, they will be fixed to the values specified here -->
+            <!-- In this example, all ages fixed. Tree scaled to age of youngest sample -->
+            <trait id="FossilSet" spec="beast.evolution.tree.TraitSet" traitname="date-backward">                       
+                TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18=4.619,
+TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1=3.445,
+TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1=3.644,
+TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1=3.128,
+TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10=3.434,
+TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2=3.786,
+TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17=4.245,
+TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20=4.492,
+TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1=4.43,
+TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7=4.05,
+TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3=4.02,
+TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1=4.164,
+TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1=4.301,
+TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9=3.656,
+TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16=4.452,
+TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1=3.22,
+TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1=3.149,
+TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3=3.275,
+TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22=4.006,
+TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7=4.006,
+TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3=2.96,
+TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2=2.846,
+TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8=3.391,
+TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6=2.328,
+TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2=2.5,
+TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3=2.899,
+TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7=3.645,
+TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1=2.148,
+TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6=1.639,
+TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5=2.131,
+TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1=3.702,
+TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1=1.757,
+TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3=1.88,
+TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3=1.398,
+TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3=1.283,
+TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1=1.493,
+TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4=1.125,
+TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5=2.308,
+TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21=2.057,
+TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18=1.526,
+TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13=0.986,
+TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1=1.771,
+TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10=1.532,
+TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2=0.507,
+TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1=0.475,
+TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6=0.361,
+TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30=0.185,
+TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5=1.19,
+TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1=0.002,
+TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45=0.081,
+TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1=0.365,
+TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4=0.766,
+TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4=0.217,
+TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1=0.733,
+TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23=0.244,
+TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1=0.333,
+TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1=1.033,
+TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1=1.076,
+TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14=0.654,
+TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4=0
+                <taxa idref="TaxonSet"/>
+            </trait>
+            
+        </tree>
+
+        <!-- FBD model -->
+        <parameter id="birthRateFBD" lower="0.0" name="stateNode">1.0 1.0 1.0 1.0</parameter> <!-- change required here for FBD skyline, add starting values for each interval-->
+        <parameter id="deathRateFBD" lower="0.0" name="stateNode">1.0 1.0 1.0 1.0</parameter>
+        <parameter id="samplingRateFBD" lower="0.0" name="stateNode">0.1 0.1 0.1 0.1</parameter>
+        <parameter id="originFBD" lower="0.0" name="stateNode">18.982</parameter>      
+        <!-- BM-model state nodes-->
+        <stateNode idref="rootValues"/>
+        <stateNode idref="varValues"/>        
+        <stateNode idref="covValues"/>
+        <!--Clock model -->
+        <stateNode idref="rateValues"/>
+        <stateNode idref="rateAssignments"/>        
+        
+    </state>
+
+    <!-- Starting tree block -->
+    <init id="RandomTheTree" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@TheTree" taxa="@dnaSequence">
+        <populationModel id="ConstantPopulation0.t" spec="ConstantPopulation">
+            <parameter id="randomPopSize.t" spec="parameter.RealParameter" name="popSize">1.0</parameter>
+        </populationModel>
+    </init>
+
+    <!-- ** The Posterior ** -->
+    <!-- Specify your posterior, within this you'll specify your prior and likelihood -->
+    <distribution id="posterior" spec="util.CompoundDistribution">
+
+        <!-- ** The Priors ** -->
+        <distribution id="prior" spec="util.CompoundDistribution">
+
+            <!-- the tree prior, the FBD skyline model, change spec --> 
+            <distribution id="FBD" spec="beast.evolution.speciation.BirthDeathSkylineModel" conditionOnRhoSampling="false"  birthRate="@birthRateFBD" deathRate="@deathRateFBD" samplingRate="@samplingRateFBD" origin="@originFBD" tree="@TheTree">
+                <parameter id="rFBD" estimate="false" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                <parameter id="rhoFBD" estimate="false" lower="0.0" name="rho" upper="1.0">0.0</parameter>
+                <!-- change required here for FBD skyline, add change times, last entry must always be zero -->
+                <parameter name="birthRateChangeTimes" id="birthRateChangeTimesSASky" value="3.582 1.882 0.682 0"/>
+                <parameter name="deathRateChangeTimes" id="deathRateChangeTimesSASky" value="3.582 1.882 0.682 0"/>
+                <parameter name="samplingRateChangeTimes" id="samplingRateChangeTimesSASky" value="3.582 1.882 0.682 0"/>
+                <reverseTimeArrays spec='parameter.BooleanParameter' value='true true true true true'/> <!-- clarify order of change times, i.e., backwards (true) or fowards (false) -->
+            </distribution> <!-- note no option to conditionOnSurvival in the SA package -->
+
+            <!-- Priors on the FBD model parameters -->
+            <distribution id="birthRatePriorFBD" spec="beast.math.distributions.Prior" x="@birthRateFBD">
+        	  <distr id="birthRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>
+            <distribution id="deathRatePriorFBD" spec="beast.math.distributions.Prior" x="@deathRateFBD">
+        	  <distr id="deathRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>  
+            <distribution id="samplingRatePriorFBD" spec="beast.math.distributions.Prior" x="@samplingRateFBD">
+        	  <distr id="samplingRateExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.1"/>
+            </distribution>  
+            <distribution id="originPriorFBD" spec="beast.math.distributions.Prior" x="@originFBD">
+	            <distr id="originFBDUniform" spec="beast.math.distributions.Uniform" upper="Infinity"/>
+            </distribution>
+
+            <!--Priors on trait model parameters -->
+            
+            <!-- BM model prior -->
+            <!-- trait evolutionary rate, the diagonal elements in the variance-covariance matrix -->
+            <distribution id="varValuesPrior" spec="beast.math.distributions.Prior" x="@varValues">
+                <distr id="varValuesLogNormal" spec="beast.math.distributions.LogNormalDistributionModel" S="0.3" M="1.0"/>
+            </distribution>
+            <!-- trait correlations, the off-diagonal elements in the variance-covariance matrix -->
+            <distribution id="covValuesPrior" spec="beast.math.distributions.Prior" x="@covValues">
+                <distr id="covValuesUniform" spec="beast.math.distributions.Uniform" lower="-1.0" upper="1.0"/>
+            </distribution>
+            <!-- trait values at the root -->
+            <distribution id="rootValuesPrior" spec="beast.math.distributions.Prior" x="@rootValues">
+                <distr id="rootValuesNormal" spec="beast.math.distributions.Normal" mean="0.0" sigma="2.0"/>
+            </distribution>
+
+            <!-- clock model -->
+            <distribution id="rateValuesPrior" spec="beast.math.distributions.Prior" x="@rateValues">
+	            <distr id="rateValuesExp" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.2"/>
+	        </distribution>
+            <distribution id="rateAssignmentsPrior" spec="beast.math.distributions.Prior" x="@rateAssignments">
+	            <distr id="rateAssignmentsUniform" spec="beast.math.distributions.Uniform" offset="0.0" lower="0.0" upper="1.0"/>
+	        </distribution>
+
+            <!-- insert prior fossil ages here -->
+
+        </distribution>        
+
+        <!-- ** The likelihood ** -->
+        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+
+            <!-- START Morphological likelihood CONTRABAND-Package -->
+            <distribution id="PCMLikelihood" spec="contraband.prunelikelihood.BMPruneLikelihood">
+
+                <tree idref="TheTree"/>
+                
+                <!-- trait values for species of interest, an array of elements in the trait matrix-->
+                <!-- For example
+                    trait1 trait2 trait3
+                    sp1     T11    T12    T13
+                    sp2     T21    T22    T23
+                    sp3     T31    T32    T33
+                    the input here should be T11 T12 T13 T21 T22 T23 T31 T32 T33
+                -->
+                <traits id="oneTraitData" spec="parameter.RealParameter" minordimension="9" keys= "TS01_LEpigrav_ASH_Nadap_DobosiEtAl1988_AR_na_3_pseudo_no_18 TS1_Cres_GBS_RobinHoodsCave_Jacobi2004_AR_d_1_pseudo_no_1 TS1_Cres_GBS_SunHole_Jacobi2004_AR_na_1_pseudo_no_1 TS1_Cres_GBS_ThreeHolesCave_BartonRoberts1996_AR_na_1_pseudo_no_1 TS1_EAzil_CH_HauteriveChampreveyres_Leeschetal2004_AR_d_1_pseudo_no_10 TS1_EAzil_SWF_Murat_Lorblanchet1985u1996_AR_na_1_pseudo_no_2 TS1_FMag_IBC_SantimamineSlnc_LopezQuintana2011_AR_na_1_pseudo_no_17 TS1_FMag_IBM_ParcoII_Langlais2007_AR_na_1_pseudo_no_20 TS1_LEpigrav_ASH_Zoeld_BeresEtAl2020_AR_p_1_pseudo_no_1 TS1_Mag_BOMO_Pekarna_Valoch2001_AR_na_1_pseudo_no_7 TS1_Mag_BSN_BoisLaiterie_OtteStraus1997_AR_NA_2_pseudo_no_3 TS1_Mag_PL_Klementowice20_WisniewskiT2015_AR_na_9_pseudo_no_1 TS1_Mag_PL_Wilczyce10_Krolik2014_AR_na_4_pseudo_no_1 TS1_TransMag_SG_Felsstalle_Kind1987_AR_d_1_pseudo_no_9 TS1_TransMag_SG_HelgaAbri_Hess2019_AR_d_1_pseudo_no_16 TS1_TransMag_SG_ZigeunerfelsFG_HornauerJahnkeNoack2019_AR_d_1_pseudo_no_1 TS1_UMag_IBA_LapadosCoelhos4_Gameiroetal2020_AR__pseudo_no_1 TS1_UMag_NF_EtiollesQ31_ChristensenValentin2004_AR_d_1_pseudo_no_3 TS1_UMag_SWF_BoisRagot_Langlais2018_AR_na_1_pseudo_no_22 TS1_UMag_SWF_BoisRagotniv5_LeLiconJulien2005_AR_d_1_pseudo_no_7 TS12_EAzil_CH_AbriNeumuhle_Sedlmeier2015_AR_na_1_pseudo_no_3 TS12_EAzil_NF_LeCloseauLocus4_Bodu1998_AR_na_1_pseudo_no_2 TS12_EAzil_SWF_Imperatrice_Naudinotetal2017u2018_AR_d_1_pseudo_no_8 TS2_EpiMag_BOMO_Kulna4_Valoch1998_AR_d_1_pseudo_no_6 TS2_FMag_IBA_LapadosCoelhos3_Gameiro2012_AR_d_1_pseudo_no_2 TS2_Hav_NG_AhrenshoeftLA58d_Weberetal2010fig7_AR_d_1_pseudo_no_3 TS2_Mag_BOMO_Kulna6_Valoch1998_AR_d_1_pseudo_no_7 TS2_Wito_PL_NowaBiala1_ValdeKraszewska2015_AR_d_1_pseudo_no_1 TS23_LAzil_NF_LeCloseauLocus14_Bodu1998_AR_na_1_pseudo_no_6 TS3_AFeder_GBS_MotherGrundysParlour_Armstrong1925_AR_na_1_pseudo_no_5 TS3_AFeder_GBS_PinHoleCave_JacobiandHigham2009_AR_d_1_pseudo_no_1 TS3_Brom_PL_Rotnowo18_Galinski2007_AR_d_1_pseudo_no_1 TS3_Brom_SS_Trollesgave_Fischer1990_AR_na_1_pseudo_no_3 TS3_EAzil_IBC_LosAzulesUnit3_FernandezTresguerres1980_AR_na_1_pseudo_no_3 TS3_EpiAhr_BSN_Remouchamps_Dewez1974_AR_P_2_pseudo_no_3 TS3_LEpigrav_NEI_LaCogolaSU19_Cusinato2003_AR_p_1_pseudo_no_1 TS3_LEpigrav_NEI_PaluEchen_Dalmerietal2013_AR_d_1_pseudo_no_4 TS3_LEpigrav_NEI_RiparoDalmeripossiblylayer15_AgogueDalmeri2005_AR_na_2_pseudo_no_5 TS3_LEpigrav_NEI_RiparoDalmeriUpperlayers_Bassettietal1998_AR_na_1_pseudo_no_21 TS3_Sauv_IBM_CingledelAigua_Roman2011_AR_na_1_pseudo_no_18 TS3_Sauv_IBM_Pena14_Sotoetal2019_AR_na_1_pseudo_no_13 TS3_Wito_PL_Witow5Cassemblage1_Chmielewska1978_AR_d_2_pseudo_no_1 TS34_LAzil_IBA_Fariseu4_Aubry2009_AR_na_1_pseudo_no_10 TS34_LPal_SG_BadBuchauKappel_Joachimetal2015_AR_p_1_pseudo_no_2 TS4_Ahr_SS_SyltholmVII_Mage2019_AR_na_1_pseudo_no_1 TS4_Bell_NF_Alizay_Biardetal2015_AR_na_1_pseudo_no_6 TS4_BeurA_SG_JagerhaushohleSchicht13_Taute1971_AR_na_1_pseudo_no_30 TS4_ELab_SWF_PortdePenne_Langlais2020_AR_d_1_pseudo_no_5 TS4_EpiAhr_PL_Bolkow1_Galinski2018_AR_p_2_pseudo_no_1 TS4_ESauv_NEI_RomagnanoLocIIIlayerAE_Bartolomeietal1984_AR_na_1_pseudo_no_45 TS4_LAzil_IBA_Bocas0_Bicho1999_AR_na_1_pseudo_no_1 TS4_LAzil_IBC_Perro2_GonzalezMoralesDiazCasado19911992_AR_na_1_pseudo_no_4 TS4_LEpigrav_NEI_LaCogolaSU18_Cusinato2003_AR_na_2_pseudo_no_4 TS4_REpigrav_ASH_Altwasser_JagherFischerMorel1997_AR_na_3_pseudo_no_1 TS4_Sauv_IBM_Filador4_Romanetal2021_AR_na_1_pseudo_no_23 TS4_Swid_LT_Kabeliai2_Ostrauskas2002_AR_d_1_pseudo_no_1 TS4_SwidAhr_PL_Kochlew1_Cyrek1996_AR_d_2_pseudo_no_1 TS4_SwidAhr_PL_WojnowoAcutIII75_Kobusiewicz2016_AR_d_4_pseudo_no_1 TS45_FBT_GBS_ThreeWaysWharfCWest_LewisandRackham2011_AR_p_1_pseudo_no_14 TS5_EMeso_GBS_StarCarr_Milneretal2018_AR_na_1_pseudo_no_4">
+                0.115771088699815 -0.108679192884551 0.07441402097774 -0.00654934632465726 -0.0639693256337034 -0.0289412588299966 0.0498948003102425 0.0194670406072081 -0.0366723433537487 0.0954580765934919 -0.128942605355071 0.0531475364484733 0.0105059769540687 -0.0101919199022581 -0.0107274727882182 -0.0461961907019789 0.0274547168856628 0.00552411041437388 0.974465341908685 0.404893289598538 -0.0391197147505426 -0.050614016534549 0.0120367171653348 0.0448353124183423 -0.0938553835972053 -0.0572134961343784 -0.0222478266663286 -0.967373958842064 0.220726526269515 0.0348868973140436 -0.0196782754096278 -0.00352069159549907 0.0111817233364397 0.00382187777692181 -0.0865197250962921 0.0168625193243392 -0.258746615606599 -0.045176217699836 -0.13954359033118 -0.0189974320864945 -0.222552246601777 -0.00754025564198461 -0.0375514372497773 0.0501869785767871 0.0189336071515701 -0.449641411476792 -0.0693831863477515 0.00786487371844014 -0.0611983476533395 -0.00750487858758198 0.0382165387708366 0.0212399447870429 0.0111958239738864 -0.00980713290403872 0.328547786090851 -0.0688281613870461 0.0360432742072343 0.0593824998831145 0.0315337835076056 -0.0162029659620098 -0.00143455666489438 -0.0234472514033469 0.0151995008659777 -0.401690497425311 -0.0884799491890865 0.0706768862578099 -0.101598701497729 0.0211095969870279 -0.00537663874058728 0.0411810024982132 -0.00355045945631084 -0.00998163232142728 -0.139532137462901 -0.124812180174675 0.0300151145496439 -0.0424259424847187 -0.0301636741423951 -0.00129694216227781 0.0347986728453826 0.0188148809335106 -0.0328759415791662 0.176652925699692 -0.109940911775803 0.0755865343798416 0.00374592344536816 0.0312335068129109 -0.0499286861586572 -0.0174862551085271 0.022948160232235 -0.00219045526505986 0.228709441932231 -0.0989696322157854 0.0658891417662873 0.0622763873326683 0.0346947123551256 0.0173468018261693 -0.0189403508386165 -0.0098034266099649 0.00972671493791208 1.10439522633584 0.591440263335987 0.0157728824349729 -0.0931268598284182 -0.0310542502524557 0.0629126424876306 -0.0537913293578245 -0.0264707665040099 -0.00919042521982129 -0.136750136561171 -0.129486466127448 0.0664066161951628 0.0070288528481687 -0.0021333779545857 0.0836746307201276 -0.044416613126461 0.0403145701429928 0.0246125246827996 0.378317251192013 -0.0224228734541386 -0.0398781609259097 0.0106486976286157 0.0024613146653538 -0.0846709616528615 -0.0322668436953751 -0.00523176652420096 0.00922403981707278 0.755210803054536 0.224778464486158 -0.163311732433449 0.00660856440970076 0.0111863094940837 -0.0252125530774373 0.0553648832927872 -0.0606055872650387 -0.0784989402360747 -0.520237778716694 -0.0289274417769614 -0.0672496637094919 -0.0755782783869968 -0.0111071719548991 0.0287754952312725 -0.0378236998160618 -0.0111671838296983 -0.00246089174810049 0.0474929220512976 -0.13711184427624 0.208726021855615 -0.0208953789988394 -0.00115110295302225 -0.0103273647136041 -0.0100293200086849 0.019519474082811 -0.0149192101320356 -0.443892736733629 -0.0740887113764031 -0.0259886287869265 -0.0843930354006901 0.00752435070886368 0.0186819945286627 -0.00967533329441577 0.0121096601342745 0.0393618925163288 0.433168784343114 -0.0319643183409251 0.059256023763349 0.0843641840039071 -0.00204254212495843 0.023056005001431 -0.014765651066599 -0.0458308047173215 0.00733683632609847 0.229429427801338 -0.0226094689290507 -0.218751124300634 0.0763087538288483 0.0512754240200927 0.0377162913091892 -0.107977438502436 0.0107293034339852 0.0396185750822735 -0.237252268839774 -0.0946625432544509 -0.0108002287465316 -0.102906016947539 0.0270181579661923 -0.042937840630934 0.00437125645544697 0.00623361603185087 -0.0383336793509224 -0.575258570283774 0.00174448766790979 -0.0804517258760293 -0.0855807777212572 0.0399047595176273 0.00357668269488537 0.0839046046965737 -0.00661215848126271 0.0617614889086545 -0.0470059336837304 -0.122362773911321 -0.0505428397691102 -0.0302452403822737 0.0549901566690311 -0.0147915539790419 0.0260915252000145 0.029845128869012 0.000552083554600824 -0.767970616046575 0.0691772941259921 0.0761334965941173 -0.103484697985422 0.039780524584095 0.0125799576596675 0.00572269259580619 -0.0761998712848358 0.0305085508110241 0.32813474062251 -0.0709294851445727 0.0684715485211133 0.0232374536282295 -0.0190205000021119 -0.0445897302992614 0.00474450382527521 -0.0368323085481835 -0.00580561644912916 0.0917134982032201 -0.12675201045262 0.123789282867776 -0.00394544320606771 -0.00505918142521905 0.00909196472588281 0.00148024235028271 0.0172984314792383 -0.0105596991124392 0.460841885010073 -0.00373790633943834 -0.0152985898058655 0.0224746461407038 0.00340714152808705 -0.0792186683079082 0.0086608115564407 -0.0409210513279358 -0.0510084872612733 -1.11908463468582 0.429554193310337 -0.0821630516865018 0.0689542502998106 -0.0944971737621899 -0.0799109039712961 -0.0471308832411171 -0.0114705982774456 0.0256299547161973 0.0748382949702182 -0.120768310964821 0.0270362945595117 -0.0390124523895736 0.0243229844648008 -0.0446763660726431 -0.0263848987308602 0.0311637101401386 -0.0296647652693167 0.0625578874095167 -0.120116229884732 -0.000429970074786658 -0.0188952458677767 -0.00943608281562422 -0.030874076710786 -0.0357539328946667 0.0176974571093265 -0.0107939538431063 0.415555155453389 -0.0183801752419298 -0.0177308794813185 0.0544843683141673 -0.00381704756268435 -0.0145393231037359 -0.0335379318247511 -0.032343498490645 -0.00166162385185389 1.22637209389241 0.803399519558931 0.0748393522198372 -0.126604300337167 -0.0344180395216415 0.130381539205461 0.0167780014247639 0.044945973576138 0.0181640677795926 -0.226158092680092 -0.0753262684430842 -0.124385333866326 -0.0117955910748662 -0.00500950107003566 0.0394407172729236 -0.0529370183735151 0.0280957650591804 -0.0894351229531225 -0.0597656073713421 -0.107407745079548 -0.0583569033189198 -0.0578646472091795 0.0203180571145132 -0.0513724736377696 -0.027190560411792 0.036545121242771 -0.00156331711929716 0.0374914866000024 -0.110200555666769 -0.0349382090499976 0.0764801703664386 -0.0577528317427908 0.0942094467355159 0.0716056353702044 0.0258701371416576 0.0108109530588491 0.222751321604226 -0.104800196920063 0.164611667263968 0.041163732581758 0.0134111149386695 0.0020192171411678 -0.0238254251379016 -0.00539969102128155 0.00411629852351035 -0.75767113867965 0.0823803859077113 -0.0398678084075661 -0.0385983581604732 -0.0282207630896051 0.0264357650642197 0.0784431551657094 -0.0636338613174243 0.00810447028381474 -0.00552772362019851 -0.123615174999461 0.0663665597129095 -0.0314315419661062 0.0196649632600605 -0.0235187245660236 -0.0197717297738935 0.0358604578663478 0.00529817517365563 0.332030873902746 -0.0703725325827505 0.12675718789302 0.0874504385090315 -0.0359635804740722 0.0207279901436254 -0.018796266308042 -0.0336888173853006 0.00645174489029577 -0.0894391120140704 -0.10936219738527 -0.0745842979597272 -0.0879949659271672 -0.0155255543425138 -0.0836177789758533 0.0129606729390086 0.0609169066550453 0.020422759576163 0.187724491256668 -0.0224171731083664 -0.28362482927718 0.102673274801466 0.0488229877031643 0.0668828789854117 0.0575503336007157 0.0162767090180432 0.00080528062816283 0.385514400599245 0.00510407940114842 -0.144341009653756 0.020790580503813 -0.0270378620187539 -0.100310217510231 0.0313559601998906 0.00611061365652196 -0.0122458810234837 0.110683090408518 -0.102329884958015 -0.0739494202702055 0.028149475324546 -0.0677034064032299 -0.0208523501974849 0.0318177970223231 0.0211813685357394 0.00174119999749677 -0.235268519562288 -0.0765251954047744 -0.136461940141197 -0.0390220369390652 -0.0723578220117347 -0.00421757320985685 0.071075226270294 0.0107817770470358 -0.021409942330195 0.0967676242790463 -0.109037673182921 0.00686030924859885 0.0157622346019539 -0.0654920376202428 -0.00443751502504772 0.00182364650279465 0.0268958136412827 -0.0461547980014389 0.316634450177415 -0.0743049386382248 0.0598952899117698 0.0995666708106216 -0.00257814806912237 0.0580823590896681 0.0325469664527959 -0.0341554820640972 -0.00853066357292198 0.279364984738683 -0.0209200058211724 -0.183482210270651 0.0387127411499282 0.154349618131731 -0.00347527979158005 0.0115669745105018 0.00181034558367849 0.0111844954078387 0.341798271574815 -0.049166793186841 0.0286681568001054 0.0729354961595647 -0.0588170832832835 0.00270977589141149 0.0613383744083886 -0.0275928966755737 0.014914957768885 0.011551607933621 -0.0629598119013223 -0.196600348330144 0.0666097293456092 0.0248174991292018 0.0690099546817501 0.0373891090349564 0.0095821643199054 0.0228927203337634 0.00946556860361828 -0.132778508294158 0.0961398466083622 0.0514430951815733 -0.0298866549593986 0.0841368210409253 -0.0531670257008513 0.0283869797111025 0.0196172914449028 0.141238433254142 -0.107118865636056 0.0376116070381838 -0.0067909201703145 -0.0435773699155033 -0.0646598788752127 0.0370828003176251 0.0178412636668654 -0.00897647676830527 -0.450204162611035 -0.0598547527272518 0.0411473870243351 -0.127499801147538 0.0257338872514717 -0.0178731366261445 -0.0268464506978153 -0.0134681139564376 -0.0173025384602694 0.138618023598355 -0.123605719965062 0.0629784816681156 0.019632059473912 0.0528355393605548 -0.00642731451659423 -0.00902796545446948 0.00819230612102038 -0.0057115468112889 0.20566688743559 -0.0445322925402085 -0.16899753612221 -0.00147296472930701 0.0898579682371142 -0.0534459060716976 -0.040412232829358 0.0194831209150447 -0.0244563256828216 -0.347978024189764 -0.107600454838475 0.00975808871270533 0.01047337189348 -0.0119987371857267 0.12783532454761 0.0579294194214709 0.0142332495477089 -0.010796683464508 -0.936380946585486 0.227254845557592 -0.0548228150809639 -0.0203081674742871 0.066222680886815 -0.0302935344397574 -0.0759908719822648 -0.0828788773895293 0.0123759653298654 -0.221885888820668 -0.0932509782223542 -0.0739262524969335 -0.064357150881029 0.0897192641109835 0.0417011130495106 -0.0900154808558436 0.0493764516220426 -0.0103137966359513 -1.44112949441237 0.962226702307181 0.134485555899477 0.279269486686964 0.0880501569214004 -0.0527060683474146 0.0257784127285555 0.165500609743638 -0.0266951779121223 -0.410938876130504 -0.0683566560212154 -0.0300354411091678 -0.0723797826725847 -0.0257064206502109 0.0265449959464315 -0.0445026733515494 0.00293592921822445 -0.0315386366700218 -0.532194853996504 -0.0154183381633884 -0.0647501662796454 -0.0864611348422725 0.121541851558433 0.0226725861591088 0.0597394594001278 -0.0249396719694922 0.00102673887012479
+                </traits>
+
+                <!-- the morphological clock model -->
+                <branchRateModel id="rateCatClock" spec="contraband.clock.RateCategoryClockModel" nCat="2">
+                    <rates id="rateValues" spec="parameter.RealParameter" lower="0" upper="1000">0.00000001 0.00000005</rates>
+                    <rateCatAssign id="rateAssignments" spec="parameter.IntegerParameter" lower="0" upper="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</rateCatAssign>
+                    <tree idref="TheTree"/>
+                </branchRateModel>
+
+                <!-- parameters in the BM model -->
+                <!-- here we assume each trait has its own evolutionary rate -->
+                <!-- if we assume all traits to share one common rate, we should set the flag by oneRateOnly="true" -->
+                <!-- the flag upperMatrix="true" here is to ensure the non-singular variance-covariance matrix -->
+                <nodeMath id="pcmNodeMath" spec="contraband.math.NodeMath" traits="@oneTraitData" upperMatrix="true">
+                    <sigmasq id="varValues" spec="parameter.RealParameter">1.0</sigmasq>
+                    <correlation id="covValues" spec="parameter.RealParameter">0.0</correlation>
+                    <rootValues id="rootValues" spec="parameter.RealParameter">0.0</rootValues>
+                </nodeMath>
+            </distribution> <!-- END Morphological (PCM) likleihood -->            
+        </distribution> <!-- End Likelihood -->
+    </distribution> <!-- End Posterior -->
+
+    <!-- ** MCMC moves ** - I have shuffled these into non-arbitrary groups -->
+    <!-- FBD model parameters -->
+    <operator id="birthRateFBDScaler.t" spec="ScaleOperator" parameter="@birthRateFBD" weight="3.0"/>
+    <operator id="deathRateFBDScaler.t" spec="ScaleOperator" parameter="@deathRateFBD" weight="3.0"/>
+    <operator id="samplingRateFBDScaler.t" spec="ScaleOperator" parameter="@samplingRateFBD" weight="3.0"/>
+    <operator id="originScalerFBD" spec="ScaleOperator" parameter="@originFBD" scaleFactor="0.75" weight="3.0"/>    
+    <!-- parameters in the BM model -->
+    <operator id="varValueScaler" spec="ScaleOperator" parameter="@varValues" scaleFactor="0.75" weight="6.0"/>
+    <operator id="covValueRandomWalk" spec="RealRandomWalkOperator" parameter="@covValues" windowSize="1.0" weight="10.0"/>
+    <operator id="rootValuesRandomWalk" spec="RealRandomWalkOperator" parameter="@rootValues" windowSize="1.0" weight="6.0"/>
+    <!-- clock model --> 
+    <operator id="rateAssignmentWalker" spec="IntRandomWalkOperator" parameter="@rateAssignments" windowSize="1" weight="10.0"/>
+    <operator id="rateValueScaler" spec="ScaleOperator" parameter="@rateValues" scaleFactor="0.75" weight="3.0"/>
+    <!-- tree topology -->
+    <operator id="LeafToSAFBD" spec="LeafToSampledAncestorJump" tree="@TheTree" weight="10.0"/>
+    <operator id="SAWilsonBaldingFBD" spec="SAWilsonBalding" tree="@TheTree" weight="10.0"/>
+    <operator id="SAWideFBD" spec="SAExchange" isNarrow="false" tree="@TheTree" weight="10.0"/>
+    <operator id="SANarrowFBD" spec="SAExchange" tree="@TheTree" weight="10.0"/>
+    <operator id="SAUniformOperatorFBD" spec="SAUniform" tree="@TheTree" weight="20.0"/>
+    <operator id="SATreeRootScalerFBD" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@TheTree" weight="1.0"/>
+    <operator id="SATreeScalerFBD" spec="SAScaleOperator" scaleFactor="0.42" tree="@TheTree" weight="3.0"/>
+
+    <!-- Insert moves on fossil ages -->
+
+    <!-- ** Parameters to log to file ** -->
+    <logger id="tracelog" fileName="TAXA_60_PCs_9/independent_run_2/output/FBD_skyline.log" logEvery="500000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="prior"/>
+        <log idref="likelihood"/>        
+        <log idref="PCMLikelihood"/>
+        <log idref="FBD"/>
+        <log id="TreeHeight.t" spec="beast.evolution.tree.TreeHeightLogger" tree="@TheTree"/>
+        <log id="SACountFBD" spec="beast.evolution.tree.SampledAncestorLogger" tree="@TheTree"/>
+        <!-- FBD model parameters -->
+        <log idref="birthRateFBD"/>
+        <log idref="deathRateFBD"/>
+        <log idref="samplingRateFBD"/>
+        <log idref="rFBD"/>
+        <log idref="rhoFBD"/>
+        <log idref="originFBD"/>
+        <!-- Clock model parameters -->        
+        <log idref="rateValues"/>
+        <log idref="rateAssignments"/>
+        <!-- BM model parameters -->
+        <log idref="varValues"/>
+        <log idref="covValues"/>
+        <log idref="rootValues"/>
+        <!-- Insert fossil ages -->
+    </logger>
+
+    <!-- screenlog -->
+    <logger id="screenlog" spec="Logger" logEvery="500000">
+        <log idref="posterior"/>
+        <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <!-- treelog -->
+    <logger id="treelog.t" spec="Logger" fileName="TAXA_60_PCs_9/independent_run_2/output/FBD_skyline.trees" logEvery="500000" mode="tree">
+        <log id="TreeWithMetaDataLogger" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@TheTree" branchratemodel="@rateCatClock" sort="false"/>
+    </logger>
+
+</run>
+
+</beast>
