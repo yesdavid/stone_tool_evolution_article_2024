@@ -289,9 +289,6 @@ ggsave(cowplot_ULNC_tree_posterior_length_rate,
 ###########################################################
 ###########################################################
 ###########################################################
-###########################################################
-
-
 
 variables <- c("posterior", "rate_median", "length_median", "height_0.95_HPD_absolute")
 
@@ -384,8 +381,6 @@ for(current_taxa in unique(ULNC_tree_data_df$taxa)){
 }
 per_taxa_traits_df <- 
   do.call(rbind.data.frame, per_taxa_traits_list)
-
-
 
 
 
@@ -493,8 +488,6 @@ cowplot_ULNC_tree_posterior_length_rate <-
 cowplot_ULNC_tree_posterior_length_rate
 
 
-
-
 ############ posterior
 
 per_taxa_plot_posterior <- 
@@ -541,16 +534,6 @@ per_trait_plot_posterior <-
   theme_bw() +
   ylab("Posterior clade probability")+
   xlab("Traits")
-
-# cowplot_posteriors <- 
-#   cowplot::plot_grid(plot_ULNC_posteriors,
-#                      cowplot::plot_grid(per_taxa_plot_posterior,
-#                                         per_trait_plot_posterior,
-#                                         ncol = 2,
-#                                         labels = c("B", "C")),
-#                      nrow = 2,
-#                      labels = c("A"))
-
 
 ############ height_0.95_HPD_absolute
 
@@ -599,14 +582,6 @@ per_trait_plot_height_0.95_HPD_absolute <-
   ylab("Age uncertainty range length")+
   xlab("Traits")
 
-# cowplot_height_median <- 
-#   cowplot::plot_grid(plot_ULNC_height_median,
-#                      cowplot::plot_grid(per_taxa_plot_height_0.95_HPD_absolute,
-#                                         per_trait_plot_height_0.95_HPD_absolute,
-#                                         ncol = 2,
-#                                         labels = c("B", "C")),
-#                      nrow = 2,
-#                      labels = c("A"))
 
 ############ length_median
 
@@ -655,14 +630,6 @@ per_trait_plot_length_median <-
   ylab("Median branch length")+
   xlab("Traits")
 
-# cowplot_length_median <- 
-#   cowplot::plot_grid(plot_ULNC_length_median,
-#                      cowplot::plot_grid(per_taxa_plot_length_median,
-#                                         per_trait_plot_length_median,
-#                                         ncol = 2,
-#                                         labels = c("B", "C")),
-#                      nrow = 2,
-#                      labels = c("A"))
 
 ############ rate_median
 
@@ -711,58 +678,6 @@ per_trait_plot_rate_median <-
   ylab("Median branch rate")+
   xlab("Traits")
 
-# cowplot_rate_median <- 
-#   cowplot::plot_grid(plot_ULNC_rate_median,
-#                      cowplot::plot_grid(per_taxa_plot_rate_median,
-#                                         per_trait_plot_rate_median,
-#                                         ncol = 2,
-#                                         labels = c("B", "C")),
-#                      nrow = 2,
-#                      labels = c("A"))
-
-
-
-
-#################################
-# mega_cowplot_ULNC_tree_posterior_length_rate <- 
-#   cowplot::plot_grid(cowplot::plot_grid(plot_ULNC_posteriors,
-#                                         cowplot::plot_grid(per_taxa_plot_posterior,
-#                                                            per_trait_plot_posterior,
-#                                                            ncol = 2,
-#                                                            labels = c("Ab", "Ac")),
-#                                         nrow = 2,
-#                                         labels = c("Aa")),
-#                      cowplot::plot_grid(plot_ULNC_height_median,
-#                                         cowplot::plot_grid(per_taxa_plot_height_0.95_HPD_absolute,
-#                                                            per_trait_plot_height_0.95_HPD_absolute,
-#                                                            ncol = 2,
-#                                                            labels = c("Bb", "Bc")),
-#                                         nrow = 2,
-#                                         labels = c("Ba")),
-#                      cowplot::plot_grid(plot_ULNC_length_median,
-#                                         cowplot::plot_grid(per_taxa_plot_length_median,
-#                                                            per_trait_plot_length_median,
-#                                                            ncol = 2,
-#                                                            labels = c("Cb", "Cc")),
-#                                         nrow = 2,
-#                                         labels = c("Ca")),
-#                      cowplot::plot_grid(plot_ULNC_rate_median,
-#                                         cowplot::plot_grid(per_taxa_plot_rate_median,
-#                                                            per_trait_plot_rate_median,
-#                                                            ncol = 2,
-#                                                            labels = c("Db", "Dd")),
-#                                         nrow = 2,
-#                                         labels = c("Da")),
-#                      ncol = 2)
-# 
-# mega_cowplot_ULNC_tree_posterior_length_rate
-
-# ggsave(mega_cowplot_ULNC_tree_posterior_length_rate,
-#        filename = file.path("3_output", "mega_cowplot_ULNC_tree_posterior_length_rate.png"),
-#        width = 30, height = 30, units = "cm", device = "png")
-# ggsave(mega_cowplot_ULNC_tree_posterior_length_rate,
-#        filename = file.path("3_output", "mega_cowplot_ULNC_tree_posterior_length_rate.eps"),
-#        width = 30, height = 20, units = "cm", device = "eps")
 
 #################################
 mega_cowplot_ULNC_tree_posterior_length_rate_v2 <- 
@@ -796,16 +711,3 @@ ggsave(mega_cowplot_ULNC_tree_posterior_length_rate_v2,
 ggsave(mega_cowplot_ULNC_tree_posterior_length_rate_v2,
        filename = file.path("3_output", "mega_cowplot_ULNC_tree_posterior_length_rate_v2.eps"),
        width = 40, height = 20, units = "cm", device = "eps")
-
-#################################
-# cowplot::plot_grid(per_taxa_plot_posterior,
-#                    per_taxa_plot_height_0.95_HPD_absolute,
-#                    per_taxa_plot_length_median,
-#                    per_taxa_plot_rate_median,
-#                    per_trait_plot_posterior,
-#                    per_trait_plot_height_0.95_HPD_absolute,
-#                    per_trait_plot_length_median,
-#                    per_trait_plot_rate_median,
-#                    nrow = 2)
-
-
