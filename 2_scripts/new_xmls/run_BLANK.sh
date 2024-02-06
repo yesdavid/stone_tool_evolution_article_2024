@@ -12,7 +12,7 @@
 
 # jobs always start in $HOME 
 # change to the working directory
-cd /home/woody/gwpa/gwpa007h/BEAST2_contraband/
+# cd /home/
 
 # run your job
 java -jar contraband.jar -statefile CURRENT_FOLDER_PLACEHOLDER/CURRENT_SCRIPT_PLACEHOLDER.state CURRENT_FOLDER_PLACEHOLDER/CURRENT_SCRIPT_PLACEHOLDER.xml
