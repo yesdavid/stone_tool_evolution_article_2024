@@ -14,7 +14,7 @@ Rachel Warnock³ ORCID: [0000-0002-9151-4642](http://orcid.org/0000-0002-9151-46
 
 ### Compendium DOI:
 
-[![DOI](https://zenodo.org/badge/DOI/.svg)](https://doi.org/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10693326.svg)](https://doi.org/10.5281/zenodo.10693326)
 
 The files at the URL above will generate the results as found in the publication. The files hosted at <https://github.com/yesdavid/stone_tool_evolution_article_2024> are the development versions and may have changed since the paper was published.
 
