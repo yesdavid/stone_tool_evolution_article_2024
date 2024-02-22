@@ -1,4 +1,4 @@
-# Scripts
+# Contents
 
 `./new_xmls` contains all BEAST2 scripts and the output MCC trees from this study.
 
