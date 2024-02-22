@@ -40,7 +40,7 @@ ngrip_delta_o_18 <-
                                from = 10000,
                                by = 1000)) +
   theme_bw() +
-  labs(y = "δ18O (‰)",
+  labs(y = expression(paste(δ^18, "O", " (‰)")), 
        x = "Age BP (1950)") +
   theme(legend.position = "none",
         panel.grid.minor = element_line(colour="grey95"),
