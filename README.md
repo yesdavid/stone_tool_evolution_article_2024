@@ -35,7 +35,7 @@ Cultural macroevolution; Bayesian phylogenies; phylogenetic comparative methods;
 
 The Bayesian phylogenies were inferred using `BEAST v2.6.6`, and the following packages: `ORC v1.0.3`, `BDMM-Prime v0.0.32`, `BDSKY v1.4.8`, `MODEL_SELECTION v1.5.3`, `BEASTLabs v1.9.7`, `SA v2.0.2`, `FastRelaxedClockLogNormal v1.1.1`, and `contraband v0.0.1` (which is provided in the `./2_scripts/contraband.jar` file).
 
-All further analyses were conducted in R v4.3.2 using the following packages: `beastio (>= 0.3.3)`, `coda (>= 0.19-4)`, `cowplot (>= 1.1.1)`, `data.table (>= 1.14.8)`, `dplyr (>= 1.1.2)`, `forcats (>= 1.0.0)`, `ggplot2 (>= 3.4.3)`, `ggpubr (>= 0.6.0)`, `ggrepel (>= 0.9.3)`, `ggthemes (>= 4.2.4)`, `ggtree (>= 3.6.2)`, `magrittr (>= 2.0.3)`, `Momocs (>= 1.4.0)`, `outlineR (>= 0.1.0)`, `raster (>= 3.6-20)`, `rcarbon (>= 1.5.0)`, `readr (>= 2.1.4)`, `RevGadgets (>= 1.1.0)`, `rgeos (>= 0.6-2)`, `rworldmap (>= 1.3-6)`, `sp (>= 1.6-0)`, `splitstackshape (>= 1.4.8)`, `tibble (>= 3.2.1)`, `tidyr (>= 1.3.0)`, `treeio (>= 1.22.0)`.
+All further analyses were conducted in `R v4.3.2` using the following packages: `beastio (>= 0.3.3)`, `coda (>= 0.19-4)`, `cowplot (>= 1.1.1)`, `data.table (>= 1.14.8)`, `dplyr (>= 1.1.2)`, `forcats (>= 1.0.0)`, `ggplot2 (>= 3.4.3)`, `ggpubr (>= 0.6.0)`, `ggrepel (>= 0.9.3)`, `ggthemes (>= 4.2.4)`, `ggtree (>= 3.6.2)`, `magrittr (>= 2.0.3)`, `Momocs (>= 1.4.0)`, `outlineR (>= 0.1.0)`, `raster (>= 3.6-20)`, `rcarbon (>= 1.5.0)`, `readr (>= 2.1.4)`, `RevGadgets (>= 1.1.0)`, `rgeos (>= 0.6-2)`, `rworldmap (>= 1.3-6)`, `sp (>= 1.6-0)`, `splitstackshape (>= 1.4.8)`, `tibble (>= 3.2.1)`, `tidyr (>= 1.3.0)`, `treeio (>= 1.22.0)`.
 
 ### Licenses:
 
