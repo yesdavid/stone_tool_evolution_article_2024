@@ -23,7 +23,7 @@ The .xml scripts generated with `12_fill_BEAST2_scripts.R` have to be run with B
 `contraband.jar` is the Java .jar-file which has to be used to run the xml scripts using the contraband package for Brownian Motion (see `./new_xmls/run_BLANK.sh`).
 
 ## R-scripts to analyse and visualise the output
-`13_LOCAL_move_converged_runs.R`: script to check whether prior, likelihood, and posterior have converged/ESS>>200. If yes, moves scripts and output to `./new_xmls/done` folder, if no, creates "resume.sh" file to resume job on HPC. 
+`13_LOCAL_move_converged_runs.R`: script to check the (downloaded) .log-files whether prior, likelihood, and posterior have converged/ESS>>200. If yes, moves scripts and output to `./new_xmls/done` folder, if no, creates "resume.sh" file to resume job on HPC. 
 
 `14_logfiles.R`: script to load .log-files of converged runs and summarize evolutionary rates and variances.
 	
