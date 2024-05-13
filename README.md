@@ -36,9 +36,11 @@ The Bayesian phylogenies were inferred using `BEAST v2.6.6`, and the following p
 
 All further analyses were conducted in `R v4.3.2` using the following packages: `beastio (>= 0.3.3)`, `coda (>= 0.19-4)`, `cowplot (>= 1.1.1)`, `data.table (>= 1.14.8)`, `dplyr (>= 1.1.2)`, `forcats (>= 1.0.0)`, `ggplot2 (>= 3.4.3)`, `ggpubr (>= 0.6.0)`, `ggrepel (>= 0.9.3)`, `ggthemes (>= 4.2.4)`, `ggtree (>= 3.6.2)`, `magrittr (>= 2.0.3)`, `Momocs (>= 1.4.0)`, `outlineR (>= 0.1.0)`, `raster (>= 3.6-20)`, `rcarbon (>= 1.5.0)`, `readr (>= 2.1.4)`, `RevGadgets (>= 1.1.0)`, `rgeos (>= 0.6-2)`, `rworldmap (>= 1.3-6)`, `sp (>= 1.6-0)`, `splitstackshape (>= 1.4.8)`, `tibble (>= 3.2.1)`, `tidyr (>= 1.3.0)`, `treeio (>= 1.22.0)`.
 
-These particular package versions can be downloaded and installed from the Posit Package Manager via the `install_packages.R` script provided in this repository. Alternatively, users can download and employ the `StoneToolEvol2024.sif` Singularity/Apptainer container provided. To use the Singularity file interactively, use the following command: `singularity exec StoneToolEvol2024.sif R`.
+These particular package versions can be downloaded and installed from the Posit Package Manager via the `install_packages.R` script provided in this repository. Alternatively, users can download and employ the `StoneToolEvol2024.sif` Singularity/Apptainer container provided on [10.5281/zenodo.11186033](https://doi.org/10.5281/zenodo.11186033). To use the Singularity file interactively, use the following command: `singularity exec StoneToolEvol2024.sif R`.
 
 ### How to reproduce:
+
+It is important to execute the scripts (found in `1_scripts`) in a certain order. First, scripts `10_C14_dates_v3.R`, `11_subset_outlines.R`, and `12_fill_BEAST2_scripts.R` have to be run in R. Script `12_fill_BEAST2_scripts.R` produces .xml files which have to be run with BEAST2 and the contraband package. BEAST2 with the above specified packages has to be installed on the computer/HPC, but the .xml files have to be run using the `contraband.jar` file (e.g. `java -jar contraband.jar 32_09_ULNC_FBD_skyline_age_uncertainty_underPrior.xml`). Afterwards, the results can be merged, analysed, and visualised in R using the R scripts `13_LOCAL_move_converged_runs.R`, `14_logfiles.R`, `15_plot_Skyline.R`, `15_plot_Skyline_ULNC.R`, `15_plot_Skyline_underPrior.R`, and `15_plot_Tree.R`. A short description of what each script does is given in `2_scripts/README.md`.
 
 ### Licenses:
 
