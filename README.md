@@ -3,7 +3,7 @@
 David N. Matzig¹,✉ ORCID: [0000-0001-7349-5401](http://orcid.org/0000-0001-7349-5401)  
 Ben Marwick² ORCID: [0000-0001-7879-4531](http://orcid.org/0000-0001-7879-4531)  
 Felix Riede¹ ORCID: [0000-0002-4879-7157](http://orcid.org/0000-0002-4879-7157)    
-Rachel Warnock³ ORCID: [0000-0002-9151-4642](http://orcid.org/0000-0002-9151-4642)    
+Rachel C.M. Warnock³ ORCID: [0000-0002-9151-4642](http://orcid.org/0000-0002-9151-4642)    
 
 ¹ Department of Archaeology and Heritage Studies, Aarhus University, Denmark  
 ² Department of Anthropology, University of Washington, USA   
@@ -23,7 +23,7 @@ The files at the URL above will generate the results as found in the publication
 [![ORCiD](https://img.shields.io/badge/ORCiD-0000--0001--7349--5401-green.svg)](http://orcid.org/0000-0001-7349-5401) David N. Matzig (<david.matzig@cas.au.dk>) 
 
 ### Published in:
-Matzig, D.N., Marwick, B., Riede, F., & Warnock, R.C.M. (2024). A macroevolutionary analysis of European Late Upper Palaeolithic stone tool shape using a Bayesian phylodynamic framework. R. Soc. Open Sci. 11: 240321. [https://doi.org/10.31235/osf.io/2a3xv](https://doi.org/10.1098/rsos.240321).  
+Matzig, D.N., Marwick, B., Riede, F., & Warnock, R.C.M. (2024). A macroevolutionary analysis of European Late Upper Palaeolithic stone tool shape using a Bayesian phylodynamic framework. R. Soc. Open Sci. 11: 240321. [https://doi.org/10.1098/rsos.240321](https://doi.org/10.1098/rsos.240321).  
 
 ### Abstract:
 Phylogenetic models are commonly used in paleobiology to study the patterns and processes of organismal evolution. In the human sciences, phylogenetic methods have been deployed for reconstructing ancestor-descendant relationships using linguistic and material culture data. Within evolutionary archaeology specifically, phylogenetic analyses based on maximum parsimony and discrete traits dominate, which sets limitations for the downstream role cultural phylogenies, once derived, can play in more elaborate analytical pipelines. Moreover, the use of discrete character traits in these efforts prevails, which in turn sets a number of non-trivial challenges. Recent methodological advances in computational paleobiology, however, now allow us to infer Bayesian phylogenies using continuous characters. Capitalizing on these developments, we here present an exploratory analysis of cultural macroevolution of projectile point shape evolution in the European Final Palaeolithic and earliest Mesolithic (~15,000-11,000 BP) using a time-scaled Bayesian phylogeny and a fossilised birth-death sampling process model. This model-based approach leaps far beyond the application of parsimony, in that it not only produces a tree, but also divergence times, and diversification rates, which we compare to the pronounced climatic changes that occurred during this timeframe. While common in cultural evolutionary analyses of language, the extension of Bayesian phylodynamic models to archaeology represents a major methodological breakthrough.
