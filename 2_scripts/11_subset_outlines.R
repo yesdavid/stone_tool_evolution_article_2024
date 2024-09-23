@@ -47,6 +47,8 @@ Momocs::filter(final_subset_outlines,
 
 final_subset_outlines_centered <- Momocs::coo_center(final_subset_outlines)
 final_subset_outlines_centered_scaled <- Momocs::coo_scale(final_subset_outlines_centered)
+final_subset_outlines_centered_scaled <- Momocs::coo_slidedirection(final_subset_outlines_centered_scaled,
+                                                                    direction = "up")
 
 #############################################################################################
 #############################################################################################
